@@ -13,8 +13,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "RISCV Primitives",
-            targets: ["RISCV Primitives"]
+            name: "RISCV Standard",
+            targets: ["RISCV Standard"]
         ),
     ],
     dependencies: [
@@ -22,7 +22,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "RISCV Primitives",
+            name: "RISCV Standard",
             dependencies: [
                 .product(name: "CPU Primitives", package: "swift-cpu-primitives"),
             ]

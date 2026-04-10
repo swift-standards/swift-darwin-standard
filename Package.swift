@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-riscv-primitives",
+    name: "swift-riscv-standard",
     platforms: [
         .macOS(.v26),
         .iOS(.v26),
@@ -18,7 +18,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../swift-cpu-primitives"),
+        .package(path: "../../swift-primitives/swift-cpu-primitives"),
     ],
     targets: [
         .target(

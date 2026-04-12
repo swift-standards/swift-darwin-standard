@@ -3,28 +3,130 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-riscv-standard",
+    name: "swift-darwin-standard",
     platforms: [
         .macOS(.v26),
         .iOS(.v26),
         .tvOS(.v26),
         .watchOS(.v26),
-        .visionOS(.v26),
+        .visionOS(.v26)
     ],
     products: [
         .library(
-            name: "RISCV Standard",
-            targets: ["RISCV Standard"]
+            name: "Darwin Kernel Standard",
+            targets: ["Darwin Kernel Standard"]
         ),
+        .library(
+            name: "Darwin Kernel Event Standard",
+            targets: ["Darwin Kernel Event Standard"]
+        ),
+        .library(
+            name: "Darwin Kernel Time Standard",
+            targets: ["Darwin Kernel Time Standard"]
+        ),
+        .library(
+            name: "Darwin Loader Standard",
+            targets: ["Darwin Loader Standard"]
+        ),
+        .library(
+            name: "Darwin Memory Standard",
+            targets: ["Darwin Memory Standard"]
+        ),
+        .library(
+            name: "Darwin Kernel Standard Test Support",
+            targets: ["Darwin Kernel Standard Test Support"]
+        )
     ],
     dependencies: [
-        .package(path: "../../swift-primitives/swift-cpu-primitives"),
+        .package(path: "../../swift-primitives/swift-kernel-primitives"),
+        .package(path: "../../swift-primitives/swift-time-primitives"),
+        .package(path: "../../swift-primitives/swift-loader-primitives"),
+        // SDG(wraps): Darwin syscalls wrap errno
+        // .package(path: "../swift-error-primitives"),
     ],
     targets: [
+
+        // MARK: - Core
         .target(
-            name: "RISCV Standard",
+            name: "Darwin Standard Core",
+            dependencies: []
+        ),
+
+        // MARK: - C Shims
+        .target(
+            name: "CDarwinKernelShim",
+            dependencies: []
+        ),
+        .target(
+            name: "CDarwinMemoryShim",
+            dependencies: []
+        ),
+
+        // MARK: - Kernel
+        .target(
+            name: "Darwin Kernel Standard",
             dependencies: [
-                .product(name: "CPU Primitives", package: "swift-cpu-primitives"),
+                .target(name: "Darwin Standard Core"),
+                .target(name: "CDarwinKernelShim"),
+                .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Random Primitives", package: "swift-kernel-primitives"),
+                .product(name: "Time Primitives", package: "swift-time-primitives"),
+            ]
+        ),
+
+        // MARK: - Kernel Event
+        .target(
+            name: "Darwin Kernel Event Standard",
+            dependencies: [
+                .target(name: "Darwin Standard Core"),
+                .target(name: "Darwin Kernel Time Standard"),
+                .product(name: "Kernel Descriptor Primitives", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Event Primitives", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Error Primitives", package: "swift-kernel-primitives"),
+            ]
+        ),
+
+        // MARK: - Kernel Time
+        .target(
+            name: "Darwin Kernel Time Standard",
+            dependencies: [
+                .target(name: "Darwin Standard Core"),
+            ]
+        ),
+
+        // MARK: - Loader
+        .target(
+            name: "Darwin Loader Standard",
+            dependencies: [
+                .target(name: "Darwin Standard Core"),
+                .product(name: "Loader Primitives", package: "swift-loader-primitives")
+            ]
+        ),
+
+        // MARK: - Memory
+        .target(
+            name: "Darwin Memory Standard",
+            dependencies: [
+                .target(name: "Darwin Standard Core"),
+                .target(name: "CDarwinMemoryShim")
+            ]
+        ),
+
+        // MARK: - Test Support
+        .target(
+            name: "Darwin Kernel Standard Test Support",
+            dependencies: [
+                "Darwin Kernel Standard",
+                .product(name: "Kernel Primitives Test Support", package: "swift-kernel-primitives")
+            ],
+            path: "Tests/Support"
+        ),
+
+        // MARK: - Tests
+        .testTarget(
+            name: "Darwin Kernel Event Standard Tests",
+            dependencies: [
+                "Darwin Kernel Event Standard",
             ]
         ),
     ],

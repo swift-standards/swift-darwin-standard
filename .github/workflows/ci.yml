@@ -21,9 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Configure git for private repos
-        run: git config --global url."https://${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
       - name: Select Xcode 26.0
         run: sudo xcode-select -s /Applications/Xcode_26.0.app
 
@@ -68,9 +65,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Configure git for private repos
-        run: git config --global url."https://${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
       - name: Cache Swift packages
         uses: actions/cache@v5
         with:
@@ -91,9 +85,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Configure git for private repos
-        run: git config --global url."https://${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
       - name: Cache Swift packages
         uses: actions/cache@v5
         with:
@@ -113,9 +104,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Configure git for private repos
-        run: git config --global url."https://${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
       - name: Install Swift
         uses: SwiftyLab/setup-swift@latest
         with:
@@ -132,5 +120,6 @@ jobs:
           restore-keys: windows-swift62-spm-
 
       # Note: swift test builds automatically
+      # Release mode + -gnone works around Swift 6.2.1 Windows compiler crash in debug info verifier
       - name: Test
-        run: swift test -c debug
+        run: swift test -c release -Xswiftc -gnone

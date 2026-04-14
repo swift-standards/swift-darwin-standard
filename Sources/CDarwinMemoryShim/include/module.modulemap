@@ -1,0 +1,4 @@
+module CDarwinMemoryShim {
+    header "shim.h"
+    export *
+}

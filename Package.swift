@@ -70,6 +70,7 @@ let package = Package(
                 .target(name: "CDarwinKernelShim"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Random Primitives", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Thread Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
             ]
         ),

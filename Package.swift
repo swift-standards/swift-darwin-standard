@@ -41,6 +41,7 @@ let package = Package(
         .package(path: "../../swift-primitives/swift-kernel-primitives"),
         .package(path: "../../swift-primitives/swift-time-primitives"),
         .package(path: "../../swift-primitives/swift-loader-primitives"),
+        .package(path: "../../swift-primitives/swift-string-primitives"),
         // SDG(wraps): Darwin syscalls wrap errno
         // .package(path: "../swift-error-primitives"),
     ],
@@ -100,7 +101,9 @@ let package = Package(
             name: "Darwin Loader Standard",
             dependencies: [
                 .target(name: "Darwin Standard Core"),
-                .product(name: "Loader Primitives", package: "swift-loader-primitives")
+                .target(name: "CDarwinKernelShim"),
+                .product(name: "Loader Primitives", package: "swift-loader-primitives"),
+                .product(name: "String Primitives", package: "swift-string-primitives")
             ]
         ),
 

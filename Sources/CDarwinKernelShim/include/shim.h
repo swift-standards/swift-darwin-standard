@@ -30,6 +30,18 @@ static inline int32_t swift_RTLD_FIRST(void) {
     return RTLD_FIRST;
 }
 
+// Dynamic loader symbol-lookup sentinels.
+// These are C macros expanding to cast expressions — not importable into Swift
+// without a shim. On Darwin they live in <dlfcn.h> unconditionally.
+
+static inline void *swift_RTLD_DEFAULT(void) {
+    return RTLD_DEFAULT;
+}
+
+static inline void *swift_RTLD_NEXT(void) {
+    return RTLD_NEXT;
+}
+
 #endif /* __APPLE__ */
 
 #endif /* CDARWIN_SHIM_H */

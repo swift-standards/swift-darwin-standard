@@ -14,42 +14,48 @@
 public import Kernel_Random_Primitives
 internal import Darwin
 
-// MARK: - Darwin arc4random Implementation
+// MARK: - Darwin arc4random syscall
 
-extension Kernel.Random {
-    /// Fills a mutable span with cryptographically secure random bytes.
+extension Darwin.Kernel.Random {
+    /// Fills a mutable span with cryptographically secure random bytes using
+    /// `arc4random_buf`.
     ///
-    /// Uses arc4random_buf which reads from the kernel's CSPRNG.
-    /// This function never fails and never blocks.
+    /// Darwin's `arc4random_buf` reads from the kernel's CSPRNG and is
+    /// infallible — it never fails and never blocks. The
+    /// `throws(Kernel.Random.Error)` annotation is present for cross-platform
+    /// signature parity with `Linux.Kernel.Random.getrandom(_:)` and
+    /// `Windows.Kernel.Random.bCryptGenRandom(_:)`; the body never throws on
+    /// Darwin (see [PATTERN-009]).
     ///
     /// - Parameter span: The mutable span to fill with random bytes.
-
-    public static func fill(_ span: inout MutableSpan<UInt8>) {
-        unsafe span.withUnsafeMutableBytes { (buffer: UnsafeMutableRawBufferPointer) in
-            unsafe fill(buffer)
+    public static func arc4random(_ span: inout MutableSpan<UInt8>) throws(Kernel.Random.Error) {
+        try unsafe span.withUnsafeMutableBytes { (buffer: UnsafeMutableRawBufferPointer) throws(Kernel.Random.Error) in
+            try unsafe arc4random(buffer)
         }
     }
 
-    /// Fills a buffer with cryptographically secure random bytes.
+    /// Fills a buffer with cryptographically secure random bytes using
+    /// `arc4random_buf`.
     ///
-    /// Uses arc4random_buf which reads from the kernel's CSPRNG.
-    /// This function never fails and never blocks.
+    /// Darwin's `arc4random_buf` reads from the kernel's CSPRNG and is
+    /// infallible — it never fails and never blocks. The
+    /// `throws(Kernel.Random.Error)` annotation is present for cross-platform
+    /// signature parity (see [PATTERN-009]).
     ///
     /// - Parameter buffer: The buffer to fill with random bytes.
-
     @unsafe
-    public static func fill(_ buffer: UnsafeMutableRawBufferPointer) {
+    public static func arc4random(_ buffer: UnsafeMutableRawBufferPointer) throws(Kernel.Random.Error) {
         guard let base = buffer.baseAddress, buffer.count > 0 else { return }
         unsafe arc4random_buf(base, buffer.count)
     }
 
-    /// Fills a typed buffer with cryptographically secure random bytes.
+    /// Fills a typed buffer with cryptographically secure random bytes using
+    /// `arc4random_buf`.
     ///
     /// - Parameter buffer: The buffer to fill with random bytes.
-
     @unsafe
-    public static func fill(_ buffer: UnsafeMutableBufferPointer<UInt8>) {
-        unsafe fill(UnsafeMutableRawBufferPointer(buffer))
+    public static func arc4random(_ buffer: UnsafeMutableBufferPointer<UInt8>) throws(Kernel.Random.Error) {
+        try unsafe arc4random(UnsafeMutableRawBufferPointer(buffer))
     }
 }
 

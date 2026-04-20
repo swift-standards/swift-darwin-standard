@@ -29,8 +29,8 @@ import Testing
 
     extension Kernel.Event.Queue.Event.Test.Unit {
 
-        @Test("event roundtrips through C conversion")
-        func eventRoundtripsThoughCConversion() throws {
+        @Test
+        func `event roundtrips through C conversion`() throws {
             let (readFd, writeFd) = try Kernel.Event.Test.makePipe()
             defer {
                 Kernel.Event.Test.closeNoThrow(readFd)
@@ -57,20 +57,20 @@ import Testing
             // Note: data may not roundtrip perfectly due to pointer conversion
         }
 
-        @Test("event data roundtrips value")
-        func eventDataRoundtripsValue() {
+        @Test
+        func `event data roundtrips value`() {
             let data = Kernel.Event.Queue.Event.Data(12345)
             #expect(data == 12345)
         }
 
-        @Test("event data zero constant exists")
-        func eventDataZeroConstantExists() {
+        @Test
+        func `event data zero constant exists`() {
             let data = Kernel.Event.Queue.Event.Data.zero
             #expect(data == 0)
         }
 
-        @Test("event conforms to Equatable")
-        func eventEquatable() {
+        @Test
+        func `event conforms to Equatable`() {
             let event1 = Kernel.Event.Queue.Event(
                 id: Kernel.Event.ID(UInt(42)),
                 filter: .read,
@@ -91,8 +91,8 @@ import Testing
             #expect(event1 != event3)
         }
 
-        @Test("event conforms to Hashable")
-        func eventHashable() {
+        @Test
+        func `event conforms to Hashable`() {
             let event1 = Kernel.Event.Queue.Event(
                 id: Kernel.Event.ID(UInt(42)),
                 filter: .read,

@@ -28,8 +28,8 @@ import Testing
 
     extension Kernel.Event.Queue.Error.Test.Unit {
 
-        @Test("create error captures posix error code")
-        func createErrorCapturesPosixCode() {
+        @Test
+        func `create error captures posix error code`() {
             let code = Kernel.Error.Code.posix(EBADF)
             let error = Kernel.Event.Queue.Error.create(code)
 
@@ -40,8 +40,8 @@ import Testing
             }
         }
 
-        @Test("kevent error captures posix error code")
-        func keventErrorCapturesPosixCode() {
+        @Test
+        func `kevent error captures posix error code`() {
             let code = Kernel.Error.Code.posix(EINVAL)
             let error = Kernel.Event.Queue.Error.kevent(code)
 
@@ -52,14 +52,14 @@ import Testing
             }
         }
 
-        @Test("error conforms to Swift.Error")
-        func errorConformsToSwiftError() {
+        @Test
+        func `error conforms to Swift.Error`() {
             let error: any Swift.Error = Kernel.Event.Queue.Error.interrupted
             #expect(error is Kernel.Event.Queue.Error)
         }
 
-        @Test("error conforms to Equatable")
-        func errorEquatable() {
+        @Test
+        func `error conforms to Equatable`() {
             let error1 = Kernel.Event.Queue.Error.interrupted
             let error2 = Kernel.Event.Queue.Error.interrupted
             let error3 = Kernel.Event.Queue.Error.create(.posix(EBADF))
@@ -68,8 +68,8 @@ import Testing
             #expect(error1 != error3)
         }
 
-        @Test("error has description")
-        func errorHasDescription() {
+        @Test
+        func `error has description`() {
             let error = Kernel.Event.Queue.Error.interrupted
             #expect(!error.description.isEmpty)
         }

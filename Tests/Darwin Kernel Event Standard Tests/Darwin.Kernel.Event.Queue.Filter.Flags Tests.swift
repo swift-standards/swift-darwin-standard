@@ -27,48 +27,48 @@ import Testing
     // MARK: - Unit Tests
 
     extension Kernel.Event.Queue.Filter.Flags.Test.Unit {
-        @Test("init with rawValue stores value")
-        func initWithRawValue() {
+        @Test
+        func `init with rawValue stores value`() {
             let flags = Kernel.Event.Queue.Filter.Flags(rawValue: 42)
             #expect(flags.rawValue == 42)
         }
 
-        @Test("none has rawValue of 0")
-        func noneHasZeroRawValue() {
+        @Test
+        func `none has rawValue of 0`() {
             #expect(Kernel.Event.Queue.Filter.Flags.none.rawValue == 0)
         }
 
-        @Test("trigger matches NOTE_TRIGGER")
-        func triggerMatchesNoteTrigger() {
+        @Test
+        func `trigger matches NOTE_TRIGGER`() {
             #expect(Kernel.Event.Queue.Filter.Flags.trigger.rawValue == UInt32(NOTE_TRIGGER))
         }
 
-        @Test("flags can be combined with |")
-        func flagsCombineWithOr() {
+        @Test
+        func `flags can be combined with |`() {
             let combined = Kernel.Event.Queue.Filter.Flags.trigger | Kernel.Event.Queue.Filter.Flags.none
             #expect(combined.rawValue == Kernel.Event.Queue.Filter.Flags.trigger.rawValue)
         }
 
-        @Test("contains returns true for contained flag")
-        func containsReturnsTrueForContained() {
+        @Test
+        func `contains returns true for contained flag`() {
             let flags = Kernel.Event.Queue.Filter.Flags.trigger
             #expect(flags.contains(.trigger))
         }
 
-        @Test("contains returns true for none in any flags")
-        func containsReturnsTrueForNone() {
+        @Test
+        func `contains returns true for none in any flags`() {
             let flags = Kernel.Event.Queue.Filter.Flags.trigger
             #expect(flags.contains(.none))
         }
 
-        @Test("contains returns false for non-contained flag")
-        func containsReturnsFalseForNonContained() {
+        @Test
+        func `contains returns false for non-contained flag`() {
             let flags = Kernel.Event.Queue.Filter.Flags.none
             #expect(!flags.contains(.trigger))
         }
 
-        @Test("rawValue roundtrip preserves value")
-        func rawValueRoundtrip() {
+        @Test
+        func `rawValue roundtrip preserves value`() {
             let original: UInt32 = 0xDEAD_BEEF
             let flags = Kernel.Event.Queue.Filter.Flags(rawValue: original)
             #expect(flags.rawValue == original)
@@ -78,14 +78,14 @@ import Testing
     // MARK: - Conformance Tests
 
     extension Kernel.Event.Queue.Filter.Flags.Test.Unit {
-        @Test("Flags is Sendable")
-        func isSendable() {
+        @Test
+        func `Flags is Sendable`() {
             let flags: any Sendable = Kernel.Event.Queue.Filter.Flags.trigger
             #expect(flags is Kernel.Event.Queue.Filter.Flags)
         }
 
-        @Test("Flags is Equatable")
-        func isEquatable() {
+        @Test
+        func `Flags is Equatable`() {
             let a = Kernel.Event.Queue.Filter.Flags.trigger
             let b = Kernel.Event.Queue.Filter.Flags.trigger
             let c = Kernel.Event.Queue.Filter.Flags.none
@@ -93,8 +93,8 @@ import Testing
             #expect(a != c)
         }
 
-        @Test("Flags is Hashable")
-        func isHashable() {
+        @Test
+        func `Flags is Hashable`() {
             var set = Set<Kernel.Event.Queue.Filter.Flags>()
             set.insert(.trigger)
             set.insert(.none)
@@ -106,20 +106,20 @@ import Testing
     // MARK: - Edge Cases
 
     extension Kernel.Event.Queue.Filter.Flags.Test.EdgeCase {
-        @Test("combining same flag is idempotent")
-        func combiningIdempotent() {
+        @Test
+        func `combining same flag is idempotent`() {
             let combined = Kernel.Event.Queue.Filter.Flags.trigger | .trigger
             #expect(combined == .trigger)
         }
 
-        @Test("combining with none is identity")
-        func combiningWithNoneIsIdentity() {
+        @Test
+        func `combining with none is identity`() {
             let combined = Kernel.Event.Queue.Filter.Flags.trigger | .none
             #expect(combined == .trigger)
         }
 
-        @Test("none combined with none is none")
-        func noneCombinedWithNone() {
+        @Test
+        func `none combined with none is none`() {
             let combined = Kernel.Event.Queue.Filter.Flags.none | .none
             #expect(combined == .none)
         }

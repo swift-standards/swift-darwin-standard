@@ -28,38 +28,38 @@ import Testing
 
     extension Kernel.Event.Queue.Flags.Test.Unit {
 
-        @Test("add and delete flags are distinct")
-        func addAndDeleteAreDistinct() {
+        @Test
+        func `add and delete flags are distinct`() {
             #expect(Kernel.Event.Queue.Flags.add != .delete)
             #expect(Kernel.Event.Queue.Flags.add.rawValue != Kernel.Event.Queue.Flags.delete.rawValue)
         }
 
-        @Test("flags combine with OR operator")
-        func flagsCombineWithOrOperator() {
+        @Test
+        func `flags combine with OR operator`() {
             let combined = Kernel.Event.Queue.Flags.add | .enable
             #expect(combined.contains(.add))
             #expect(combined.contains(.enable))
             #expect(!combined.contains(.delete))
         }
 
-        @Test("contains detects single flag")
-        func containsDetectsSingleFlag() {
+        @Test
+        func `contains detects single flag`() {
             #expect(Kernel.Event.Queue.Flags.add.contains(.add))
             #expect(!Kernel.Event.Queue.Flags.add.contains(.delete))
         }
 
-        @Test("none has rawValue zero")
-        func noneHasRawValueZero() {
+        @Test
+        func `none has rawValue zero`() {
             #expect(Kernel.Event.Queue.Flags.none.rawValue == 0)
         }
 
-        @Test("add flag rawValue matches EV_ADD")
-        func addRawValueMatchesEVADD() {
+        @Test
+        func `add flag rawValue matches EV_ADD`() {
             #expect(Kernel.Event.Queue.Flags.add.rawValue == UInt16(EV_ADD))
         }
 
-        @Test("delete flag rawValue matches EV_DELETE")
-        func deleteRawValueMatchesEVDELETE() {
+        @Test
+        func `delete flag rawValue matches EV_DELETE`() {
             #expect(Kernel.Event.Queue.Flags.delete.rawValue == UInt16(EV_DELETE))
         }
     }

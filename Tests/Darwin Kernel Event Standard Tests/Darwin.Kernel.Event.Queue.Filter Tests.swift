@@ -28,29 +28,29 @@ import Testing
 
     extension Kernel.Event.Queue.Filter.Test.Unit {
 
-        @Test("read and write filters are distinct")
-        func readAndWriteAreDistinct() {
+        @Test
+        func `read and write filters are distinct`() {
             #expect(Kernel.Event.Queue.Filter.read != .write)
             #expect(Kernel.Event.Queue.Filter.read.rawValue != Kernel.Event.Queue.Filter.write.rawValue)
         }
 
-        @Test("read filter rawValue matches EVFILT_READ")
-        func readRawValueMatchesEVFILTREAD() {
+        @Test
+        func `read filter rawValue matches EVFILT_READ`() {
             #expect(Kernel.Event.Queue.Filter.read.rawValue == Int16(EVFILT_READ))
         }
 
-        @Test("write filter rawValue matches EVFILT_WRITE")
-        func writeRawValueMatchesEVFILTWRITE() {
+        @Test
+        func `write filter rawValue matches EVFILT_WRITE`() {
             #expect(Kernel.Event.Queue.Filter.write.rawValue == Int16(EVFILT_WRITE))
         }
 
-        @Test("user filter rawValue matches EVFILT_USER")
-        func userRawValueMatchesEVFILTUSER() {
+        @Test
+        func `user filter rawValue matches EVFILT_USER`() {
             #expect(Kernel.Event.Queue.Filter.user.rawValue == Int16(EVFILT_USER))
         }
 
-        @Test("filter conforms to Equatable")
-        func filterEquatable() {
+        @Test
+        func `filter conforms to Equatable`() {
             let filter1 = Kernel.Event.Queue.Filter.read
             let filter2 = Kernel.Event.Queue.Filter.read
             let filter3 = Kernel.Event.Queue.Filter.write
@@ -59,8 +59,8 @@ import Testing
             #expect(filter1 != filter3)
         }
 
-        @Test("filter conforms to Hashable")
-        func filterHashable() {
+        @Test
+        func `filter conforms to Hashable`() {
             let filter1 = Kernel.Event.Queue.Filter.read
             let filter2 = Kernel.Event.Queue.Filter.read
 

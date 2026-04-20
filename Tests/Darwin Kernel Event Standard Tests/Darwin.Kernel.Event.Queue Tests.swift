@@ -31,16 +31,16 @@ import Testing
 
         // MARK: - Lifecycle Tests
 
-        @Test("create returns valid kqueue descriptor")
-        func createReturnsValidDescriptor() throws {
+        @Test
+        func `create returns valid kqueue descriptor`() throws {
             let kq = try Kernel.Event.Queue.create()
             defer { Kernel.Event.Test.closeNoThrow(kq) }
 
             #expect(kq.rawValue >= 0)
         }
 
-        @Test("Kqueue namespace exists")
-        func kqueueNamespaceExists() {
+        @Test
+        func `Kqueue namespace exists`() {
             // Type check - ensures the namespace compiles
             _ = Kernel.Event.Queue.self
         }

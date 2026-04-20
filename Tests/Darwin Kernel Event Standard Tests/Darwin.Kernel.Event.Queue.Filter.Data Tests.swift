@@ -23,40 +23,40 @@ import Testing
 
         // MARK: - Unit Tests
 
-        @Test("zero constant equals 0")
-        func zeroConstant() {
+        @Test
+        func `zero constant equals 0`() {
             let zero = Kernel.Event.Queue.Filter.Data.zero
             #expect(zero == 0)
         }
 
-        @Test("init from Int stores value")
-        func initFromInt() {
+        @Test
+        func `init from Int stores value`() {
             let data = Kernel.Event.Queue.Filter.Data(42)
             #expect(data == 42)
         }
 
-        @Test("literal initialization works")
-        func literalInit() {
+        @Test
+        func `literal initialization works`() {
             let data: Kernel.Event.Queue.Filter.Data = 100
             #expect(data == 100)
         }
 
-        @Test("negative values are preserved")
-        func negativeValues() {
+        @Test
+        func `negative values are preserved`() {
             let data = Kernel.Event.Queue.Filter.Data(-1)
             #expect(data == -1)
         }
 
         // MARK: - Conformance Tests
 
-        @Test("Data is Sendable")
-        func isSendable() {
+        @Test
+        func `Data is Sendable`() {
             let data: any Sendable = Kernel.Event.Queue.Filter.Data.zero
             #expect(data is Kernel.Event.Queue.Filter.Data)
         }
 
-        @Test("Data is Equatable")
-        func isEquatable() {
+        @Test
+        func `Data is Equatable`() {
             let a = Kernel.Event.Queue.Filter.Data(42)
             let b = Kernel.Event.Queue.Filter.Data(42)
             let c = Kernel.Event.Queue.Filter.Data(0)
@@ -64,8 +64,8 @@ import Testing
             #expect(a != c)
         }
 
-        @Test("Data is Hashable")
-        func isHashable() {
+        @Test
+        func `Data is Hashable`() {
             var set = Set<Kernel.Event.Queue.Filter.Data>()
             set.insert(Kernel.Event.Queue.Filter.Data(1))
             set.insert(Kernel.Event.Queue.Filter.Data(2))
@@ -75,14 +75,14 @@ import Testing
 
         // MARK: - Edge Cases
 
-        @Test("Int.max is preserved")
-        func intMaxPreserved() {
+        @Test
+        func `Int.max is preserved`() {
             let data = Kernel.Event.Queue.Filter.Data(Int.max)
             #expect(data.rawValue == Int.max)
         }
 
-        @Test("Int.min is preserved")
-        func intMinPreserved() {
+        @Test
+        func `Int.min is preserved`() {
             let data = Kernel.Event.Queue.Filter.Data(Int.min)
             #expect(data.rawValue == Int.min)
         }

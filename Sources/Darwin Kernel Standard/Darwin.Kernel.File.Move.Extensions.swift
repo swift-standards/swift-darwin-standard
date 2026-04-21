@@ -25,6 +25,7 @@ extension Kernel.File.Move {
     ///   - oldPath: Source path.
     ///   - newPath: Destination path.
     /// - Throws: `Kernel.File.Rename.Error` if the move fails.
+    @_spi(Syscall)
     @unsafe
     public static func noClobber(
         from oldPath: UnsafePointer<CChar>,
@@ -66,6 +67,7 @@ extension Kernel.File.Move {
     ///   - path1: First path.
     ///   - path2: Second path.
     /// - Throws: `Kernel.File.Rename.Error` on failure.
+    @_spi(Syscall)
     @unsafe
     public static func exchange(
         _ path1: UnsafePointer<CChar>,

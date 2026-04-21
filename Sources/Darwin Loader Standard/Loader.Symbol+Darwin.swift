@@ -43,6 +43,36 @@ extension Loader.Symbol {
     /// Wraps `dlsym(3)`.
     ///
     /// - Parameters:
+    ///   - name: The symbol name.
+    ///   - scope: Where to search — a loaded `Handle` or special scope.
+    /// - Returns: Pointer to the symbol.
+    /// - Throws: `Loader.Error.symbol` if not found.
+    ///
+    /// ## Pointer Lifetime
+    ///
+    /// - Returned `UnsafeRawPointer` is valid only while the owning library remains loaded.
+    /// - Caller is responsible for correct casting and calling convention.
+    @unsafe
+    public static func lookup(
+        name: Swift.String,
+        in scope: Scope
+    ) throws(Loader.Error) -> UnsafeRawPointer {
+        // Manual NUL-terminated UTF-8 buffer: withCString does not preserve
+        // typed throws on Swift 6.3, so we use the same pattern as
+        // Darwin.Kernel.File.Attributes.Extended.copyAll.
+        var utf8 = Array(name.utf8)
+        utf8.append(0)
+        return try unsafe utf8.withUnsafeBufferPointer { buffer throws(Loader.Error) in
+            let cName = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: CChar.self)
+            return try unsafe lookup(name: cName, in: scope)
+        }
+    }
+
+    /// Looks up a symbol in a library or scope on Darwin (raw C-string variant).
+    ///
+    /// Wraps `dlsym(3)`.
+    ///
+    /// - Parameters:
     ///   - name: The symbol name (C string).
     ///   - scope: Where to search — a loaded `Handle` or special scope.
     /// - Returns: Pointer to the symbol.
@@ -52,6 +82,7 @@ extension Loader.Symbol {
     ///
     /// - Returned `UnsafeRawPointer` is valid only while the owning library remains loaded.
     /// - Caller is responsible for correct casting and calling convention.
+    @_spi(Syscall)
     @unsafe
     public static func lookup(
         name: UnsafePointer<CChar>,

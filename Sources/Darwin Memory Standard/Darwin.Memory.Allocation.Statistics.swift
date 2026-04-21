@@ -9,6 +9,8 @@
 //
 // ===----------------------------------------------------------------------===//
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+
 public import Darwin_Standard_Core
 import CDarwinMemoryShim
 
@@ -58,3 +60,5 @@ extension Darwin_Standard_Core.Darwin.Memory.Allocation.Statistics {
         )
     }
 }
+
+#endif

@@ -9,6 +9,8 @@
 //
 // ===----------------------------------------------------------------------===//
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+
 public import Darwin_Standard_Core
 public import Loader_Primitives
 internal import Darwin.Mach
@@ -238,3 +240,5 @@ extension Darwin_Standard_Core.Darwin.Loader.Section {
         }
     }
 }
+
+#endif

@@ -9,6 +9,8 @@
 //
 // ===----------------------------------------------------------------------===//
 
+#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+
 public import Darwin_Standard_Core
 internal import Darwin.Mach
 internal import MachO
@@ -135,3 +137,5 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
         }
     }
 }
+
+#endif

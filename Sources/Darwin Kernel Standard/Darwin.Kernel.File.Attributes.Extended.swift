@@ -55,13 +55,15 @@ extension Kernel.File.Attributes.Extended {
 // MARK: - List Operations
 
 extension Kernel.File.Attributes.Extended {
-    /// Lists extended attribute names on a file.
+    /// Lists extended attribute names on a file (raw C-string path variant).
     ///
     /// - Parameters:
-    ///   - path: Path to the file.
+    ///   - path: Path to the file as a C string.
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Returns: Array of attribute names.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func list(
         path: UnsafePointer<CChar>,
         followSymlinks: Bool = true
@@ -121,14 +123,16 @@ extension Kernel.File.Attributes.Extended {
 // MARK: - Get Operations
 
 extension Kernel.File.Attributes.Extended {
-    /// Gets an extended attribute value by path.
+    /// Gets an extended attribute value by path (raw C-string variant).
     ///
     /// - Parameters:
-    ///   - name: The attribute name.
-    ///   - path: Path to the file.
+    ///   - name: The attribute name as a C string.
+    ///   - path: Path to the file as a C string.
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Returns: The attribute value as bytes.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func get(
         name: UnsafePointer<CChar>,
         path: UnsafePointer<CChar>,
@@ -156,13 +160,15 @@ extension Kernel.File.Attributes.Extended {
         return Array(buffer.prefix(result))
     }
 
-    /// Gets an extended attribute value by file descriptor.
+    /// Gets an extended attribute value by file descriptor (raw C-string name variant).
     ///
     /// - Parameters:
-    ///   - name: The attribute name.
+    ///   - name: The attribute name as a C string.
     ///   - descriptor: The file descriptor.
     /// - Returns: The attribute value as bytes.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func get(
         name: UnsafePointer<CChar>,
         _ descriptor: borrowing Kernel.Descriptor
@@ -191,14 +197,16 @@ extension Kernel.File.Attributes.Extended {
 // MARK: - Set Operations
 
 extension Kernel.File.Attributes.Extended {
-    /// Sets an extended attribute by path.
+    /// Sets an extended attribute by path (raw C-string variant).
     ///
     /// - Parameters:
-    ///   - name: The attribute name.
+    ///   - name: The attribute name as a C string.
     ///   - value: The attribute value.
-    ///   - path: Path to the file.
+    ///   - path: Path to the file as a C string.
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func set(
         name: UnsafePointer<CChar>,
         value: UnsafeRawBufferPointer,
@@ -220,13 +228,15 @@ extension Kernel.File.Attributes.Extended {
         }
     }
 
-    /// Sets an extended attribute by file descriptor.
+    /// Sets an extended attribute by file descriptor (raw C-string name variant).
     ///
     /// - Parameters:
-    ///   - name: The attribute name.
+    ///   - name: The attribute name as a C string.
     ///   - value: The attribute value.
     ///   - descriptor: The file descriptor.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func set(
         name: UnsafePointer<CChar>,
         value: UnsafeRawBufferPointer,
@@ -249,13 +259,15 @@ extension Kernel.File.Attributes.Extended {
 // MARK: - Remove Operations
 
 extension Kernel.File.Attributes.Extended {
-    /// Removes an extended attribute by path.
+    /// Removes an extended attribute by path (raw C-string variant).
     ///
     /// - Parameters:
-    ///   - name: The attribute name.
-    ///   - path: Path to the file.
+    ///   - name: The attribute name as a C string.
+    ///   - path: Path to the file as a C string.
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func remove(
         name: UnsafePointer<CChar>,
         path: UnsafePointer<CChar>,
@@ -269,12 +281,14 @@ extension Kernel.File.Attributes.Extended {
         }
     }
 
-    /// Removes an extended attribute by file descriptor.
+    /// Removes an extended attribute by file descriptor (raw C-string name variant).
     ///
     /// - Parameters:
-    ///   - name: The attribute name.
+    ///   - name: The attribute name as a C string.
     ///   - descriptor: The file descriptor.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
+    @unsafe
     public static func remove(
         name: UnsafePointer<CChar>,
         _ descriptor: borrowing Kernel.Descriptor
@@ -342,6 +356,168 @@ extension Kernel.File.Attributes.Extended {
         }
 
         return names
+    }
+
+    /// Invokes `body` with a NUL-terminated C string for the given name.
+    ///
+    /// `Swift.String.withCString` does not preserve typed throws on Swift 6.3,
+    /// so this helper uses the same manual NUL-terminated UTF-8 buffer pattern
+    /// as ``copyAll(from:to:)``.
+    @unsafe
+    fileprivate static func withCName<R, E: Swift.Error>(
+        _ name: Swift.String,
+        _ body: (UnsafePointer<CChar>) throws(E) -> R
+    ) throws(E) -> R {
+        var utf8 = Array(name.utf8)
+        utf8.append(0)
+        return try unsafe utf8.withUnsafeBufferPointer { buffer throws(E) in
+            let ptr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: CChar.self)
+            return try unsafe body(ptr)
+        }
+    }
+}
+
+// MARK: - Safe Path/Name Overloads
+
+extension Kernel.File.Attributes.Extended {
+    /// Lists extended attribute names on a file.
+    ///
+    /// - Parameters:
+    ///   - path: Path to the file.
+    ///   - followSymlinks: If true, follows symlinks (default: true).
+    /// - Returns: Array of attribute names.
+    /// - Throws: `Error` on failure.
+    public static func list(
+        path: borrowing Kernel.Path.View,
+        followSymlinks: Bool = true
+    ) throws(Error) -> [Swift.String] {
+        try unsafe path.withUnsafePointer { pathPtr throws(Error) in
+            try unsafe list(
+                path: UnsafeRawPointer(pathPtr).assumingMemoryBound(to: CChar.self),
+                followSymlinks: followSymlinks
+            )
+        }
+    }
+
+    /// Gets an extended attribute value by path.
+    ///
+    /// - Parameters:
+    ///   - name: The attribute name.
+    ///   - path: Path to the file.
+    ///   - followSymlinks: If true, follows symlinks (default: true).
+    /// - Returns: The attribute value as bytes.
+    /// - Throws: `Error` on failure.
+    public static func get(
+        name: Swift.String,
+        path: borrowing Kernel.Path.View,
+        followSymlinks: Bool = true
+    ) throws(Error) -> [UInt8] {
+        try unsafe withCName(name) { namePtr throws(Error) in
+            try unsafe path.withUnsafePointer { pathPtr throws(Error) in
+                try unsafe get(
+                    name: namePtr,
+                    path: UnsafeRawPointer(pathPtr).assumingMemoryBound(to: CChar.self),
+                    followSymlinks: followSymlinks
+                )
+            }
+        }
+    }
+
+    /// Gets an extended attribute value by file descriptor.
+    ///
+    /// - Parameters:
+    ///   - name: The attribute name.
+    ///   - descriptor: The file descriptor.
+    /// - Returns: The attribute value as bytes.
+    /// - Throws: `Error` on failure.
+    public static func get(
+        name: Swift.String,
+        _ descriptor: borrowing Kernel.Descriptor
+    ) throws(Error) -> [UInt8] {
+        try unsafe withCName(name) { namePtr throws(Error) in
+            try unsafe get(name: namePtr, descriptor)
+        }
+    }
+
+    /// Sets an extended attribute by path.
+    ///
+    /// - Parameters:
+    ///   - name: The attribute name.
+    ///   - value: The attribute value.
+    ///   - path: Path to the file.
+    ///   - followSymlinks: If true, follows symlinks (default: true).
+    /// - Throws: `Error` on failure.
+    public static func set(
+        name: Swift.String,
+        value: UnsafeRawBufferPointer,
+        path: borrowing Kernel.Path.View,
+        followSymlinks: Bool = true
+    ) throws(Error) {
+        try unsafe withCName(name) { namePtr throws(Error) in
+            try unsafe path.withUnsafePointer { pathPtr throws(Error) in
+                try unsafe set(
+                    name: namePtr,
+                    value: value,
+                    path: UnsafeRawPointer(pathPtr).assumingMemoryBound(to: CChar.self),
+                    followSymlinks: followSymlinks
+                )
+            }
+        }
+    }
+
+    /// Sets an extended attribute by file descriptor.
+    ///
+    /// - Parameters:
+    ///   - name: The attribute name.
+    ///   - value: The attribute value.
+    ///   - descriptor: The file descriptor.
+    /// - Throws: `Error` on failure.
+    public static func set(
+        name: Swift.String,
+        value: UnsafeRawBufferPointer,
+        _ descriptor: borrowing Kernel.Descriptor
+    ) throws(Error) {
+        try unsafe withCName(name) { namePtr throws(Error) in
+            try unsafe set(name: namePtr, value: value, descriptor)
+        }
+    }
+
+    /// Removes an extended attribute by path.
+    ///
+    /// - Parameters:
+    ///   - name: The attribute name.
+    ///   - path: Path to the file.
+    ///   - followSymlinks: If true, follows symlinks (default: true).
+    /// - Throws: `Error` on failure.
+    public static func remove(
+        name: Swift.String,
+        path: borrowing Kernel.Path.View,
+        followSymlinks: Bool = true
+    ) throws(Error) {
+        try unsafe withCName(name) { namePtr throws(Error) in
+            try unsafe path.withUnsafePointer { pathPtr throws(Error) in
+                try unsafe remove(
+                    name: namePtr,
+                    path: UnsafeRawPointer(pathPtr).assumingMemoryBound(to: CChar.self),
+                    followSymlinks: followSymlinks
+                )
+            }
+        }
+    }
+
+    /// Removes an extended attribute by file descriptor.
+    ///
+    /// - Parameters:
+    ///   - name: The attribute name.
+    ///   - descriptor: The file descriptor.
+    /// - Throws: `Error` on failure.
+    public static func remove(
+        name: Swift.String,
+        _ descriptor: borrowing Kernel.Descriptor
+    ) throws(Error) {
+        try unsafe withCName(name) { namePtr throws(Error) in
+            try unsafe remove(name: namePtr, descriptor)
+        }
     }
 }
 

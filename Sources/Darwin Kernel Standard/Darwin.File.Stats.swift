@@ -127,6 +127,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter path: The path as a C string.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
+    @_spi(Syscall)
     @unsafe
     public static func get(path: UnsafePointer<CChar>) throws(Error) -> Self {
         var sb = PlatformStat()
@@ -151,6 +152,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter path: The path as a C string.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
+    @_spi(Syscall)
     @unsafe
     public static func lget(path: UnsafePointer<CChar>) throws(Error) -> Self {
         var sb = PlatformStat()

@@ -94,7 +94,7 @@ extension Loader.Symbol {
 
         if let errorCStr = unsafe dlerror() {
             let u8Ptr = unsafe UnsafeRawPointer(errorCStr).assumingMemoryBound(to: UInt8.self)
-            let view = unsafe String_Primitives.String.View(u8Ptr, count: String_Primitives.String.length(of: u8Ptr))
+            let view = unsafe String_Primitives.String.Borrowed(u8Ptr, count: String_Primitives.String.length(of: u8Ptr))
             throw .symbol(unsafe Loader.Message(copying: view))
         }
 

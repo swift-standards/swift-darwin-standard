@@ -68,8 +68,8 @@ extension Kernel.Copy.Clone {
     /// - Throws: ``Kernel/Copy/Error`` on failure.
 
     public static func file(
-        from sourcePath: borrowing Kernel.Path.View,
-        to destPath: borrowing Kernel.Path.View
+        from sourcePath: borrowing Kernel.Path.Borrowed,
+        to destPath: borrowing Kernel.Path.Borrowed
     ) throws(Kernel.Copy.Error) {
         try unsafe sourcePath.withUnsafePointer { srcCString throws(Kernel.Copy.Error) in
             try unsafe destPath.withUnsafePointer { dstCString throws(Kernel.Copy.Error) in

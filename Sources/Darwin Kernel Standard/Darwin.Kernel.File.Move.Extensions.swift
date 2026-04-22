@@ -48,8 +48,8 @@ extension Kernel.File.Move {
 
     /// Atomically moves a file using `Kernel.Path`, failing if destination exists.
     public static func noClobber(
-        from oldPath: borrowing Kernel.Path.View,
-        to newPath: borrowing Kernel.Path.View
+        from oldPath: borrowing Kernel.Path.Borrowed,
+        to newPath: borrowing Kernel.Path.Borrowed
     ) throws(Kernel.File.Rename.Error) {
         try unsafe oldPath.withUnsafePointer { oldPtr throws(Kernel.File.Rename.Error) in
             try unsafe newPath.withUnsafePointer { newPtr throws(Kernel.File.Rename.Error) in
@@ -88,8 +88,8 @@ extension Kernel.File.Move {
 
     /// Atomically exchanges two files using `Kernel.Path`.
     public static func exchange(
-        _ path1: borrowing Kernel.Path.View,
-        _ path2: borrowing Kernel.Path.View
+        _ path1: borrowing Kernel.Path.Borrowed,
+        _ path2: borrowing Kernel.Path.Borrowed
     ) throws(Kernel.File.Rename.Error) {
         try unsafe path1.withUnsafePointer { ptr1 throws(Kernel.File.Rename.Error) in
             try unsafe path2.withUnsafePointer { ptr2 throws(Kernel.File.Rename.Error) in

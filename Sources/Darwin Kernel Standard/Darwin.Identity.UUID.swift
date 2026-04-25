@@ -10,12 +10,12 @@ extension Darwin_Standard_Core.Darwin {
     public enum Identity {}
 }
 
-extension Darwin.Identity {
+extension Darwin_Standard_Core.Darwin.Identity {
     /// Native UUID parsing using Darwin's libuuid.
     public enum UUID {}
 }
 
-extension Darwin.Identity.UUID {
+extension Darwin_Standard_Core.Darwin.Identity.UUID {
     /// 16-byte tuple type matching RFC 4122 storage.
     public typealias Bytes = (
         UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,

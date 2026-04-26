@@ -14,6 +14,9 @@ public import Kernel_File_Primitives
 @_spi(Syscall) public import Kernel_Descriptor_Primitives
 internal import Time_Primitives
 
+// L2 init?(code:) extensions for Kernel.Descriptor.Validity.Error and Kernel.IO.Error
+internal import ISO_9945_Kernel
+
 #if canImport(Darwin)
 internal import Darwin
 

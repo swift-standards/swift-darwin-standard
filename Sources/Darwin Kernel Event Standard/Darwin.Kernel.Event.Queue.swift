@@ -12,6 +12,9 @@
 public import Kernel_Event_Primitives
 internal import Darwin_Kernel_Time_Standard
 
+// L2 .POSIX namespace constants
+internal import ISO_9945_Kernel
+
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 internal import Darwin
 

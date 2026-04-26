@@ -42,6 +42,7 @@ let package = Package(
         .package(path: "../../swift-primitives/swift-time-primitives"),
         .package(path: "../../swift-primitives/swift-loader-primitives"),
         .package(path: "../../swift-primitives/swift-string-primitives"),
+        .package(path: "../../swift-iso/swift-iso-9945"),
         // SDG(wraps): Darwin syscalls wrap errno
         // .package(path: "../swift-error-primitives"),
     ],
@@ -73,6 +74,7 @@ let package = Package(
                 .product(name: "Kernel Random Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Thread Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
+                .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
             ]
         ),
 
@@ -85,6 +87,7 @@ let package = Package(
                 .product(name: "Kernel Descriptor Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Event Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Error Primitives", package: "swift-kernel-primitives"),
+                .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
             ]
         ),
 

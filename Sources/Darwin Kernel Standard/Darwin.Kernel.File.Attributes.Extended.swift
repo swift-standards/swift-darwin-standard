@@ -12,7 +12,6 @@
 #if canImport(Darwin)
 
 public import Kernel_File_Primitives
-@_spi(Syscall) public import Kernel_Descriptor_Primitives
 internal import Darwin
 
 // MARK: - Attributes.Extended Namespace
@@ -93,14 +92,15 @@ extension Kernel.File.Attributes.Extended {
 
     /// Lists extended attribute names on an open file descriptor.
     ///
-    /// - Parameter descriptor: The file descriptor.
+    /// - Parameter fd: The file descriptor.
     /// - Returns: Array of attribute names.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
     public static func list(
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) -> [Swift.String] {
         // First call to get required buffer size
-        let size = flistxattr(descriptor._rawValue, nil, 0, 0)
+        let size = flistxattr(fd, nil, 0, 0)
         guard size >= 0 else {
             throw .current()
         }
@@ -111,7 +111,7 @@ extension Kernel.File.Attributes.Extended {
 
         // Allocate buffer and get names
         var buffer = [CChar](repeating: 0, count: size)
-        let result = unsafe flistxattr(descriptor._rawValue, &buffer, size, 0)
+        let result = unsafe flistxattr(fd, &buffer, size, 0)
         guard result >= 0 else {
             throw .current()
         }
@@ -171,10 +171,10 @@ extension Kernel.File.Attributes.Extended {
     @unsafe
     public static func get(
         name: UnsafePointer<CChar>,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) -> [UInt8] {
         // First call to get required buffer size
-        let size = unsafe fgetxattr(descriptor._rawValue, name, nil, 0, 0, 0)
+        let size = unsafe fgetxattr(fd, name, nil, 0, 0, 0)
         guard size >= 0 else {
             throw .current()
         }
@@ -185,7 +185,7 @@ extension Kernel.File.Attributes.Extended {
 
         // Allocate buffer and get value
         var buffer = [UInt8](repeating: 0, count: size)
-        let result = unsafe fgetxattr(descriptor._rawValue, name, &buffer, size, 0, 0)
+        let result = unsafe fgetxattr(fd, name, &buffer, size, 0, 0)
         guard result >= 0 else {
             throw .current()
         }
@@ -240,10 +240,10 @@ extension Kernel.File.Attributes.Extended {
     public static func set(
         name: UnsafePointer<CChar>,
         value: UnsafeRawBufferPointer,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) {
         let result = unsafe fsetxattr(
-            descriptor._rawValue,
+            fd,
             name,
             value.baseAddress,
             value.count,
@@ -291,9 +291,9 @@ extension Kernel.File.Attributes.Extended {
     @unsafe
     public static func remove(
         name: UnsafePointer<CChar>,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) {
-        let result = unsafe fremovexattr(descriptor._rawValue, name, 0)
+        let result = unsafe fremovexattr(fd, name, 0)
         guard result == 0 else {
             throw .current()
         }
@@ -309,9 +309,10 @@ extension Kernel.File.Attributes.Extended {
     ///   - source: Source file descriptor.
     ///   - destination: Destination file descriptor.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
     public static func copyAll(
-        from source: borrowing Kernel.Descriptor,
-        to destination: borrowing Kernel.Descriptor
+        fromFd source: Int32,
+        toFd destination: Int32
     ) throws(Error) {
         let names = try list(source)
 
@@ -423,19 +424,20 @@ extension Kernel.File.Attributes.Extended {
         }
     }
 
-    /// Gets an extended attribute value by file descriptor.
+    /// Gets an extended attribute value by file descriptor (raw fd variant).
     ///
     /// - Parameters:
     ///   - name: The attribute name.
-    ///   - descriptor: The file descriptor.
+    ///   - fd: The file descriptor.
     /// - Returns: The attribute value as bytes.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
     public static func get(
         name: Swift.String,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) -> [UInt8] {
         try unsafe withCName(name) { namePtr throws(Error) in
-            try unsafe get(name: namePtr, descriptor)
+            try unsafe get(name: namePtr, fd)
         }
     }
 
@@ -465,20 +467,21 @@ extension Kernel.File.Attributes.Extended {
         }
     }
 
-    /// Sets an extended attribute by file descriptor.
+    /// Sets an extended attribute by file descriptor (raw fd variant).
     ///
     /// - Parameters:
     ///   - name: The attribute name.
     ///   - value: The attribute value.
-    ///   - descriptor: The file descriptor.
+    ///   - fd: The file descriptor.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
     public static func set(
         name: Swift.String,
         value: UnsafeRawBufferPointer,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) {
         try unsafe withCName(name) { namePtr throws(Error) in
-            try unsafe set(name: namePtr, value: value, descriptor)
+            try unsafe set(name: namePtr, value: value, fd)
         }
     }
 
@@ -505,18 +508,19 @@ extension Kernel.File.Attributes.Extended {
         }
     }
 
-    /// Removes an extended attribute by file descriptor.
+    /// Removes an extended attribute by file descriptor (raw fd variant).
     ///
     /// - Parameters:
     ///   - name: The attribute name.
-    ///   - descriptor: The file descriptor.
+    ///   - fd: The file descriptor.
     /// - Throws: `Error` on failure.
+    @_spi(Syscall)
     public static func remove(
         name: Swift.String,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ fd: Int32
     ) throws(Error) {
         try unsafe withCName(name) { namePtr throws(Error) in
-            try unsafe remove(name: namePtr, descriptor)
+            try unsafe remove(name: namePtr, fd)
         }
     }
 }

@@ -165,14 +165,18 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
         return Self(_from: sb)
     }
 
-    /// Gets Darwin-specific file metadata for an open file descriptor.
+    /// Gets Darwin-specific file metadata for an open raw file descriptor.
     ///
-    /// - Parameter descriptor: The file descriptor to stat.
+    /// Spec-literal: takes a raw `Int32` fd. The L3-policy typed-descriptor
+    /// convenience lives at swift-darwin per [PLAT-ARCH-005] / [PLAT-ARCH-008e].
+    ///
+    /// - Parameter fd: The raw file descriptor to stat.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
-    public static func get(descriptor: borrowing Kernel.Descriptor) throws(Error) -> Self {
+    @_spi(Syscall)
+    public static func get(fd: Int32) throws(Error) -> Self {
         var sb = PlatformStat()
-        guard unsafe fstat(descriptor._rawValue, &sb) == 0 else {
+        guard unsafe fstat(fd, &sb) == 0 else {
             throw Error(_posixErrno: errno)
         }
         return Self(_from: sb)

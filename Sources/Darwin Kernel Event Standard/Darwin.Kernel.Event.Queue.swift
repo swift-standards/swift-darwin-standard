@@ -46,7 +46,7 @@ extension Kernel.Event {
         ///
         /// - Throws: `Error.create` if kqueue creation fails.
         public init() throws(Error) {
-            self.descriptor = try Self.create()
+            self.descriptor = try Kernel.Descriptor(_rawValue: Self.create())
         }
     }
 }
@@ -115,13 +115,18 @@ internal func _kevent(
 // MARK: - Package Statics (C API Mirror)
 
 extension Kernel.Event.Queue {
-    /// Creates a new kqueue descriptor.
-    package static func create() throws(Kernel.Event.Queue.Error) -> Kernel.Descriptor {
+    /// Creates a new kqueue, returning the raw fd.
+    ///
+    /// Spec-literal: returns the raw `Int32` fd. Zero descriptor construction:
+    /// the L3-policy wrapper at swift-darwin wraps the result via
+    /// `Kernel.Descriptor(_rawValue:)` per [PLAT-ARCH-005] / [PLAT-ARCH-008e].
+    /// § 5.6 handle-returning bifurcation.
+    package static func create() throws(Kernel.Event.Queue.Error) -> Int32 {
         let kq = kqueue()
         guard kq >= 0 else {
             throw .create(.posix(errno))
         }
-        return Kernel.Descriptor(_rawValue: kq)
+        return kq
     }
 
     /// Registers events without waiting.

@@ -12,6 +12,7 @@
 public import Darwin_Standard_Core
 public import Kernel_File_Primitives
 @_spi(Syscall) public import Kernel_Descriptor_Primitives
+@_spi(Syscall) public import ISO_9945_Kernel_Descriptor
 internal import Time_Primitives
 
 // L2 init?(code:) extensions for Kernel.Descriptor.Validity.Error and Kernel.IO.Error
@@ -180,6 +181,13 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
             throw Error(_posixErrno: errno)
         }
         return Self(_from: sb)
+    }
+
+    /// Gets Darwin-specific file metadata for a typed descriptor.
+    ///
+    /// Phase 1.5 typed L2 form. Delegates to the raw `get(fd:)` SPI.
+    public static func get(_ descriptor: borrowing POSIX.Kernel.Descriptor) throws(Error) -> Self {
+        try get(fd: descriptor._rawValue)
     }
 }
 

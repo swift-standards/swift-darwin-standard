@@ -1,3 +1,8 @@
+public import Kernel_Namespace
+public import Kernel_File_Primitives
+public import Kernel_Primitives_Core
+public import Kernel_Event_Primitives
+
 // ===----------------------------------------------------------------------===//
 //
 // This source file is part of the swift-kernel open source project
@@ -11,7 +16,6 @@
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-public import Kernel_Event_Primitives
 
 extension Kernel {
     /// Spec-literal alias for ``Kernel/Event/Queue`` matching the

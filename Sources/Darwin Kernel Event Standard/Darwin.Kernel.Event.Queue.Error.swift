@@ -8,7 +8,7 @@
 // See LICENSE for license information
 //
 // ===----------------------------------------------------------------------===//
-public import Kernel_Error_Primitives
+public import Error_Primitives
 public import Kernel_Event_Primitives
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
@@ -17,8 +17,8 @@ public import Kernel_Event_Primitives
         /// Errors from kqueue operations.
         ///
         /// Low-level errors from kqueue syscalls. Each case wraps the
-        /// underlying `Kernel.Error.Code` for platform-specific details.
-        /// Convert to `Kernel.Error` for semantic error handling.
+        /// underlying `Error_Primitives.Error.Code` for platform-specific details.
+        /// Convert to `Error_Primitives.Error` for semantic error handling.
         ///
         /// ## Usage
         ///
@@ -32,7 +32,7 @@ public import Kernel_Event_Primitives
         ///     case .interrupted:
         ///         // Retry the operation
         ///     default:
-        ///         throw Kernel.Error(error)
+        ///         throw Error_Primitives.Error(error)
         ///     }
         /// }
         /// ```
@@ -46,13 +46,13 @@ public import Kernel_Event_Primitives
             ///
             /// Returned by `kqueue()` syscall. Common causes: process
             /// has too many open file descriptors, system limit reached.
-            case create(Kernel.Error.Code)
+            case create(Error_Primitives.Error.Code)
 
             /// Failed to register, modify, or query events.
             ///
             /// Returned by `kevent()` syscall. Common causes: invalid
             /// kqueue descriptor, bad event specification, invalid filter.
-            case kevent(Kernel.Error.Code)
+            case kevent(Error_Primitives.Error.Code)
 
             /// Operation was interrupted by a signal.
             ///

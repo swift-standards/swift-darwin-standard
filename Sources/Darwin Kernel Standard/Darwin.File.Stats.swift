@@ -239,7 +239,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
 extension Kernel.File.Stats.Error {
     /// Creates an error from a POSIX errno.
     internal init(_posixErrno code: Int32) {
-        let errorCode = Kernel.Error.Code.posix(code)
+        let errorCode = Error_Primitives.Error.Code.posix(code)
         if let e = Kernel.Descriptor.Validity.Error(code: errorCode) {
             self = .handle(e)
             return
@@ -248,7 +248,7 @@ extension Kernel.File.Stats.Error {
             self = .io(e)
             return
         }
-        self = .platform(Kernel.Error(code: errorCode))
+        self = .platform(Error_Primitives.Error(code: errorCode))
     }
 }
 

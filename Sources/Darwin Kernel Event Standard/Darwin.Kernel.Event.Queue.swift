@@ -147,7 +147,7 @@ extension Kernel.Event.Queue {
                 kq.descriptor._rawValue, buffer.baseAddress, Int32(events.count), nil, 0, nil
             )
             guard result >= 0 else {
-                let code = Kernel.Error.Code.posix(errno)
+                let code = Error_Primitives.Error.Code.posix(errno)
                 if code.posix == EINTR { throw .interrupted }
                 throw .kevent(code)
             }
@@ -175,7 +175,7 @@ extension Kernel.Event.Queue {
                 kq, buffer.baseAddress, Int32(events.count), nil, 0, nil
             )
             guard result >= 0 else {
-                let code = Kernel.Error.Code.posix(errno)
+                let code = Error_Primitives.Error.Code.posix(errno)
                 if code.posix == EINTR { throw .interrupted }
                 throw .kevent(code)
             }
@@ -206,7 +206,7 @@ extension Kernel.Event.Queue {
                 result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), nil)
             }
             guard result >= 0 else {
-                let code = Kernel.Error.Code.posix(errno)
+                let code = Error_Primitives.Error.Code.posix(errno)
                 if code.posix == EINTR { throw .interrupted }
                 throw .kevent(code)
             }
@@ -238,7 +238,7 @@ extension Kernel.Event.Queue {
                 result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), nil)
             }
             guard result >= 0 else {
-                let code = Kernel.Error.Code.posix(errno)
+                let code = Error_Primitives.Error.Code.posix(errno)
                 if code.posix == EINTR { throw .interrupted }
                 throw .kevent(code)
             }

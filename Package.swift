@@ -71,10 +71,11 @@ let package = Package(
                 .target(name: "Darwin Standard Core"),
                 .target(name: "CDarwinKernelShim"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "Random Primitives", package: "swift-random-primitives"),
-                .product(name: "Kernel Thread Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
+                .product(name: "ISO 9945 Kernel Thread", package: "swift-iso-9945"),
             ]
         ),
 

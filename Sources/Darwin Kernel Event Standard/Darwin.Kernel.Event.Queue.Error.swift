@@ -1,3 +1,8 @@
+public import Kernel_Namespace
+public import Kernel_File_Primitives
+public import Kernel_Primitives_Core
+public import Kernel_Event_Primitives
+
 // ===----------------------------------------------------------------------===//
 //
 // This source file is part of the swift-kernel open source project
@@ -9,7 +14,6 @@
 //
 // ===----------------------------------------------------------------------===//
 public import Error_Primitives
-public import Kernel_Event_Primitives
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 

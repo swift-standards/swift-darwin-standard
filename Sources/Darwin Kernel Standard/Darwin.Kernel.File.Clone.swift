@@ -18,7 +18,7 @@ internal import Darwin
 
 extension Kernel.File.Clone.Capability {
     /// Probes whether the filesystem at the given path supports cloning.
-    public static func probe(at path: borrowing Kernel.Path.Borrowed) throws(Kernel.File.Clone.Error.Syscall) -> Kernel.File.Clone.Capability {
+    public static func probe(at path: borrowing Path.Borrowed) throws(Kernel.File.Clone.Error.Syscall) -> Kernel.File.Clone.Capability {
         try unsafe path.withUnsafePointer { cString throws(Kernel.File.Clone.Error.Syscall) in
             var statfsBuf = statfs()
             let result = unsafe statfs(UnsafeRawPointer(cString).assumingMemoryBound(to: CChar.self), &statfsBuf)
@@ -44,7 +44,7 @@ extension Kernel.File.Clone.Capability {
 
 extension Kernel.File.Clone.Metadata {
     /// Gets the size of a file.
-    public static func size(at path: borrowing Kernel.Path.Borrowed) throws(Kernel.File.Clone.Error.Syscall) -> Int {
+    public static func size(at path: borrowing Path.Borrowed) throws(Kernel.File.Clone.Error.Syscall) -> Int {
         try unsafe path.withUnsafePointer { cString throws(Kernel.File.Clone.Error.Syscall) in
             var statBuf = stat()
             let result = unsafe stat(UnsafeRawPointer(cString).assumingMemoryBound(to: CChar.self), &statBuf)
@@ -65,8 +65,8 @@ extension Kernel.File.Clone {
     public enum Clonefile {
         /// Attempts to clone a file using clonefile().
         public static func attempt(
-            source: borrowing Kernel.Path.Borrowed,
-            destination: borrowing Kernel.Path.Borrowed
+            source: borrowing Path.Borrowed,
+            destination: borrowing Path.Borrowed
         ) throws(Kernel.File.Clone.Error.Syscall) -> Bool {
             try unsafe source.withUnsafePointer { srcCString throws(Kernel.File.Clone.Error.Syscall) in
                 try unsafe destination.withUnsafePointer { dstCString throws(Kernel.File.Clone.Error.Syscall) in
@@ -91,8 +91,8 @@ extension Kernel.File.Clone {
     public enum Copyfile {
         /// Copies a file using copyfile() with COPYFILE_CLONE flag.
         public static func clone(
-            source: borrowing Kernel.Path.Borrowed,
-            destination: borrowing Kernel.Path.Borrowed
+            source: borrowing Path.Borrowed,
+            destination: borrowing Path.Borrowed
         ) throws(Kernel.File.Clone.Error.Syscall) {
             try unsafe source.withUnsafePointer { srcCString throws(Kernel.File.Clone.Error.Syscall) in
                 try unsafe destination.withUnsafePointer { dstCString throws(Kernel.File.Clone.Error.Syscall) in
@@ -116,8 +116,8 @@ extension Kernel.File.Clone {
 
         /// Copies a file using copyfile() without clone attempt.
         public static func data(
-            source: borrowing Kernel.Path.Borrowed,
-            destination: borrowing Kernel.Path.Borrowed
+            source: borrowing Path.Borrowed,
+            destination: borrowing Path.Borrowed
         ) throws(Kernel.File.Clone.Error.Syscall) {
             try unsafe source.withUnsafePointer { srcCString throws(Kernel.File.Clone.Error.Syscall) in
                 try unsafe destination.withUnsafePointer { dstCString throws(Kernel.File.Clone.Error.Syscall) in

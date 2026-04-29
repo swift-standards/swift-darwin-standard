@@ -390,7 +390,7 @@ extension Kernel.File.Attributes.Extended {
     /// - Returns: Array of attribute names.
     /// - Throws: `Error` on failure.
     public static func list(
-        path: borrowing Kernel.Path.Borrowed,
+        path: borrowing Path.Borrowed,
         followSymlinks: Bool = true
     ) throws(Error) -> [Swift.String] {
         try unsafe path.withUnsafePointer { pathPtr throws(Error) in
@@ -411,7 +411,7 @@ extension Kernel.File.Attributes.Extended {
     /// - Throws: `Error` on failure.
     public static func get(
         name: Swift.String,
-        path: borrowing Kernel.Path.Borrowed,
+        path: borrowing Path.Borrowed,
         followSymlinks: Bool = true
     ) throws(Error) -> [UInt8] {
         try unsafe withCName(name) { namePtr throws(Error) in
@@ -453,7 +453,7 @@ extension Kernel.File.Attributes.Extended {
     public static func set(
         name: Swift.String,
         value: UnsafeRawBufferPointer,
-        path: borrowing Kernel.Path.Borrowed,
+        path: borrowing Path.Borrowed,
         followSymlinks: Bool = true
     ) throws(Error) {
         try unsafe withCName(name) { namePtr throws(Error) in
@@ -495,7 +495,7 @@ extension Kernel.File.Attributes.Extended {
     /// - Throws: `Error` on failure.
     public static func remove(
         name: Swift.String,
-        path: borrowing Kernel.Path.Borrowed,
+        path: borrowing Path.Borrowed,
         followSymlinks: Bool = true
     ) throws(Error) {
         try unsafe withCName(name) { namePtr throws(Error) in

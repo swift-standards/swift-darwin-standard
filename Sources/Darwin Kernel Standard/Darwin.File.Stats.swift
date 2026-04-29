@@ -244,10 +244,6 @@ extension Kernel.File.Stats.Error {
             self = .handle(e)
             return
         }
-        if let e = Kernel.IO.Error(code: errorCode) {
-            self = .io(e)
-            return
-        }
         self = .platform(Error_Primitives.Error(code: errorCode))
     }
 }

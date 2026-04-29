@@ -120,7 +120,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter path: The path to stat.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
-    public static func get(path: borrowing Kernel.Path) throws(Error) -> Self {
+    public static func get(path: borrowing Path) throws(Error) -> Self {
         let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(to: CChar.self)
         return try unsafe get(path: cPath)
     }
@@ -145,7 +145,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter path: The path to stat.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
-    public static func lget(path: borrowing Kernel.Path) throws(Error) -> Self {
+    public static func lget(path: borrowing Path) throws(Error) -> Self {
         let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(to: CChar.self)
         return try unsafe lget(path: cPath)
     }

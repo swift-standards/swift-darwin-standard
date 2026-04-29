@@ -30,7 +30,7 @@ import Testing
 
         @Test
         func `create error captures posix error code`() {
-            let code = Kernel.Error.Code.posix(EBADF)
+            let code = Error_Primitives.Error.Code.posix(EBADF)
             let error = Kernel.Event.Queue.Error.create(code)
 
             if case .create(let capturedCode) = error {
@@ -42,7 +42,7 @@ import Testing
 
         @Test
         func `kevent error captures posix error code`() {
-            let code = Kernel.Error.Code.posix(EINVAL)
+            let code = Error_Primitives.Error.Code.posix(EINVAL)
             let error = Kernel.Event.Queue.Error.kevent(code)
 
             if case .kevent(let capturedCode) = error {

@@ -29,9 +29,9 @@ extension Kernel.File.Attributes {
 extension Kernel.File.Attributes.Extended {
     /// Error type for extended attribute operations.
     public struct Error: Swift.Error, Sendable {
-        public let code: Kernel.Error.Code
+        public let code: Error_Primitives.Error.Code
 
-        public init(code: Kernel.Error.Code) {
+        public init(code: Error_Primitives.Error.Code) {
             self.code = code
         }
 

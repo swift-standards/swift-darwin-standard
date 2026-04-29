@@ -33,9 +33,9 @@ extension Darwin_Standard_Core.Darwin.Kernel {
 extension Darwin_Standard_Core.Darwin.Kernel.Sysctl {
     /// Error type for sysctl operations.
     public struct Error: Swift.Error, Sendable {
-        public let code: Kernel.Error.Code
+        public let code: Error_Primitives.Error.Code
 
-        public init(code: Kernel.Error.Code) {
+        public init(code: Error_Primitives.Error.Code) {
             self.code = code
         }
 

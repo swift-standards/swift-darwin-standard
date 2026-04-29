@@ -34,7 +34,7 @@ extension Kernel.File.Move {
         let result = unsafe renamex_np(oldPath, newPath, UInt32(RENAME_EXCL))
 
         guard result == 0 else {
-            let code = Kernel.Error.Code.posix(errno)
+            let code = Error_Primitives.Error.Code.posix(errno)
             switch code.posix {
             case EEXIST:
                 throw .exists
@@ -76,7 +76,7 @@ extension Kernel.File.Move {
         let result = unsafe renamex_np(path1, path2, UInt32(RENAME_SWAP))
 
         guard result == 0 else {
-            let code = Kernel.Error.Code.posix(errno)
+            let code = Error_Primitives.Error.Code.posix(errno)
             switch code.posix {
             case EPERM, EACCES:
                 throw .permission(code)

@@ -11,6 +11,7 @@
 
 #if canImport(Darwin)
 
+public import ISO_9945_Core
 public import Kernel_File_Primitives
 @_spi(Syscall) public import Kernel_Descriptor_Primitives
 internal import Darwin

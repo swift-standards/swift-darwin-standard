@@ -11,6 +11,8 @@
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
+public import ISO_9945_Kernel_File
+public import ISO_9945_Core
 public import Kernel_File_Primitives
 internal import Darwin
 

@@ -14,7 +14,7 @@
 internal import Darwin
 public import ISO_9945_Kernel_Thread
 
-extension Kernel.Thread {
+extension ISO_9945.Kernel.Thread {
     /// Opaque OS thread identifier on Darwin.
     ///
     /// The raw value is the Mach port name for the thread, as returned by
@@ -37,7 +37,7 @@ extension Kernel.Thread {
     }
 }
 
-extension Kernel.Thread.ID {
+extension ISO_9945.Kernel.Thread.ID {
     /// The ID of the calling thread.
     public static var current: Self {
         .init(rawValue: UInt32(unsafe pthread_mach_thread_np(unsafe pthread_self())))

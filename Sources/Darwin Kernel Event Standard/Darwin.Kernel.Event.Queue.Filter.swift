@@ -14,7 +14,7 @@ public import ISO_9945_Core
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     internal import Darwin
 
-    extension Kernel.Event.Queue {
+    extension ISO_9945.Kernel.Event.Queue {
         /// Filter types determining what conditions trigger kqueue events.
         ///
         /// Each event in kqueue is associated with a filter that defines what
@@ -25,12 +25,12 @@ public import ISO_9945_Core
         ///
         /// ```swift
         /// // Monitor for read readiness
-        /// let event = Kernel.Event.Queue.Event(
-        ///     id: Kernel.Event.ID(socketFd),
+        /// let event = ISO_9945.Kernel.Event.Queue.Event(
+        ///     id: ISO_9945.Kernel.Event.ID(socketFd),
         ///     filter: .read,
         ///     flags: .add | .enable
         /// )
-        /// try Kernel.Event.Queue.register(kq, events: [event])
+        /// try ISO_9945.Kernel.Event.Queue.register(kq, events: [event])
         /// ```
         ///
         /// ## See Also
@@ -46,7 +46,7 @@ public import ISO_9945_Core
         }
     }
 
-    extension Kernel.Event.Queue.Filter {
+    extension ISO_9945.Kernel.Event.Queue.Filter {
         /// Monitors a descriptor for read readiness.
         ///
         /// Triggers when data is available to read from the descriptor.

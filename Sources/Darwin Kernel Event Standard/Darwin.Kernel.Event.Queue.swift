@@ -22,7 +22,7 @@ internal import Darwin
 /// Type alias for C kevent struct to avoid ambiguity with Swift kevent method.
 internal typealias CKevent = kevent
 
-extension Kernel.Event {
+extension ISO_9945.Kernel.Event {
     /// Kqueue event notification (Darwin).
     ///
     /// Owns the kqueue file descriptor via `~Copyable` — deinit closes
@@ -32,7 +32,7 @@ extension Kernel.Event {
     /// ## Usage
     ///
     /// ```swift
-    /// var kq = try Kernel.Event.Queue()
+    /// var kq = try ISO_9945.Kernel.Event.Queue()
     /// try kq.register(events: [event])
     /// let count = try kq.poll(into: &events, timeout: .seconds(1))
     /// // kq deinit closes the kqueue fd
@@ -40,20 +40,20 @@ extension Kernel.Event {
     @safe
     public struct Queue: ~Copyable, Sendable {
         /// The underlying kqueue file descriptor.
-        internal let descriptor: Kernel.Descriptor
+        internal let descriptor: ISO_9945.Kernel.Descriptor
 
         /// Creates a new kqueue instance.
         ///
         /// - Throws: `Error.create` if kqueue creation fails.
         public init() throws(Error) {
-            self.descriptor = try Kernel.Descriptor(_rawValue: Self.create())
+            self.descriptor = try ISO_9945.Kernel.Descriptor(_rawValue: Self.create())
         }
     }
 }
 
 // MARK: - Public Instance API
 
-extension Kernel.Event.Queue {
+extension ISO_9945.Kernel.Event.Queue {
     /// Registers events without waiting.
     ///
     /// - Parameter events: Array of events to register/modify.
@@ -78,12 +78,12 @@ extension Kernel.Event.Queue {
     /// Registers `EVFILT_USER` on this kqueue instance and returns a channel
     /// whose `wake()` method triggers it from any thread. Call before
     /// transferring the Queue to the poll thread via `sending`.
-    public func wakeup() throws(Error) -> Kernel.Wakeup.Channel {
+    public func wakeup() throws(Error) -> ISO_9945.Kernel.Wakeup.Channel {
         let wakeupEvent = Event(id: .zero, filter: .user, flags: .add | .clear)
         try self.register(events: [wakeupEvent])
 
         let rawFd = self.descriptor._rawValue
-        return Kernel.Wakeup.Channel {
+        return ISO_9945.Kernel.Wakeup.Channel {
             let trigger = Event(id: .zero, filter: .user, flags: .none, fflags: .trigger)
             do throws(Error) {
                 try Self.register(rawDescriptor: rawFd, events: [trigger])
@@ -114,14 +114,14 @@ internal func _kevent(
 
 // MARK: - Package Statics (C API Mirror)
 
-extension Kernel.Event.Queue {
+extension ISO_9945.Kernel.Event.Queue {
     /// Creates a new kqueue, returning the raw fd.
     ///
     /// Spec-literal: returns the raw `Int32` fd. Zero descriptor construction:
     /// the L3-policy wrapper at swift-darwin wraps the result via
-    /// `Kernel.Descriptor(_rawValue:)` per [PLAT-ARCH-005] / [PLAT-ARCH-008e].
+    /// `ISO_9945.Kernel.Descriptor(_rawValue:)` per [PLAT-ARCH-005] / [PLAT-ARCH-008e].
     /// § 5.6 handle-returning bifurcation.
-    package static func create() throws(Kernel.Event.Queue.Error) -> Int32 {
+    package static func create() throws(ISO_9945.Kernel.Event.Queue.Error) -> Int32 {
         let kq = kqueue()
         guard kq >= 0 else {
             throw .create(.posix(errno))
@@ -131,15 +131,15 @@ extension Kernel.Event.Queue {
 
     /// Registers events without waiting.
     package static func register(
-        _ kq: borrowing Kernel.Event.Queue,
+        _ kq: borrowing ISO_9945.Kernel.Event.Queue,
         events: [Event]
-    ) throws(Kernel.Event.Queue.Error) {
+    ) throws(ISO_9945.Kernel.Event.Queue.Error) {
         guard !events.isEmpty else { return }
 
         try unsafe withUnsafeTemporaryAllocation(
             of: CKevent.self,
             capacity: events.count
-        ) { (buffer) throws(Kernel.Event.Queue.Error) in
+        ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) in
             for i in 0..<events.count {
                 unsafe (buffer[i] = unsafe events[i].cValue)
             }
@@ -156,18 +156,18 @@ extension Kernel.Event.Queue {
 
     /// Registers events using a raw file descriptor value.
     ///
-    /// For contexts where a `Kernel.Descriptor` borrow cannot be maintained
+    /// For contexts where a `ISO_9945.Kernel.Descriptor` borrow cannot be maintained
     /// (e.g., `@Sendable` closures that outlive the descriptor's lexical scope).
     package static func register(
         rawDescriptor kq: Int32,
         events: [Event]
-    ) throws(Kernel.Event.Queue.Error) {
+    ) throws(ISO_9945.Kernel.Event.Queue.Error) {
         guard !events.isEmpty else { return }
 
         try unsafe withUnsafeTemporaryAllocation(
             of: CKevent.self,
             capacity: events.count
-        ) { (buffer) throws(Kernel.Event.Queue.Error) in
+        ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) in
             for i in 0..<events.count {
                 unsafe (buffer[i] = unsafe events[i].cValue)
             }
@@ -185,20 +185,20 @@ extension Kernel.Event.Queue {
 
 // MARK: - Package Statics: Polling
 
-extension Kernel.Event.Queue {
+extension ISO_9945.Kernel.Event.Queue {
     /// Waits for events (array variant).
     package static func poll(
-        _ kq: borrowing Kernel.Event.Queue,
+        _ kq: borrowing ISO_9945.Kernel.Event.Queue,
         into events: inout [Event],
         timeout: Duration?
-    ) throws(Kernel.Event.Queue.Error) -> Int {
+    ) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int {
         guard !events.isEmpty else { return 0 }
         let count = events.count
 
         return try unsafe withUnsafeTemporaryAllocation(
             of: CKevent.self,
             capacity: count
-        ) { (buffer) throws(Kernel.Event.Queue.Error) -> Int in
+        ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int in
             let result: Int32
             if var ts = timespec(timeout) {
                 result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)
@@ -220,17 +220,17 @@ extension Kernel.Event.Queue {
 
     /// Waits for events (buffer pointer variant).
     package static func poll(
-        _ kq: borrowing Kernel.Event.Queue,
+        _ kq: borrowing ISO_9945.Kernel.Event.Queue,
         into events: UnsafeMutableBufferPointer<Event>,
         timeout: Duration?
-    ) throws(Kernel.Event.Queue.Error) -> Int {
+    ) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int {
         guard !events.isEmpty else { return 0 }
         let count = events.count
 
         return try unsafe withUnsafeTemporaryAllocation(
             of: CKevent.self,
             capacity: count
-        ) { (buffer) throws(Kernel.Event.Queue.Error) -> Int in
+        ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int in
             let result: Int32
             if var ts = timespec(timeout) {
                 result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)

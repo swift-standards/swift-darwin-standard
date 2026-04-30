@@ -14,7 +14,7 @@ public import Error_Primitives
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-    extension Kernel.Event.Queue {
+    extension ISO_9945.Kernel.Event.Queue {
         /// Errors from kqueue operations.
         ///
         /// Low-level errors from kqueue syscalls. Each case wraps the
@@ -25,8 +25,8 @@ public import Error_Primitives
         ///
         /// ```swift
         /// do {
-        ///     let kq = try Kernel.Event.Queue.create()
-        /// } catch let error as Kernel.Event.Queue.Error {
+        ///     let kq = try ISO_9945.Kernel.Event.Queue.create()
+        /// } catch let error as ISO_9945.Kernel.Event.Queue.Error {
         ///     switch error {
         ///     case .create(let code):
         ///         print("kqueue creation failed: \(code)")
@@ -62,7 +62,7 @@ public import Error_Primitives
         }
     }
 
-    extension Kernel.Event.Queue.Error: CustomStringConvertible {
+    extension ISO_9945.Kernel.Event.Queue.Error: CustomStringConvertible {
         public var description: Swift.String {
             switch self {
             case .create(let code):

@@ -15,7 +15,7 @@ public import ISO_9945_Core
 
 // MARK: - Darwin-specific Open Options
 
-extension Kernel.File.Open.Options {
+extension ISO_9945.Kernel.File.Open.Options {
     /// Disables caching (F_NOCACHE).
     ///
     /// Darwin-specific. Applied via `fcntl` after open.

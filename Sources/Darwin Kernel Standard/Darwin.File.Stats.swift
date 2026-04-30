@@ -14,7 +14,7 @@ public import ISO_9945_Kernel_File
 public import Darwin_Standard_Core
 internal import Time_Primitives
 
-// L2 init?(code:) extensions for Kernel.Descriptor.Validity.Error and Kernel.IO.Error
+// L2 init?(code:) extensions for ISO_9945.Kernel.Descriptor.Validity.Error and ISO_9945.Kernel.IO.Error
 internal import ISO_9945_Kernel
 
 #if canImport(Darwin)
@@ -26,7 +26,7 @@ internal typealias PlatformStat = stat
 extension Darwin_Standard_Core.Darwin.File {
     /// Darwin-specific file metadata including birthtime.
     ///
-    /// This type extends the cross-platform `Kernel.File.Stats` with Darwin-specific
+    /// This type extends the cross-platform `ISO_9945.Kernel.File.Stats` with Darwin-specific
     /// fields like `birthtime` (file creation time) that are not available on all platforms.
     ///
     /// ## Usage
@@ -44,17 +44,17 @@ extension Darwin_Standard_Core.Darwin.File {
     /// - ``Kernel/File/Stats`` for cross-platform file stats
     public struct Stats: Sendable, Equatable {
         /// The cross-platform file stats.
-        public let base: Kernel.File.Stats
+        public let base: ISO_9945.Kernel.File.Stats
 
         /// File creation time (birthtime).
         ///
         /// This is always available on Darwin systems as `st_birthtimespec`.
         /// On other platforms, use the platform-specific package or omit this field.
-        public let birthtime: Kernel.Time
+        public let birthtime: ISO_9945.Kernel.Time
 
         /// Creates Darwin file stats.
         @inlinable
-        public init(base: Kernel.File.Stats, birthtime: Kernel.Time) {
+        public init(base: ISO_9945.Kernel.File.Stats, birthtime: ISO_9945.Kernel.Time) {
             self.base = base
             self.birthtime = birthtime
         }
@@ -66,54 +66,54 @@ extension Darwin_Standard_Core.Darwin.File {
 extension Darwin_Standard_Core.Darwin.File.Stats {
     /// File size in bytes.
     @inlinable
-    public var size: Kernel.File.Size { base.size }
+    public var size: ISO_9945.Kernel.File.Size { base.size }
 
     /// File type (regular, directory, symlink, etc.).
     @inlinable
-    public var type: Kernel.File.Stats.Kind { base.type }
+    public var type: ISO_9945.Kernel.File.Stats.Kind { base.type }
 
     /// POSIX file permissions.
     @inlinable
-    public var permissions: Kernel.File.Permissions { base.permissions }
+    public var permissions: ISO_9945.Kernel.File.Permissions { base.permissions }
 
     /// Owner user ID.
     @inlinable
-    public var uid: Kernel.User.ID { base.uid }
+    public var uid: ISO_9945.Kernel.User.ID { base.uid }
 
     /// Owner group ID.
     @inlinable
-    public var gid: Kernel.Group.ID { base.gid }
+    public var gid: ISO_9945.Kernel.Group.ID { base.gid }
 
     /// Inode number.
     @inlinable
-    public var inode: Kernel.Inode { base.inode }
+    public var inode: ISO_9945.Kernel.Inode { base.inode }
 
     /// Device ID.
     @inlinable
-    public var device: Kernel.Device { base.device }
+    public var device: ISO_9945.Kernel.Device { base.device }
 
     /// Number of hard links.
     @inlinable
-    public var linkCount: Kernel.Link.Count { base.linkCount }
+    public var linkCount: ISO_9945.Kernel.Link.Count { base.linkCount }
 
     /// Last access time.
     @inlinable
-    public var accessTime: Kernel.Time { base.accessTime }
+    public var accessTime: ISO_9945.Kernel.Time { base.accessTime }
 
     /// Last modification time.
     @inlinable
-    public var modificationTime: Kernel.Time { base.modificationTime }
+    public var modificationTime: ISO_9945.Kernel.Time { base.modificationTime }
 
     /// Status change time.
     @inlinable
-    public var changeTime: Kernel.Time { base.changeTime }
+    public var changeTime: ISO_9945.Kernel.Time { base.changeTime }
 }
 
 // MARK: - Get operations
 
 extension Darwin_Standard_Core.Darwin.File.Stats {
     /// Error type for Darwin file stats operations.
-    public typealias Error = Kernel.File.Stats.Error
+    public typealias Error = ISO_9945.Kernel.File.Stats.Error
 
     /// Gets Darwin-specific file metadata for a path (follows symlinks).
     ///
@@ -185,7 +185,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// Gets Darwin-specific file metadata for a typed descriptor.
     ///
     /// Phase 1.5 typed L2 form. Delegates to the raw `get(fd:)` SPI.
-    public static func get(_ descriptor: borrowing Kernel.Descriptor) throws(Error) -> Self {
+    public static func get(_ descriptor: borrowing ISO_9945.Kernel.Descriptor) throws(Error) -> Self {
         try get(fd: descriptor._rawValue)
     }
 }
@@ -216,15 +216,15 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
             nanosecondFraction: Int32(sb.st_birthtimespec.tv_nsec)
         )
 
-        let base = Kernel.File.Stats(
-            size: Kernel.File.Size(Int64(sb.st_size)),
-            type: Kernel.File.Stats.Kind(_mode: sb.st_mode),
-            permissions: Kernel.File.Permissions(rawValue: UInt16(sb.st_mode & 0o7777)),
-            uid: Kernel.User.ID(__unchecked: (), UInt32(sb.st_uid)),
-            gid: Kernel.Group.ID(__unchecked: (), UInt32(sb.st_gid)),
-            inode: Kernel.Inode(UInt64(sb.st_ino)),
-            device: Kernel.Device(UInt64(sb.st_dev)),
-            linkCount: Kernel.Link.Count(__unchecked: (), Cardinal(UInt(sb.st_nlink))),
+        let base = ISO_9945.Kernel.File.Stats(
+            size: ISO_9945.Kernel.File.Size(Int64(sb.st_size)),
+            type: ISO_9945.Kernel.File.Stats.Kind(_mode: sb.st_mode),
+            permissions: ISO_9945.Kernel.File.Permissions(rawValue: UInt16(sb.st_mode & 0o7777)),
+            uid: ISO_9945.Kernel.User.ID(__unchecked: (), UInt32(sb.st_uid)),
+            gid: ISO_9945.Kernel.Group.ID(__unchecked: (), UInt32(sb.st_gid)),
+            inode: ISO_9945.Kernel.Inode(UInt64(sb.st_ino)),
+            device: ISO_9945.Kernel.Device(UInt64(sb.st_dev)),
+            linkCount: ISO_9945.Kernel.Link.Count(__unchecked: (), Cardinal(UInt(sb.st_nlink))),
             accessTime: atime,
             modificationTime: mtime,
             changeTime: ctime
@@ -236,11 +236,11 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
 
 // MARK: - Error extension for posix errno
 
-extension Kernel.File.Stats.Error {
+extension ISO_9945.Kernel.File.Stats.Error {
     /// Creates an error from a POSIX errno.
     internal init(_posixErrno code: Int32) {
         let errorCode = Error_Primitives.Error.Code.posix(code)
-        if let e = Kernel.Descriptor.Validity.Error(code: errorCode) {
+        if let e = ISO_9945.Kernel.Descriptor.Validity.Error(code: errorCode) {
             self = .handle(e)
             return
         }
@@ -250,7 +250,7 @@ extension Kernel.File.Stats.Error {
 
 // MARK: - Kind extension for mode_t
 
-extension Kernel.File.Stats.Kind {
+extension ISO_9945.Kernel.File.Stats.Kind {
     /// Creates a file type from POSIX st_mode.
     internal init(_mode: mode_t) {
         let fileType = _mode & S_IFMT

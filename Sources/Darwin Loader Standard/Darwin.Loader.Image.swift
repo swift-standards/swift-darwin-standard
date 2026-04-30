@@ -12,6 +12,9 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
 public import Darwin_Standard_Core
+public import Tagged_Primitives
+public import Cardinal_Primitives
+public import Ordinal_Primitives_Core
 internal import Darwin.Mach
 internal import MachO
 
@@ -29,21 +32,21 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     ///
     /// This property is thread-safe. However, the count may change
     /// between reading it and iterating through images.
-    public static var count: UInt32 {
-        _dyld_image_count()
+    public static var count: Count {
+        Count(__unchecked: (), Cardinal(UInt(_dyld_image_count())))
     }
 
     /// Gets the Mach-O header for an image by index.
     ///
-    /// - Parameter index: The image index (0 ..< count).
+    /// - Parameter index: The image index (`Ordinal.zero ..< count.map(Ordinal.init)`).
     /// - Returns: The image header, or `nil` if the index is invalid.
     ///
     /// ## Thread Safety
     ///
     /// This function is thread-safe. The returned header is valid
     /// while the image remains loaded.
-    public static func header(at index: UInt32) -> Header? {
-        guard let header = unsafe _dyld_get_image_header(index) else {
+    public static func header(at index: Index) -> Header? {
+        guard let header = unsafe _dyld_get_image_header(UInt32(truncatingIfNeeded: index.rawValue.rawValue)) else {
             return nil
         }
         return unsafe Header(rawValue: UnsafeRawPointer(header))
@@ -54,20 +57,20 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// The slide is the difference between the image's actual load address
     /// and its preferred load address.
     ///
-    /// - Parameter index: The image index (0 ..< count).
+    /// - Parameter index: The image index (`Ordinal.zero ..< count.map(Ordinal.init)`).
     /// - Returns: The slide value.
-    public static func slide(at index: UInt32) -> Int {
-        _dyld_get_image_vmaddr_slide(index)
+    public static func slide(at index: Index) -> Int {
+        _dyld_get_image_vmaddr_slide(UInt32(truncatingIfNeeded: index.rawValue.rawValue))
     }
 
     /// Gets the file path for an image by index.
     ///
-    /// - Parameter index: The image index (0 ..< count).
+    /// - Parameter index: The image index (`Ordinal.zero ..< count.map(Ordinal.init)`).
     /// - Returns: The file path as a C string, or `nil` if unavailable.
     @_spi(Syscall)
     @unsafe
-    public static func path(at index: UInt32) -> UnsafePointer<CChar>? {
-        unsafe _dyld_get_image_name(index)
+    public static func path(at index: Index) -> UnsafePointer<CChar>? {
+        unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue))
     }
 }
 
@@ -82,14 +85,14 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// receives a `Span` that does NOT include the NUL terminator.
     ///
     /// - Parameters:
-    ///   - index: The image index (0 ..< count).
+    ///   - index: The image index (`0 ..< count.rawValue`).
     ///   - body: A closure that processes the path bytes. Non-throwing.
     /// - Returns: The result of the closure, or `nil` if the image is unavailable.
     public static func withPathBytes<R: ~Copyable>(
-        at index: UInt32,
+        at index: Index,
         _ body: (Span<CChar>) -> R
     ) -> R? {
-        guard let ptr = unsafe _dyld_get_image_name(index) else {
+        guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue)) else {
             return nil
         }
 
@@ -109,14 +112,14 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// escaping the pointer.
     ///
     /// - Parameters:
-    ///   - index: The image index (0 ..< count).
+    ///   - index: The image index (`0 ..< count.rawValue`).
     ///   - body: A closure that processes the path string. Non-throwing.
     /// - Returns: The result of the closure, or `nil` if the image is unavailable.
     public static func withPath<R: ~Copyable>(
-        at index: UInt32,
+        at index: Index,
         _ body: (Swift.String) -> R
     ) -> R? {
-        guard let ptr = unsafe _dyld_get_image_name(index) else {
+        guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue)) else {
             return nil
         }
 
@@ -130,9 +133,9 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// need to use the path temporarily, prefer `withPathBytes` or
     /// `withPath` to avoid allocation.
     ///
-    /// - Parameter index: The image index (0 ..< count).
+    /// - Parameter index: The image index (`0 ..< count.rawValue`).
     /// - Returns: The file path as an owned String, or `nil` if unavailable.
-    public static func pathString(at index: UInt32) -> Swift.String? {
+    public static func pathString(at index: Index) -> Swift.String? {
         withPath(at: index) { str in
             str
         }

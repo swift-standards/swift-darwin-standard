@@ -137,6 +137,7 @@ let package = Package(
             name: "Darwin Kernel Event Standard Tests",
             dependencies: [
                 "Darwin Kernel Event Standard",
+                .product(name: "ISO 9945 Kernel Test Support", package: "swift-iso-9945"),
             ]
         ),
     ],

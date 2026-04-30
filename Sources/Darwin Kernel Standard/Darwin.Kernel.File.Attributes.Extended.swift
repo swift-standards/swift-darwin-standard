@@ -13,7 +13,6 @@
 
 public import ISO_9945_Core
 public import Kernel_File_Primitives
-@_spi(Syscall) public import Kernel_Descriptor_Primitives
 internal import Darwin
 
 // MARK: - Attributes.Extended Namespace

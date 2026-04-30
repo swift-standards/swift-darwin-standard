@@ -1,6 +1,5 @@
 public import Kernel_Namespace
 public import Kernel_File_Primitives
-public import Kernel_Primitives_Core
 @_spi(Syscall) public import ISO_9945_Core
 package import Darwin_Standard_Core
 

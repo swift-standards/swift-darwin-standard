@@ -43,6 +43,9 @@ let package = Package(
         .package(path: "../../swift-primitives/swift-string-primitives"),
         .package(path: "../../swift-primitives/swift-error-primitives"),
         .package(path: "../../swift-primitives/swift-random-primitives"),
+        .package(path: "../../swift-primitives/swift-tagged-primitives"),
+        .package(path: "../../swift-primitives/swift-cardinal-primitives"),
+        .package(path: "../../swift-primitives/swift-ordinal-primitives"),
         .package(path: "../../swift-iso/swift-iso-9945"),
     ],
     targets: [
@@ -104,7 +107,10 @@ let package = Package(
                 .target(name: "Darwin Standard Core"),
                 .target(name: "CDarwinKernelShim"),
                 .product(name: "Loader Primitives", package: "swift-loader-primitives"),
-                .product(name: "String Primitives", package: "swift-string-primitives")
+                .product(name: "String Primitives", package: "swift-string-primitives"),
+                .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
+                .product(name: "Cardinal Primitives Core", package: "swift-cardinal-primitives"),
+                .product(name: "Ordinal Primitives Core", package: "swift-ordinal-primitives"),
             ]
         ),
 

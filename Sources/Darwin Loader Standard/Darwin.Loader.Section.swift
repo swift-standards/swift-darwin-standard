@@ -13,6 +13,10 @@
 
 public import Darwin_Standard_Core
 public import Loader_Primitives
+internal import Tagged_Primitives
+internal import Cardinal_Primitives
+internal import Ordinal_Primitives_Core
+internal import Ordinal_Primitives
 internal import Darwin.Mach
 internal import MachO
 
@@ -201,25 +205,25 @@ extension Darwin_Standard_Core.Darwin.Loader.Section {
         }
 
         public func makeIterator() -> Iterator {
-            Iterator(name: name, currentIndex: 0)
+            Iterator(name: name, currentIndex: .zero)
         }
 
         @safe
         public struct Iterator: @unsafe IteratorProtocol {
             let name: Name
-            var currentIndex: UInt32
+            var currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index
 
-            init(name: Name, currentIndex: UInt32) {
+            init(name: Name, currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index) {
                 self.name = name
                 self.currentIndex = currentIndex
             }
 
             public mutating func next() -> Bounds? {
-                let count = Darwin_Standard_Core.Darwin.Loader.Image.count
+                let end = Darwin_Standard_Core.Darwin.Loader.Image.count.map(Ordinal.init)
 
-                while currentIndex < count {
+                while currentIndex < end {
                     let index = currentIndex
-                    currentIndex += 1
+                    currentIndex += .one
 
                     guard let header = Darwin_Standard_Core.Darwin.Loader.Image.header(at: index) else {
                         continue

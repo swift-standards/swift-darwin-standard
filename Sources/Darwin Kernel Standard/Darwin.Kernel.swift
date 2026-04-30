@@ -10,12 +10,13 @@
 // ===----------------------------------------------------------------------===//
 
 public import Darwin_Standard_Core
-public import ISO_9945_Core
 
 extension Darwin_Standard_Core.Darwin {
-    /// Darwin kernel mechanisms — typealias to the iso-9945 L2 `Kernel`
-    /// namespace (G6.D typealias-via-L3 per [PLAT-ARCH-005]; Darwin
-    /// re-typealiases from iso-9945 since darwin-standard depends on
-    /// iso-9945 per [PLAT-ARCH-007]).
-    public typealias Kernel = ISO_9945.Kernel
+    /// Darwin kernel mechanisms — distinct nominal type per [PLAT-ARCH-008k]
+    /// Spec/Policy Namespace Split. Darwin-specific spec content (BSD-derived
+    /// syscalls like `arc4random_buf`, `sysctl`, `F_BARRIERFSYNC`/`F_FULLFSYNC`)
+    /// lives here; POSIX-shared content stays at `ISO_9945.Kernel`. Resolves
+    /// the [PLAT-ARCH-018] silent typealias-conflict hazard between
+    /// `Darwin.Kernel` and `ISO_9945.Kernel`.
+    public enum Kernel: Sendable {}
 }

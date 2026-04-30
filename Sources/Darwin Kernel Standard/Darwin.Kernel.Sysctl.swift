@@ -12,7 +12,7 @@
 #if canImport(Darwin)
 
 public import Darwin_Standard_Core
-public import Kernel_File_Primitives
+public import Error_Primitives
 internal import Darwin
 
 // MARK: - Sysctl Namespace

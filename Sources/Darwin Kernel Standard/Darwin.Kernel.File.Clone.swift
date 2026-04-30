@@ -13,7 +13,6 @@
 
 public import ISO_9945_Kernel_File
 public import ISO_9945_Core
-public import Kernel_File_Primitives
 internal import Darwin
 
 // MARK: - Capability Probing

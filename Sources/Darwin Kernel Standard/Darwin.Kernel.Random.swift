@@ -12,8 +12,14 @@
 #if canImport(Darwin)
 
 public import Random_Primitives
-public import ISO_9945_Kernel_System
 internal import Darwin
+
+// MARK: - Namespace anchor
+
+extension Darwin.Kernel {
+    /// Darwin-specific random vocabulary (e.g. `arc4random_buf`).
+    public enum Random: Sendable {}
+}
 
 // MARK: - Darwin arc4random syscall
 

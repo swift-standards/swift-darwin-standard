@@ -12,7 +12,6 @@
 #if canImport(Darwin)
 
 public import ISO_9945_Core
-public import Kernel_File_Primitives
 internal import Darwin
 
 // MARK: - Darwin renamex_np Implementation

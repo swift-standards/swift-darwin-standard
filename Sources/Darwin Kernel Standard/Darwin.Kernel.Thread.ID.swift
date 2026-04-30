@@ -12,7 +12,6 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
 internal import Darwin
-public import Kernel_Namespace
 public import ISO_9945_Kernel_Thread
 
 extension Kernel.Thread {

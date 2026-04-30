@@ -38,7 +38,6 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../../swift-primitives/swift-kernel-primitives"),
         .package(path: "../../swift-primitives/swift-time-primitives"),
         .package(path: "../../swift-primitives/swift-loader-primitives"),
         .package(path: "../../swift-primitives/swift-string-primitives"),
@@ -52,7 +51,6 @@ let package = Package(
         .target(
             name: "Darwin Standard Core",
             dependencies: [
-                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
             ]
         ),
@@ -73,10 +71,6 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "CDarwinKernelShim"),
-                .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
-                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
-                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
-                .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Random Primitives", package: "swift-random-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
@@ -90,9 +84,6 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Time Standard"),
-                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
-                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
-                .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Error Primitives", package: "swift-error-primitives"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
             ]
@@ -131,7 +122,6 @@ let package = Package(
             name: "Darwin Kernel Standard Test Support",
             dependencies: [
                 "Darwin Kernel Standard",
-                .product(name: "Kernel Primitives Test Support", package: "swift-kernel-primitives")
             ],
             path: "Tests/Support"
         ),

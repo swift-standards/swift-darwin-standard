@@ -12,7 +12,6 @@
 #if canImport(Darwin)
 
 @_spi(Syscall) public import ISO_9945_Core
-public import Kernel_File_Primitives
 internal import Darwin
 
 // MARK: - Attributes.Extended Namespace

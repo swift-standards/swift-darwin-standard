@@ -10,9 +10,10 @@
 // ===----------------------------------------------------------------------===//
 
 public import Darwin_Standard_Core
-public import Kernel_Namespace
+public import ISO_9945_Core
 
 extension Darwin_Standard_Core.Darwin {
-    /// Darwin kernel mechanisms — typealias to the shared `Kernel` namespace.
-    public typealias Kernel = Kernel_Namespace.Kernel
+    /// Darwin kernel mechanisms — typealias to the iso-9945 L2 `Kernel`
+    /// namespace (G6.D parallel roots).
+    public typealias Kernel = ISO_9945_Core.Kernel
 }

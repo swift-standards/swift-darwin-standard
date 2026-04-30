@@ -13,7 +13,6 @@
     import Darwin
 import Testing
 
-    import Kernel_Primitives_Test_Support
     @testable import Darwin_Kernel_Event_Standard
 
     extension Kernel.Event.Queue.Event {

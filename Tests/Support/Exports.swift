@@ -9,4 +9,3 @@
 //
 // ===----------------------------------------------------------------------===//
 
-@_exported public import Kernel_Primitives_Test_Support

@@ -13,7 +13,6 @@ public import Kernel_Event_Primitives
 // See LICENSE for license information
 //
 // ===----------------------------------------------------------------------===//
-@_spi(Syscall) public import Kernel_Descriptor_Primitives
 internal import Darwin_Kernel_Time_Standard
 
 // L2 .POSIX namespace constants

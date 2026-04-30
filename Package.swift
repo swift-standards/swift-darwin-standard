@@ -51,7 +51,10 @@ let package = Package(
         // MARK: - Core
         .target(
             name: "Darwin Standard Core",
-            dependencies: []
+            dependencies: [
+                .product(name: "Kernel Primitives Core", package: "swift-kernel-primitives"),
+                .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
+            ]
         ),
 
         // MARK: - C Shims
@@ -87,7 +90,6 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Time Standard"),
-                .product(name: "Kernel Descriptor Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Primitives Core", package: "swift-kernel-primitives"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),

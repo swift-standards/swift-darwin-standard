@@ -2,6 +2,8 @@ public import Kernel_Namespace
 public import Kernel_File_Primitives
 public import Kernel_Primitives_Core
 public import Kernel_Event_Primitives
+@_spi(Syscall) import ISO_9945_Core
+package import Darwin_Standard_Core
 
 // ===----------------------------------------------------------------------===//
 //
@@ -42,8 +44,7 @@ extension Kernel.Event {
     @safe
     public struct Queue: ~Copyable, Sendable {
         /// The underlying kqueue file descriptor.
-        @_spi(Syscall)
-        public let descriptor: Kernel.Descriptor
+        internal let descriptor: Kernel.Descriptor
 
         /// Creates a new kqueue instance.
         ///

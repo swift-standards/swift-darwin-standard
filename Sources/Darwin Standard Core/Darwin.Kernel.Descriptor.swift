@@ -16,7 +16,6 @@
 // ISO_9945_Core. Internal-package visibility (no consumer leakage; the L3
 // swift-kernel umbrella provides the public typealias for downstream).
 public import ISO_9945_Core
-public import Kernel_Primitives_Core
 
 extension Kernel {
     package typealias Descriptor = ISO_9945.Kernel.Descriptor

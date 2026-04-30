@@ -52,7 +52,7 @@ let package = Package(
         .target(
             name: "Darwin Standard Core",
             dependencies: [
-                .product(name: "Kernel Primitives Core", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
             ]
         ),
@@ -75,7 +75,7 @@ let package = Package(
                 .target(name: "CDarwinKernelShim"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
-                .product(name: "Kernel Primitives Core", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Random Primitives", package: "swift-random-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
@@ -91,7 +91,7 @@ let package = Package(
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Time Standard"),
                 .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
-                .product(name: "Kernel Primitives Core", package: "swift-kernel-primitives"),
+                .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Error Primitives", package: "swift-error-primitives"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),

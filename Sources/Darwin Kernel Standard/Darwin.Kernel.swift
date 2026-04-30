@@ -10,16 +10,9 @@
 // ===----------------------------------------------------------------------===//
 
 public import Darwin_Standard_Core
+public import Kernel_Namespace
 
 extension Darwin_Standard_Core.Darwin {
-    /// Darwin kernel mechanisms.
-    ///
-    /// This is a typealias to `Kernel_Primitives.Kernel`, allowing Darwin-specific
-    /// extensions to be added to the shared Kernel type.
-    ///
-    /// Low-level Darwin syscall wrappers for:
-    /// - kqueue event notification
-    /// - Shared memory (shm_open with variadic workaround)
-    /// - Darwin-specific dlopen flags (RTLD_MAIN_ONLY, RTLD_FIRST)
-    public typealias Kernel = Kernel_Primitives_Core.Kernel
+    /// Darwin kernel mechanisms — typealias to the shared `Kernel` namespace.
+    public typealias Kernel = Kernel_Namespace.Kernel
 }

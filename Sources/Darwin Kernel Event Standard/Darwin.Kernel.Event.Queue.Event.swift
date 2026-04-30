@@ -14,7 +14,7 @@ public import ISO_9945_Core
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     internal import Darwin
 
-    extension Kernel.Event.Queue {
+    extension ISO_9945.Kernel.Event.Queue {
         /// A kqueue event describing an event source and its state.
         ///
         /// Events are used both for registering interest (input) and receiving
@@ -25,12 +25,12 @@ public import ISO_9945_Core
         ///
         /// ```swift
         /// // Register interest in read events on a socket
-        /// let event = Kernel.Event.Queue.Event(
-        ///     id: Kernel.Event.ID(socketFd.rawValue),
+        /// let event = ISO_9945.Kernel.Event.Queue.Event(
+        ///     id: ISO_9945.Kernel.Event.ID(socketFd.rawValue),
         ///     filter: .read,
         ///     flags: .add | .enable
         /// )
-        /// try Kernel.Event.Queue.register(kq, events: [event])
+        /// try ISO_9945.Kernel.Event.Queue.register(kq, events: [event])
         ///
         /// // Process returned events
         /// for event in results {
@@ -53,7 +53,7 @@ public import ISO_9945_Core
             /// - `EVFILT_READ`, `EVFILT_WRITE`: file descriptor
             /// - `EVFILT_SIGNAL`: signal number
             /// - `EVFILT_PROC`: process ID
-            public var id: Kernel.Event.ID
+            public var id: ISO_9945.Kernel.Event.ID
 
             /// Filter type (EVFILT_READ, EVFILT_WRITE, etc.).
             public var filter: Filter
@@ -82,7 +82,7 @@ public import ISO_9945_Core
             ///   - filterData: Filter-specific data.
             ///   - data: User-defined routing data.
             public init(
-                id: Kernel.Event.ID,
+                id: ISO_9945.Kernel.Event.ID,
                 filter: Filter,
                 flags: Flags,
                 fflags: Filter.Flags = .none,
@@ -101,15 +101,15 @@ public import ISO_9945_Core
 
     // MARK: - Darwin Conversion
 
-    extension Kernel.Event.Queue.Event {
+    extension ISO_9945.Kernel.Event.Queue.Event {
         /// Creates an Event from the Darwin kevent struct.
         @unsafe
         internal init(_ cEvent: kevent) {
-            self.id = unsafe Kernel.Event.ID(__unchecked: (), cEvent.ident)
-            self.filter = unsafe Kernel.Event.Queue.Filter(rawValue: cEvent.filter)
-            self.flags = unsafe Kernel.Event.Queue.Flags(rawValue: cEvent.flags)
-            self.fflags = unsafe Kernel.Event.Queue.Filter.Flags(rawValue: cEvent.fflags)
-            self.filterData = unsafe Kernel.Event.Queue.Filter.Data(__unchecked: (), cEvent.data)
+            self.id = unsafe ISO_9945.Kernel.Event.ID(__unchecked: (), cEvent.ident)
+            self.filter = unsafe ISO_9945.Kernel.Event.Queue.Filter(rawValue: cEvent.filter)
+            self.flags = unsafe ISO_9945.Kernel.Event.Queue.Flags(rawValue: cEvent.flags)
+            self.fflags = unsafe ISO_9945.Kernel.Event.Queue.Filter.Flags(rawValue: cEvent.fflags)
+            self.filterData = unsafe ISO_9945.Kernel.Event.Queue.Filter.Data(__unchecked: (), cEvent.data)
             self.data = unsafe Data(cEvent.udata)
         }
 

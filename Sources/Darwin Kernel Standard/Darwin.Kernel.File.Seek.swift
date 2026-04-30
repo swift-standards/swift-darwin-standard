@@ -16,7 +16,7 @@ internal import Darwin
 
 // MARK: - Darwin-specific Seek Whence
 
-extension Kernel.File.Seek.Whence {
+extension ISO_9945.Kernel.File.Seek.Whence {
     /// Seek to the next hole (SEEK_HOLE).
     public static let hole = Self(rawValue: SEEK_HOLE)
 

@@ -17,7 +17,7 @@ internal import Darwin
 
 // MARK: - POSIX errno to Copy.Error Mapping
 
-extension Kernel.Copy.Error {
+extension ISO_9945.Kernel.Copy.Error {
     /// Creates a copy error from a POSIX errno value.
     internal init(posixErrno: Int32) {
         switch posixErrno {
@@ -45,7 +45,7 @@ extension Kernel.Copy.Error {
 
 // MARK: - macOS clonefile Implementation
 
-extension Kernel.Copy.Clone {
+extension ISO_9945.Kernel.Copy.Clone {
     /// Clones a file using clonefile(2), creating a copy-on-write duplicate.
     ///
     /// Both files share the same data blocks until one is modified, making this
@@ -71,12 +71,12 @@ extension Kernel.Copy.Clone {
     public static func file(
         from sourcePath: borrowing Path.Borrowed,
         to destPath: borrowing Path.Borrowed
-    ) throws(Kernel.Copy.Error) {
-        try unsafe sourcePath.withUnsafePointer { srcCString throws(Kernel.Copy.Error) in
-            try unsafe destPath.withUnsafePointer { dstCString throws(Kernel.Copy.Error) in
+    ) throws(ISO_9945.Kernel.Copy.Error) {
+        try unsafe sourcePath.withUnsafePointer { srcCString throws(ISO_9945.Kernel.Copy.Error) in
+            try unsafe destPath.withUnsafePointer { dstCString throws(ISO_9945.Kernel.Copy.Error) in
                 let result = unsafe clonefile(UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self), UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self), 0)
                 guard result == 0 else {
-                    throw Kernel.Copy.Error(posixErrno: errno)
+                    throw ISO_9945.Kernel.Copy.Error(posixErrno: errno)
                 }
             }
         }

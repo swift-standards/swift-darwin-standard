@@ -13,7 +13,7 @@ public import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-    extension Kernel.Event.Queue.Filter {
+    extension ISO_9945.Kernel.Event.Queue.Filter {
         /// Kernel-returned data from a kqueue event.
         ///
         /// This is an opaque value whose interpretation depends on the filter type.
@@ -48,12 +48,12 @@ public import ISO_9945_Core
         ///
         /// - ``Kernel/Event/Queue/Event``
         /// - ``Kernel/Event/Queue/Filter``
-        public typealias Data = Tagged<Kernel.Event.Queue.Filter, Int>
+        public typealias Data = Tagged<ISO_9945.Kernel.Event.Queue.Filter, Int>
     }
 
     // MARK: - Common Values
 
-    extension Kernel.Event.Queue.Filter.Data {
+    extension ISO_9945.Kernel.Event.Queue.Filter.Data {
         /// Zero filter data (default for event registration).
         public static let zero: Self = Self(__unchecked: (), 0)
     }

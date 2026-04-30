@@ -14,7 +14,7 @@ public import ISO_9945_Core
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     internal import Darwin
 
-    extension Kernel.Event.Queue.Filter {
+    extension ISO_9945.Kernel.Event.Queue.Filter {
         /// Filter-specific flags for kqueue events.
         ///
         /// These flags (stored in the `fflags` field) provide filter-specific
@@ -24,8 +24,8 @@ public import ISO_9945_Core
         ///
         /// ```swift
         /// // User events: trigger immediately
-        /// let event = Kernel.Event.Queue.Event(
-        ///     id: Kernel.Event.ID(userEventId),
+        /// let event = ISO_9945.Kernel.Event.Queue.Event(
+        ///     id: ISO_9945.Kernel.Event.ID(userEventId),
         ///     filter: .user,
         ///     flags: .add | .enable,
         ///     fflags: .trigger
@@ -45,7 +45,7 @@ public import ISO_9945_Core
         }
     }
 
-    extension Kernel.Event.Queue.Filter.Flags {
+    extension ISO_9945.Kernel.Event.Queue.Filter.Flags {
         /// Triggers the user event immediately.
         ///
         /// Used with `EVFILT_USER` to cause the event to be delivered

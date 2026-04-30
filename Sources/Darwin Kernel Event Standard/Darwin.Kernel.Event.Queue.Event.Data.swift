@@ -13,7 +13,7 @@ public import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-    extension Kernel.Event.Queue.Event {
+    extension ISO_9945.Kernel.Event.Queue.Event {
         /// Opaque data associated with a kqueue event.
         ///
         /// Event data is a 64-bit value that the kernel returns unchanged
@@ -23,17 +23,17 @@ public import ISO_9945_Core
         ///
         /// ```swift
         /// // Use as an identifier
-        /// let data = Kernel.Event.Queue.Event.Data(id)
+        /// let data = ISO_9945.Kernel.Event.Queue.Event.Data(id)
         ///
         /// // Use with pointer-based context lookup
-        /// let data = Kernel.Event.Queue.Event.Data(pointer: contextPtr)
+        /// let data = ISO_9945.Kernel.Event.Queue.Event.Data(pointer: contextPtr)
         /// ```
-        public typealias Data = Tagged<Kernel.Event.Queue.Event, UInt64>
+        public typealias Data = Tagged<ISO_9945.Kernel.Event.Queue.Event, UInt64>
     }
 
     // MARK: - Pointer Conversions
 
-    extension Kernel.Event.Queue.Event.Data {
+    extension ISO_9945.Kernel.Event.Queue.Event.Data {
         /// Creates event data from an optional mutable raw pointer.
         ///
         /// This is the canonical conversion from kqueue's `udata` field.
@@ -77,14 +77,14 @@ public import ISO_9945_Core
         ///
         /// - Parameter data: The event data to convert.
         @unsafe
-        public init?(_ data: Kernel.Event.Queue.Event.Data) {
+        public init?(_ data: ISO_9945.Kernel.Event.Queue.Event.Data) {
             unsafe self.init(bitPattern: UInt(data.rawValue))
         }
     }
 
     // MARK: - Common Values
 
-    extension Kernel.Event.Queue.Event.Data {
+    extension ISO_9945.Kernel.Event.Queue.Event.Data {
         /// Zero event data.
         public static let zero: Self = Self(__unchecked: (), 0)
     }

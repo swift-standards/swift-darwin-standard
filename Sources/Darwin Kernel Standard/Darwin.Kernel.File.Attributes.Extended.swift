@@ -15,17 +15,17 @@
 internal import Darwin
 
 // MARK: - Attributes.Extended Namespace
-// Extends Kernel.File.Attributes directly (Kernel = Kernel_Primitives.Kernel).
+// Extends ISO_9945.Kernel.File.Attributes directly (Kernel = Kernel_Primitives.Kernel).
 // Accessible via Darwin.Kernel.File.Attributes.Extended through the typealias.
 
-extension Kernel.File.Attributes {
+extension ISO_9945.Kernel.File.Attributes {
     /// Extended attribute operations (Darwin xattr API).
     public enum Extended {}
 }
 
 // MARK: - Error
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Error type for extended attribute operations.
     public struct Error: Swift.Error, Sendable {
         public let code: Error_Primitives.Error.Code
@@ -53,7 +53,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - List Operations
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Lists extended attribute names on a file (raw C-string path variant).
     ///
     /// - Parameters:
@@ -122,7 +122,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Get Operations
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Gets an extended attribute value by path (raw C-string variant).
     ///
     /// - Parameters:
@@ -196,7 +196,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Set Operations
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Sets an extended attribute by path (raw C-string variant).
     ///
     /// - Parameters:
@@ -258,7 +258,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Remove Operations
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Removes an extended attribute by path (raw C-string variant).
     ///
     /// - Parameters:
@@ -302,7 +302,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Copy Operation
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Copies all extended attributes from one descriptor to another.
     ///
     /// - Parameters:
@@ -338,7 +338,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Helpers
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Parses a buffer of null-separated strings.
     private static func parseNullSeparatedStrings(_ buffer: [CChar], count: Int) -> [Swift.String] {
         var names: [Swift.String] = []
@@ -380,7 +380,7 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Safe Path/Name Overloads
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Lists extended attribute names on a file.
     ///
     /// - Parameters:
@@ -527,14 +527,14 @@ extension Kernel.File.Attributes.Extended {
 
 // MARK: - Typed Convenience (Phase 1.5)
 //
-// Adds typed `borrowing Kernel.Descriptor` overloads alongside the existing
+// Adds typed `borrowing ISO_9945.Kernel.Descriptor` overloads alongside the existing
 // raw `_ fd: Int32` @_spi(Syscall) SPI forms. Each typed overload delegates
 // to the corresponding raw form via `descriptor._rawValue`.
 
-extension Kernel.File.Attributes.Extended {
+extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Lists extended attribute names on a typed descriptor.
     public static func list(
-        _ descriptor: borrowing Kernel.Descriptor
+        _ descriptor: borrowing ISO_9945.Kernel.Descriptor
     ) throws(Error) -> [Swift.String] {
         try list(descriptor._rawValue)
     }
@@ -542,7 +542,7 @@ extension Kernel.File.Attributes.Extended {
     /// Gets an extended attribute value from a typed descriptor.
     public static func get(
         name: Swift.String,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ descriptor: borrowing ISO_9945.Kernel.Descriptor
     ) throws(Error) -> [UInt8] {
         try get(name: name, descriptor._rawValue)
     }
@@ -552,7 +552,7 @@ extension Kernel.File.Attributes.Extended {
     public static func set(
         name: Swift.String,
         value: UnsafeRawBufferPointer,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ descriptor: borrowing ISO_9945.Kernel.Descriptor
     ) throws(Error) {
         try unsafe set(name: name, value: value, descriptor._rawValue)
     }
@@ -560,15 +560,15 @@ extension Kernel.File.Attributes.Extended {
     /// Removes an extended attribute from a typed descriptor.
     public static func remove(
         name: Swift.String,
-        _ descriptor: borrowing Kernel.Descriptor
+        _ descriptor: borrowing ISO_9945.Kernel.Descriptor
     ) throws(Error) {
         try remove(name: name, descriptor._rawValue)
     }
 
     /// Copies all extended attributes from one typed descriptor to another.
     public static func copyAll(
-        from source: borrowing Kernel.Descriptor,
-        to destination: borrowing Kernel.Descriptor
+        from source: borrowing ISO_9945.Kernel.Descriptor,
+        to destination: borrowing ISO_9945.Kernel.Descriptor
     ) throws(Error) {
         try copyAll(fromFd: source._rawValue, toFd: destination._rawValue)
     }

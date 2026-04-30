@@ -14,7 +14,7 @@ public import ISO_9945_Core
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     internal import Darwin
 
-    extension Kernel.Event.Queue {
+    extension ISO_9945.Kernel.Event.Queue {
         /// Action and status flags for kqueue events.
         ///
         /// Flags serve two purposes:
@@ -25,8 +25,8 @@ public import ISO_9945_Core
         ///
         /// ```swift
         /// // Register an edge-triggered read event
-        /// let event = Kernel.Event.Queue.Event(
-        ///     id: Kernel.Event.ID(socketFd),
+        /// let event = ISO_9945.Kernel.Event.Queue.Event(
+        ///     id: ISO_9945.Kernel.Event.ID(socketFd),
         ///     filter: .read,
         ///     flags: .add | .enable | .clear
         /// )
@@ -52,7 +52,7 @@ public import ISO_9945_Core
 
     // MARK: - Action Flags
 
-    extension Kernel.Event.Queue.Flags {
+    extension ISO_9945.Kernel.Event.Queue.Flags {
         /// Adds the event to kqueue.
         ///
         /// If the event already exists, this modifies it. Automatically enables
@@ -87,7 +87,7 @@ public import ISO_9945_Core
 
     // MARK: - Behavior Flags
 
-    extension Kernel.Event.Queue.Flags {
+    extension ISO_9945.Kernel.Event.Queue.Flags {
         /// Enables edge-triggered behavior.
         ///
         /// The event only triggers on state *changes*, not while the condition
@@ -115,7 +115,7 @@ public import ISO_9945_Core
 
     // MARK: - Status Flags (Output Only)
 
-    extension Kernel.Event.Queue.Flags {
+    extension ISO_9945.Kernel.Event.Queue.Flags {
         /// End-of-file condition detected.
         ///
         /// For sockets: peer closed the connection. For files: read position
@@ -134,7 +134,7 @@ public import ISO_9945_Core
 
     // MARK: - Combining
 
-    extension Kernel.Event.Queue.Flags {
+    extension ISO_9945.Kernel.Event.Queue.Flags {
         /// Combines multiple flags.
         public static func | (lhs: Self, rhs: Self) -> Self {
             Self(rawValue: lhs.rawValue | rhs.rawValue)

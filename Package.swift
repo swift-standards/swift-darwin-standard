@@ -93,7 +93,6 @@ let package = Package(
                 .product(name: "Kernel Namespace", package: "swift-kernel-primitives"),
                 .product(name: "Kernel Primitives Core", package: "swift-kernel-primitives"),
                 .product(name: "Kernel File Primitives", package: "swift-kernel-primitives"),
-                .product(name: "Kernel Event Primitives", package: "swift-kernel-primitives"),
                 .product(name: "Error Primitives", package: "swift-error-primitives"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
             ]

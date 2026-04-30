@@ -1,7 +1,7 @@
+public import ISO_9945_Core
 public import Kernel_Namespace
 public import Kernel_File_Primitives
 public import Kernel_Primitives_Core
-public import Kernel_Event_Primitives
 
 // ===----------------------------------------------------------------------===//
 //

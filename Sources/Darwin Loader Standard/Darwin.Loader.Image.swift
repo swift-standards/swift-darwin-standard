@@ -67,9 +67,8 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     ///
     /// - Parameter index: The image index (`Ordinal.zero ..< count.map(Ordinal.init)`).
     /// - Returns: The file path as a C string, or `nil` if unavailable.
-    @_spi(Syscall)
     @unsafe
-    public static func path(at index: Index) -> UnsafePointer<CChar>? {
+    internal static func path(at index: Index) -> UnsafePointer<CChar>? {
         unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue))
     }
 }

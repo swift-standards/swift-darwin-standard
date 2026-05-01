@@ -61,9 +61,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Returns: Array of attribute names.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func list(
+    internal static func list(
         path: UnsafePointer<CChar>,
         followSymlinks: Bool = true
     ) throws(Error) -> [Swift.String] {
@@ -95,8 +94,7 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     /// - Parameter fd: The file descriptor.
     /// - Returns: Array of attribute names.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
-    public static func list(
+    internal static func list(
         _ fd: Int32
     ) throws(Error) -> [Swift.String] {
         // First call to get required buffer size
@@ -131,9 +129,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Returns: The attribute value as bytes.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func get(
+    internal static func get(
         name: UnsafePointer<CChar>,
         path: UnsafePointer<CChar>,
         followSymlinks: Bool = true
@@ -167,9 +164,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - descriptor: The file descriptor.
     /// - Returns: The attribute value as bytes.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func get(
+    internal static func get(
         name: UnsafePointer<CChar>,
         _ fd: Int32
     ) throws(Error) -> [UInt8] {
@@ -205,9 +201,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - path: Path to the file as a C string.
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func set(
+    internal static func set(
         name: UnsafePointer<CChar>,
         value: UnsafeRawBufferPointer,
         path: UnsafePointer<CChar>,
@@ -235,9 +230,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - value: The attribute value.
     ///   - descriptor: The file descriptor.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func set(
+    internal static func set(
         name: UnsafePointer<CChar>,
         value: UnsafeRawBufferPointer,
         _ fd: Int32
@@ -266,9 +260,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - path: Path to the file as a C string.
     ///   - followSymlinks: If true, follows symlinks (default: true).
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func remove(
+    internal static func remove(
         name: UnsafePointer<CChar>,
         path: UnsafePointer<CChar>,
         followSymlinks: Bool = true
@@ -287,9 +280,8 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - name: The attribute name as a C string.
     ///   - descriptor: The file descriptor.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func remove(
+    internal static func remove(
         name: UnsafePointer<CChar>,
         _ fd: Int32
     ) throws(Error) {
@@ -309,8 +301,7 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - source: Source file descriptor.
     ///   - destination: Destination file descriptor.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
-    public static func copyAll(
+    internal static func copyAll(
         fromFd source: Int32,
         toFd destination: Int32
     ) throws(Error) {
@@ -431,8 +422,7 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - fd: The file descriptor.
     /// - Returns: The attribute value as bytes.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
-    public static func get(
+    internal static func get(
         name: Swift.String,
         _ fd: Int32
     ) throws(Error) -> [UInt8] {
@@ -474,8 +464,7 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - value: The attribute value.
     ///   - fd: The file descriptor.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
-    public static func set(
+    internal static func set(
         name: Swift.String,
         value: UnsafeRawBufferPointer,
         _ fd: Int32
@@ -514,8 +503,7 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
     ///   - name: The attribute name.
     ///   - fd: The file descriptor.
     /// - Throws: `Error` on failure.
-    @_spi(Syscall)
-    public static func remove(
+    internal static func remove(
         name: Swift.String,
         _ fd: Int32
     ) throws(Error) {
@@ -527,9 +515,12 @@ extension ISO_9945.Kernel.File.Attributes.Extended {
 
 // MARK: - Typed Convenience (Phase 1.5)
 //
-// Adds typed `borrowing ISO_9945.Kernel.Descriptor` overloads alongside the existing
-// raw `_ fd: Int32` @_spi(Syscall) SPI forms. Each typed overload delegates
-// to the corresponding raw form via `descriptor._rawValue`.
+// Adds typed `borrowing ISO_9945.Kernel.Descriptor` overloads alongside the
+// internal raw `_ fd: Int32` forms. Each typed overload delegates to the
+// corresponding internal raw helper via `descriptor._rawValue`. Per
+// [PLAT-ARCH-008j] (Wave 4b Sub-cycle 1, 2026-05-01), the raw forms are
+// internal-scope only — L3 consumers must compose this typed surface, not
+// reach for raw fd / C-string forms.
 
 extension ISO_9945.Kernel.File.Attributes.Extended {
     /// Lists extended attribute names on a typed descriptor.

@@ -82,9 +82,8 @@ extension Loader.Symbol {
     ///
     /// - Returned `UnsafeRawPointer` is valid only while the owning library remains loaded.
     /// - Caller is responsible for correct casting and calling convention.
-    @_spi(Syscall)
     @unsafe
-    public static func lookup(
+    internal static func lookup(
         name: UnsafePointer<CChar>,
         in scope: Scope
     ) throws(Loader.Error) -> UnsafeRawPointer {

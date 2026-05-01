@@ -130,9 +130,8 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter path: The path as a C string.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
-    @_spi(Syscall)
     @unsafe
-    public static func get(path: UnsafePointer<CChar>) throws(Error) -> Self {
+    internal static func get(path: UnsafePointer<CChar>) throws(Error) -> Self {
         var sb = PlatformStat()
         guard unsafe stat(path, &sb) == 0 else {
             throw Error(_posixErrno: errno)
@@ -155,9 +154,8 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter path: The path as a C string.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
-    @_spi(Syscall)
     @unsafe
-    public static func lget(path: UnsafePointer<CChar>) throws(Error) -> Self {
+    internal static func lget(path: UnsafePointer<CChar>) throws(Error) -> Self {
         var sb = PlatformStat()
         guard unsafe lstat(path, &sb) == 0 else {
             throw Error(_posixErrno: errno)
@@ -173,8 +171,7 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// - Parameter fd: The raw file descriptor to stat.
     /// - Returns: Darwin file metadata including birthtime.
     /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
-    @_spi(Syscall)
-    public static func get(fd: Int32) throws(Error) -> Self {
+    internal static func get(fd: Int32) throws(Error) -> Self {
         var sb = PlatformStat()
         guard unsafe fstat(fd, &sb) == 0 else {
             throw Error(_posixErrno: errno)

@@ -25,9 +25,8 @@ extension ISO_9945.Kernel.File.Move {
     ///   - oldPath: Source path.
     ///   - newPath: Destination path.
     /// - Throws: `ISO_9945.Kernel.File.Rename.Error` if the move fails.
-    @_spi(Syscall)
     @unsafe
-    public static func noClobber(
+    internal static func noClobber(
         from oldPath: UnsafePointer<CChar>,
         to newPath: UnsafePointer<CChar>
     ) throws(ISO_9945.Kernel.File.Rename.Error) {
@@ -67,9 +66,8 @@ extension ISO_9945.Kernel.File.Move {
     ///   - path1: First path.
     ///   - path2: Second path.
     /// - Throws: `ISO_9945.Kernel.File.Rename.Error` on failure.
-    @_spi(Syscall)
     @unsafe
-    public static func exchange(
+    internal static func exchange(
         _ path1: UnsafePointer<CChar>,
         _ path2: UnsafePointer<CChar>
     ) throws(ISO_9945.Kernel.File.Rename.Error) {

@@ -73,17 +73,21 @@ extension ISO_9945.Kernel.Event.Queue {
         try Self.poll(self, into: &events, timeout: timeout)
     }
 
-    /// Creates a Sendable wakeup channel for cross-thread poll interruption.
+    /// Creates a Sendable signal closure for cross-thread poll interruption.
     ///
-    /// Registers `EVFILT_USER` on this kqueue instance and returns a channel
-    /// whose `wake()` method triggers it from any thread. Call before
+    /// Registers `EVFILT_USER` on this kqueue instance and returns a
+    /// `@Sendable` closure that triggers it from any thread. Call before
     /// transferring the Queue to the poll thread via `sending`.
-    public func wakeup() throws(Error) -> ISO_9945.Kernel.Wakeup.Channel {
+    ///
+    /// L3 consumers wrap the returned closure into `Kernel.Wakeup.Channel(signal:)`
+    /// at the site of use; the closure carries the raw fd capture so L3 callers
+    /// never see `_rawValue` (typed-everywhere discipline per [PLAT-ARCH-008j]).
+    public func wakeup() throws(Error) -> @Sendable () -> Void {
         let wakeupEvent = Event(id: .zero, filter: .user, flags: .add | .clear)
         try self.register(events: [wakeupEvent])
 
         let rawFd = self.descriptor._rawValue
-        return ISO_9945.Kernel.Wakeup.Channel {
+        return {
             let trigger = Event(id: .zero, filter: .user, flags: .none, fflags: .trigger)
             do throws(Error) {
                 try Self.register(rawDescriptor: rawFd, events: [trigger])

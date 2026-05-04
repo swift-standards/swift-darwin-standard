@@ -55,7 +55,7 @@ public import ISO_9945_Core
 
     extension ISO_9945.Kernel.Event.Queue.Filter.Data {
         /// Zero filter data (default for event registration).
-        public static let zero: Self = Self(__unchecked: (), 0)
+        public static let zero: Self = Self(_unchecked: 0)
     }
 
 #endif

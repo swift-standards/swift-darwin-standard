@@ -33,7 +33,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// This property is thread-safe. However, the count may change
     /// between reading it and iterating through images.
     public static var count: Count {
-        Count(__unchecked: (), Cardinal(UInt(_dyld_image_count())))
+        Count(_unchecked: Cardinal(UInt(_dyld_image_count())))
     }
 
     /// Gets the Mach-O header for an image by index.

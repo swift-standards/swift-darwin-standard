@@ -193,22 +193,22 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
     /// Creates Darwin file stats from a Darwin stat structure.
     internal init(_from sb: PlatformStat) {
         let atime = Instant(
-            __unchecked: (),
+            _unchecked: (),
             secondsSinceUnixEpoch: Int64(sb.st_atimespec.tv_sec),
             nanosecondFraction: Int32(sb.st_atimespec.tv_nsec)
         )
         let mtime = Instant(
-            __unchecked: (),
+            _unchecked: (),
             secondsSinceUnixEpoch: Int64(sb.st_mtimespec.tv_sec),
             nanosecondFraction: Int32(sb.st_mtimespec.tv_nsec)
         )
         let ctime = Instant(
-            __unchecked: (),
+            _unchecked: (),
             secondsSinceUnixEpoch: Int64(sb.st_ctimespec.tv_sec),
             nanosecondFraction: Int32(sb.st_ctimespec.tv_nsec)
         )
         let btime = Instant(
-            __unchecked: (),
+            _unchecked: (),
             secondsSinceUnixEpoch: Int64(sb.st_birthtimespec.tv_sec),
             nanosecondFraction: Int32(sb.st_birthtimespec.tv_nsec)
         )
@@ -217,11 +217,11 @@ extension Darwin_Standard_Core.Darwin.File.Stats {
             size: ISO_9945.Kernel.File.Size(Int64(sb.st_size)),
             type: ISO_9945.Kernel.File.Stats.Kind(_mode: sb.st_mode),
             permissions: ISO_9945.Kernel.File.Permissions(rawValue: UInt16(sb.st_mode & 0o7777)),
-            uid: ISO_9945.Kernel.User.ID(__unchecked: (), UInt32(sb.st_uid)),
-            gid: ISO_9945.Kernel.Group.ID(__unchecked: (), UInt32(sb.st_gid)),
+            uid: ISO_9945.Kernel.User.ID(_unchecked: UInt32(sb.st_uid)),
+            gid: ISO_9945.Kernel.Group.ID(_unchecked: UInt32(sb.st_gid)),
             inode: ISO_9945.Kernel.Inode(UInt64(sb.st_ino)),
             device: ISO_9945.Kernel.Device(UInt64(sb.st_dev)),
-            linkCount: ISO_9945.Kernel.Link.Count(__unchecked: (), Cardinal(UInt(sb.st_nlink))),
+            linkCount: ISO_9945.Kernel.Link.Count(_unchecked: Cardinal(UInt(sb.st_nlink))),
             accessTime: atime,
             modificationTime: mtime,
             changeTime: ctime

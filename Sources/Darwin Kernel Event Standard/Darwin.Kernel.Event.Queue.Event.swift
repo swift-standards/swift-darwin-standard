@@ -105,11 +105,11 @@ public import ISO_9945_Core
         /// Creates an Event from the Darwin kevent struct.
         @unsafe
         internal init(_ cEvent: kevent) {
-            self.id = unsafe ISO_9945.Kernel.Event.ID(__unchecked: (), cEvent.ident)
+            self.id = unsafe ISO_9945.Kernel.Event.ID(_unchecked: cEvent.ident)
             self.filter = unsafe ISO_9945.Kernel.Event.Queue.Filter(rawValue: cEvent.filter)
             self.flags = unsafe ISO_9945.Kernel.Event.Queue.Flags(rawValue: cEvent.flags)
             self.fflags = unsafe ISO_9945.Kernel.Event.Queue.Filter.Flags(rawValue: cEvent.fflags)
-            self.filterData = unsafe ISO_9945.Kernel.Event.Queue.Filter.Data(__unchecked: (), cEvent.data)
+            self.filterData = unsafe ISO_9945.Kernel.Event.Queue.Filter.Data(_unchecked: cEvent.data)
             self.data = unsafe Data(cEvent.udata)
         }
 
@@ -117,11 +117,11 @@ public import ISO_9945_Core
         @unsafe
         internal var cValue: kevent {
             var ev = unsafe kevent()
-            unsafe (ev.ident = id.rawValue)
+            unsafe (ev.ident = id.underlying)
             unsafe (ev.filter = filter.rawValue)
             unsafe (ev.flags = flags.rawValue)
             unsafe (ev.fflags = fflags.rawValue)
-            unsafe (ev.data = filterData.rawValue)
+            unsafe (ev.data = filterData.underlying)
             unsafe (ev.udata = UnsafeMutableRawPointer(data))
             return unsafe ev
         }

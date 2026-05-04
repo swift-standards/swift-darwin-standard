@@ -40,7 +40,7 @@ public import ISO_9945_Core
         ///
         /// - Parameter pointer: The pointer from kevent's udata field.
         public init(_ pointer: UnsafeMutableRawPointer?) {
-            self.init(__unchecked: (), UInt64(UInt(bitPattern: pointer)))
+            self.init(_unchecked: UInt64(UInt(bitPattern: pointer)))
         }
 
         /// Creates event data from a raw pointer.
@@ -50,21 +50,21 @@ public import ISO_9945_Core
         ///
         /// - Parameter pointer: A pointer to associate with the event.
         public init(_ pointer: UnsafeRawPointer) {
-            self.init(__unchecked: (), UInt64(UInt(bitPattern: pointer)))
+            self.init(_unchecked: UInt64(UInt(bitPattern: pointer)))
         }
 
         /// Creates event data from a typed pointer.
         ///
         /// - Parameter pointer: A pointer to associate with the event.
         public init<T>(pointer: UnsafePointer<T>) {
-            self.init(__unchecked: (), UInt64(UInt(bitPattern: pointer)))
+            self.init(_unchecked: UInt64(UInt(bitPattern: pointer)))
         }
 
         /// Creates event data from a mutable typed pointer.
         ///
         /// - Parameter pointer: A mutable pointer to associate with the event.
         public init<T>(pointer: UnsafeMutablePointer<T>) {
-            self.init(__unchecked: (), UInt64(UInt(bitPattern: pointer)))
+            self.init(_unchecked: UInt64(UInt(bitPattern: pointer)))
         }
     }
 
@@ -78,7 +78,7 @@ public import ISO_9945_Core
         /// - Parameter data: The event data to convert.
         @unsafe
         public init?(_ data: ISO_9945.Kernel.Event.Queue.Event.Data) {
-            unsafe self.init(bitPattern: UInt(data.rawValue))
+            unsafe self.init(bitPattern: UInt(data.underlying))
         }
     }
 
@@ -86,7 +86,7 @@ public import ISO_9945_Core
 
     extension ISO_9945.Kernel.Event.Queue.Event.Data {
         /// Zero event data.
-        public static let zero: Self = Self(__unchecked: (), 0)
+        public static let zero: Self = Self(_unchecked: 0)
     }
 
 #endif

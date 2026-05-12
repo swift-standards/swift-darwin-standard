@@ -46,7 +46,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// This function is thread-safe. The returned header is valid
     /// while the image remains loaded.
     public static func header(at index: Index) -> Header? {
-        guard let header = unsafe _dyld_get_image_header(UInt32(truncatingIfNeeded: index.rawValue.rawValue)) else {
+        guard let header = unsafe _dyld_get_image_header(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
             return nil
         }
         return unsafe Header(rawValue: UnsafeRawPointer(header))
@@ -60,7 +60,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// - Parameter index: The image index (`Ordinal.zero ..< count.map(Ordinal.init)`).
     /// - Returns: The slide value.
     public static func slide(at index: Index) -> Int {
-        _dyld_get_image_vmaddr_slide(UInt32(truncatingIfNeeded: index.rawValue.rawValue))
+        _dyld_get_image_vmaddr_slide(UInt32(truncatingIfNeeded: index.underlying.rawValue))
     }
 
     /// Gets the file path for an image by index.
@@ -69,7 +69,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// - Returns: The file path as a C string, or `nil` if unavailable.
     @unsafe
     internal static func path(at index: Index) -> UnsafePointer<CChar>? {
-        unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue))
+        unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.underlying.rawValue))
     }
 }
 
@@ -91,7 +91,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
         at index: Index,
         _ body: (Span<CChar>) -> R
     ) -> R? {
-        guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue)) else {
+        guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
             return nil
         }
 
@@ -118,7 +118,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
         at index: Index,
         _ body: (Swift.String) -> R
     ) -> R? {
-        guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.rawValue.rawValue)) else {
+        guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
             return nil
         }
 

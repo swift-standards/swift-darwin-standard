@@ -37,6 +37,8 @@ extension ISO_9945.Kernel.Event {
     /// let count = try kq.poll(into: &events, timeout: .seconds(1))
     /// // kq deinit closes the kqueue fd
     /// ```
+    // SAFETY: Encapsulates unsafe internals behind a safe API; see
+    // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
     @safe
     public struct Queue: ~Copyable, Sendable {
         /// The underlying kqueue file descriptor.

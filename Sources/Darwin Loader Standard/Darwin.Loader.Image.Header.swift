@@ -25,6 +25,9 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     ///
     /// This type is `Sendable` and can be shared across threads.
     /// The underlying header pointer is valid while the image remains loaded.
+    // WHY: Category D (SP-5) — pointer-backed value type; storage is
+    // WHY: private/internal; the type's safe API never lets the raw pointer
+    // WHY: escape, and lifetime invariants are enforced by init/deinit pairing.
     @safe
     public struct Header: Sendable, Equatable {
         /// The raw header pointer.

@@ -196,6 +196,8 @@ extension Darwin_Standard_Core.Darwin.Loader.Section {
 
 extension Darwin_Standard_Core.Darwin.Loader.Section {
     /// A sequence that enumerates sections across all loaded images.
+    // SAFETY: Encapsulates unsafe internals behind a safe API; see
+    // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
     @safe
     public struct AllSectionsSequence: @unsafe Sequence {
         let name: Name
@@ -208,6 +210,8 @@ extension Darwin_Standard_Core.Darwin.Loader.Section {
             Iterator(name: name, currentIndex: .zero)
         }
 
+        // SAFETY: Encapsulates unsafe internals behind a safe API; see
+        // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
         @safe
         public struct Iterator: @unsafe IteratorProtocol {
             let name: Name

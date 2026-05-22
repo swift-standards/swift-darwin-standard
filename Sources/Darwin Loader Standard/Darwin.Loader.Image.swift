@@ -14,7 +14,7 @@
 public import Darwin_Standard_Core
 public import Tagged_Primitives
 public import Cardinal_Primitives
-public import Ordinal_Primitives_Core
+public import Ordinal_Primitives
 internal import Darwin.Mach
 internal import MachO
 

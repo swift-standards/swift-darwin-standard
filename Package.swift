@@ -109,8 +109,8 @@ let package = Package(
                 .product(name: "Loader Primitives", package: "swift-loader-primitives"),
                 .product(name: "String Primitives", package: "swift-string-primitives"),
                 .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
-                .product(name: "Cardinal Primitives Core", package: "swift-cardinal-primitives"),
-                .product(name: "Ordinal Primitives Core", package: "swift-ordinal-primitives"),
+                .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
+                .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
             ]
         ),
 

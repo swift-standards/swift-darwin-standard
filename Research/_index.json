@@ -5,17 +5,5 @@
   "title": "Research Index — swift-darwin-primitives",
   "blurb": "",
   "scope": "swift-darwin-standard (swift-standards)",
-  "documents": [
-    {
-      "file": "audit.md",
-      "displayName": "audit.md",
-      "topic": "Pre-publication dependency-tree audit: methods-in-body violations (Kqueue.Event)",
-      "date": "2026-04-08",
-      "status": "LEGACY",
-      "statusDetail": null,
-      "statusRaw": "LEGACY",
-      "tier": null,
-      "scope": null
-    }
-  ]
+  "documents": []
 }

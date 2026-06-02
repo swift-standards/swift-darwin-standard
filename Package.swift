@@ -38,15 +38,15 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../../swift-primitives/swift-time-primitives"),
-        .package(path: "../../swift-primitives/swift-loader-primitives"),
-        .package(path: "../../swift-primitives/swift-string-primitives"),
-        .package(path: "../../swift-primitives/swift-error-primitives"),
-        .package(path: "../../swift-primitives/swift-random-primitives"),
-        .package(path: "../../swift-primitives/swift-tagged-primitives"),
-        .package(path: "../../swift-primitives/swift-cardinal-primitives"),
-        .package(path: "../../swift-primitives/swift-ordinal-primitives"),
-        .package(path: "../../swift-iso/swift-iso-9945"),
+        .package(url: "https://github.com/swift-primitives/swift-time-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-loader-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-string-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-error-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-random-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-cardinal-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-ordinal-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-iso/swift-iso-9945.git", branch: "main"),
     ],
     targets: [
 

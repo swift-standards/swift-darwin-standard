@@ -58,7 +58,7 @@ extension Darwin_Standard_Core.Darwin.Identity.UUID {
     public static func withUnparsedBytes<R: ~Copyable>(
         _ bytes: Bytes,
         uppercase: Bool = false,
-        _ body: (Span<CChar>) -> R
+        _ body: (Swift.Span<CChar>) -> R
     ) -> R {
         var output = (
             CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0),

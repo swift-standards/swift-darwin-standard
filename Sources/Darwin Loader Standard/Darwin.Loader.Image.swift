@@ -89,7 +89,7 @@ extension Darwin_Standard_Core.Darwin.Loader.Image {
     /// - Returns: The result of the closure, or `nil` if the image is unavailable.
     public static func withPathBytes<R: ~Copyable>(
         at index: Index,
-        _ body: (Span<CChar>) -> R
+        _ body: (Swift.Span<CChar>) -> R
     ) -> R? {
         guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
             return nil

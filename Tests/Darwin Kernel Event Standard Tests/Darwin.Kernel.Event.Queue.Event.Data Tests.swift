@@ -13,7 +13,10 @@
     import Darwin
     import Testing
 
+    @_spi(Syscall) import ISO_9945_Core
     @testable import Darwin_Kernel_Event_Standard
+
+    private typealias Kernel = ISO_9945.Kernel
 
     // Kernel.Event.Queue.Event.Data is a typealias to Tagged<Kernel.Event.Queue.Event, UInt64>
     // Use a custom test suite since #Tests cannot be used on typealiases
@@ -50,7 +53,7 @@
                 UnsafeMutableRawPointer($0)
             }
             let data = Kernel.Event.Queue.Event.Data(pointer)
-            #expect(data.rawValue == UInt64(UInt(bitPattern: pointer)))
+            #expect(data.underlying == UInt64(UInt(bitPattern: pointer)))
         }
 
         @Test
@@ -149,7 +152,7 @@
         @Test
         func `UInt64.max is preserved`() {
             let data = Kernel.Event.Queue.Event.Data(UInt64.max)
-            #expect(data.rawValue == UInt64.max)
+            #expect(data.underlying == UInt64.max)
         }
 
         @Test
@@ -157,7 +160,7 @@
             // Create data from a large value simulating a high memory address
             let largeValue: UInt64 = 0x7FFF_FFFF_FFFF_FFFF
             let data = Kernel.Event.Queue.Event.Data(largeValue)
-            #expect(data.rawValue == largeValue)
+            #expect(data.underlying == largeValue)
         }
     }
 #endif

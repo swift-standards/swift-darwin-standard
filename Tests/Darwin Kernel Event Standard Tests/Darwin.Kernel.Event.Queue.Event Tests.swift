@@ -13,7 +13,12 @@
     import Darwin
     import Testing
 
+    @_spi(Syscall) import ISO_9945_Core
+    import ISO_9945_Kernel_File
+    import ISO_9945_Kernel_Test_Support
     @testable import Darwin_Kernel_Event_Standard
+
+    private typealias Kernel = ISO_9945.Kernel
 
     extension Kernel.Event.Queue.Event {
         enum Test {
@@ -30,14 +35,14 @@
 
         @Test
         func `event roundtrips through C conversion`() throws {
-            let (readFd, writeFd) = try Kernel.Event.Test.makePipe()
-            defer {
-                Kernel.Event.Test.closeNoThrow(readFd)
-                Kernel.Event.Test.closeNoThrow(writeFd)
-            }
+            // `pipe`'s Descriptor fields close themselves on deinit
+            // (best-effort, per ISO_9945.Kernel.Close docs) — no manual
+            // close needed, and `.read`/`.write` are borrow-only so
+            // there's nothing consumable to extract ahead of that.
+            let pipe = try Kernel.Event.Test.makePipe()
 
             let original = Kernel.Event.Queue.Event(
-                id: .init(descriptor: readFd),
+                id: Kernel.Event.ID(pipe.read._rawValue),
                 filter: .read,
                 flags: .add | .enable,
                 fflags: .none,

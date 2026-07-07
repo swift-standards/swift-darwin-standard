@@ -11,17 +11,17 @@
 
 #if canImport(Darwin)
 
-public import ISO_9945_Core
-internal import Darwin
+    public import ISO_9945_Core
+    internal import Darwin
 
-// MARK: - Darwin-specific Seek Whence
+    // MARK: - Darwin-specific Seek Whence
 
-extension ISO_9945.Kernel.File.Seek.Whence {
-    /// Seek to the next hole (SEEK_HOLE).
-    public static let hole = Self(rawValue: SEEK_HOLE)
+    extension ISO_9945.Kernel.File.Seek.Whence {
+        /// Seek to the next hole (SEEK_HOLE).
+        public static let hole = Self(rawValue: SEEK_HOLE)
 
-    /// Seek to the next data region (SEEK_DATA).
-    public static let data = Self(rawValue: SEEK_DATA)
-}
+        /// Seek to the next data region (SEEK_DATA).
+        public static let data = Self(rawValue: SEEK_DATA)
+    }
 
 #endif

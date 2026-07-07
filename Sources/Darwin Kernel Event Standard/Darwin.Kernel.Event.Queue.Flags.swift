@@ -79,6 +79,7 @@ public import ISO_9945_Core
         /// Disables event delivery without removing.
         ///
         /// The event stays registered but won't be returned by kevent.
+        ///
         /// Useful for temporarily pausing monitoring.
         ///
         /// - Darwin: `EV_DISABLE`
@@ -100,6 +101,7 @@ public import ISO_9945_Core
         /// Disables the event after delivery.
         ///
         /// Combines with edge-triggered: event triggers once, then disables.
+        ///
         /// Call with `.enable` to re-arm.
         ///
         /// - Darwin: `EV_DISPATCH`

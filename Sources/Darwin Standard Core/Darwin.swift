@@ -19,5 +19,6 @@
 /// ## Platform
 ///
 /// Darwin APIs are available on macOS, iOS, tvOS, and watchOS.
+///
 /// This namespace isolates Darwin-specific code from cross-platform layers.
 public enum Darwin: Sendable {}

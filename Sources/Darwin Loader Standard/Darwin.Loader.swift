@@ -23,6 +23,7 @@ extension Darwin_Standard_Core.Darwin {
     /// ## Semantic Correctness
     ///
     /// These APIs are userspace dyld interfaces, NOT kernel syscalls.
+    ///
     /// They are implemented by `libSystem.B.dylib` and the dyld runtime.
     ///
     /// ## Thread Safety

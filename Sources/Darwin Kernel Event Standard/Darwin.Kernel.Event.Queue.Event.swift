@@ -55,16 +55,16 @@ public import ISO_9945_Core
             /// - `EVFILT_PROC`: process ID
             public var id: ISO_9945.Kernel.Event.ID
 
-            /// Filter type (EVFILT_READ, EVFILT_WRITE, etc.).
+            /// Filter type (EVFILT_READ, EVFILT_WRITE, and similar).
             public var filter: Filter
 
-            /// Action and status flags (EV_ADD, EV_DELETE, etc.).
+            /// Action and status flags (EV_ADD, EV_DELETE, and similar).
             public var flags: Flags
 
             /// Filter-specific flags.
             public var fflags: Filter.Flags
 
-            /// Filter-specific data (e.g., bytes available for read).
+            /// Filter-specific data (for example, bytes available for read).
             public var filterData: Filter.Data
 
             /// User-defined data for event routing.

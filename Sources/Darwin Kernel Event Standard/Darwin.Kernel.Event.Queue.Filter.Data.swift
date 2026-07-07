@@ -17,6 +17,7 @@ public import ISO_9945_Core
         /// Kernel-returned data from a kqueue event.
         ///
         /// This is an opaque value whose interpretation depends on the filter type.
+        ///
         /// The kernel populates this field when an event fires.
         ///
         /// ## Filter-Specific Meanings

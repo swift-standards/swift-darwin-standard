@@ -1,5 +1,3 @@
-public import ISO_9945_Core
-
 // ===----------------------------------------------------------------------===//
 //
 // This source file is part of the swift-kernel open source project
@@ -11,6 +9,7 @@ public import ISO_9945_Core
 //
 // ===----------------------------------------------------------------------===//
 public import Error_Primitives
+public import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
@@ -19,6 +18,7 @@ public import Error_Primitives
         ///
         /// Low-level errors from kqueue syscalls. Each case wraps the
         /// underlying `Error_Primitives.Error.Code` for platform-specific details.
+        ///
         /// Convert to `Error_Primitives.Error` for semantic error handling.
         ///
         /// ## Usage

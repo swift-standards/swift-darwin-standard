@@ -13,7 +13,10 @@
     import Darwin
     import Testing
 
+    @_spi(Syscall) import ISO_9945_Core
     @testable import Darwin_Kernel_Event_Standard
+
+    private typealias Kernel = ISO_9945.Kernel
 
     // Kernel.Event.Queue.Filter.Data is a typealias to Tagged<Kernel.Event.Queue.Filter, Int>
     // Use a custom test suite since #Tests cannot be used on typealiases
@@ -78,13 +81,13 @@
         @Test
         func `Int.max is preserved`() {
             let data = Kernel.Event.Queue.Filter.Data(Int.max)
-            #expect(data.rawValue == Int.max)
+            #expect(data.underlying == Int.max)
         }
 
         @Test
         func `Int.min is preserved`() {
             let data = Kernel.Event.Queue.Filter.Data(Int.min)
-            #expect(data.rawValue == Int.min)
+            #expect(data.underlying == Int.min)
         }
     }
 #endif

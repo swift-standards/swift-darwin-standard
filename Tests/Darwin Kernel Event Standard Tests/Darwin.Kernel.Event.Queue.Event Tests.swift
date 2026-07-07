@@ -11,7 +11,7 @@
 
 #if canImport(Darwin)
     import Darwin
-import Testing
+    import Testing
 
     @testable import Darwin_Kernel_Event_Standard
 

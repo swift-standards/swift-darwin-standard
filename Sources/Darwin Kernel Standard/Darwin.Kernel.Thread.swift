@@ -14,7 +14,7 @@ public import Darwin_Standard_Core
 extension Darwin_Standard_Core.Darwin.Kernel {
     /// Darwin thread mechanisms.
     ///
-    /// Home for Darwin-specific (non-POSIX) thread vocabulary — e.g. the
+    /// Home for Darwin-specific (non-POSIX) thread vocabulary — for example, the
     /// pthread QoS-override (`_np`) extension exposed as ``QoS``. POSIX-shared
     /// thread concepts live under `ISO_9945.Kernel.Thread` per
     /// [PLAT-ARCH-007]; this namespace carries only Darwin's own thread API

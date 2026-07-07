@@ -50,6 +50,7 @@ public import ISO_9945_Core
         /// Monitors a descriptor for read readiness.
         ///
         /// Triggers when data is available to read from the descriptor.
+        ///
         /// For sockets, also triggers on connection close (EOF). The `data`
         /// field in returned events contains the number of bytes available.
         ///
@@ -59,6 +60,7 @@ public import ISO_9945_Core
         /// Monitors a descriptor for write readiness.
         ///
         /// Triggers when the descriptor can accept writes without blocking.
+        ///
         /// The `data` field in returned events contains the amount of space
         /// available in the write buffer.
         ///

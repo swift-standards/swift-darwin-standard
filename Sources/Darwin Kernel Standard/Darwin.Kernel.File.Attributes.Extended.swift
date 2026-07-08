@@ -33,21 +33,23 @@
             public init(code: Error_Primitives.Error.Code) {
                 self.code = code
             }
+        }
+    }
 
-            /// Attribute not found.
-            public static let notFound = Error(code: .posix(ENOATTR))
+    extension ISO_9945.Kernel.File.Attributes.Extended.Error {
+        /// Attribute not found.
+        public static let notFound = Error(code: .posix(ENOATTR))
 
-            /// No space for attribute.
-            public static let noSpace = Error(code: .posix(ENOSPC))
+        /// No space for attribute.
+        public static let noSpace = Error(code: .posix(ENOSPC))
 
-            /// Permission denied.
-            public static let permissionDenied = Error(code: .posix(EACCES))
+        /// Permission denied.
+        public static let permissionDenied = Error(code: .posix(EACCES))
 
-            /// Creates an error from the current errno.
-            @usableFromInline
-            internal static func current() -> Self {
-                Self(code: .posix(errno))
-            }
+        /// Creates an error from the current errno.
+        @usableFromInline
+        internal static func current() -> Self {
+            Self(code: .posix(errno))
         }
     }
 

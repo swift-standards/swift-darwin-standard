@@ -63,79 +63,83 @@
 
     extension ISO_9945.Kernel.File.Clone {
         /// macOS clonefile() operations.
-        public enum Clonefile {
-            /// Attempts to clone a file using clonefile().
-            public static func attempt(
-                source: borrowing Path.Borrowed,
-                destination: borrowing Path.Borrowed
-            ) throws(ISO_9945.Kernel.File.Clone.Error.Syscall) -> Bool {
-                try unsafe source.withUnsafePointer { srcCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
-                    try unsafe destination.withUnsafePointer { dstCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
-                        let result = unsafe clonefile(UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self), UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self), 0)
+        public enum Clonefile {}
 
-                        if result == 0 {
-                            return true
-                        }
+        /// macOS copyfile() operations.
+        public enum Copyfile {}
+    }
 
-                        let err = errno
-                        if err == ENOTSUP {
-                            return false
-                        }
+    extension ISO_9945.Kernel.File.Clone.Clonefile {
+        /// Attempts to clone a file using clonefile().
+        public static func attempt(
+            source: borrowing Path.Borrowed,
+            destination: borrowing Path.Borrowed
+        ) throws(ISO_9945.Kernel.File.Clone.Error.Syscall) -> Bool {
+            try unsafe source.withUnsafePointer { srcCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
+                try unsafe destination.withUnsafePointer { dstCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
+                    let result = unsafe clonefile(UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self), UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self), 0)
 
-                        throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(err), operation: .clonefile)
+                    if result == 0 {
+                        return true
+                    }
+
+                    let err = errno
+                    if err == ENOTSUP {
+                        return false
+                    }
+
+                    throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(err), operation: .clonefile)
+                }
+            }
+        }
+    }
+
+    extension ISO_9945.Kernel.File.Clone.Copyfile {
+        /// Copies a file using copyfile() with COPYFILE_CLONE flag.
+        public static func clone(
+            source: borrowing Path.Borrowed,
+            destination: borrowing Path.Borrowed
+        ) throws(ISO_9945.Kernel.File.Clone.Error.Syscall) {
+            try unsafe source.withUnsafePointer { srcCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
+                try unsafe destination.withUnsafePointer { dstCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
+                    let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self)
+                    let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
+
+                    var statBuf = stat()
+                    let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
+                    if destExists {
+                        throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(EEXIST), operation: .copyfile)
+                    }
+
+                    let result = unsafe copyfile(srcPtr, dstPtr, nil, copyfile_flags_t(COPYFILE_CLONE | COPYFILE_ALL))
+
+                    guard result == 0 else {
+                        throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .copyfile)
                     }
                 }
             }
         }
 
-        /// macOS copyfile() operations.
-        public enum Copyfile {
-            /// Copies a file using copyfile() with COPYFILE_CLONE flag.
-            public static func clone(
-                source: borrowing Path.Borrowed,
-                destination: borrowing Path.Borrowed
-            ) throws(ISO_9945.Kernel.File.Clone.Error.Syscall) {
-                try unsafe source.withUnsafePointer { srcCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
-                    try unsafe destination.withUnsafePointer { dstCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
-                        let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self)
-                        let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
+        /// Copies a file using copyfile() without clone attempt.
+        public static func data(
+            source: borrowing Path.Borrowed,
+            destination: borrowing Path.Borrowed
+        ) throws(ISO_9945.Kernel.File.Clone.Error.Syscall) {
+            try unsafe source.withUnsafePointer { srcCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
+                try unsafe destination.withUnsafePointer { dstCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
+                    let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self)
+                    let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
 
-                        var statBuf = stat()
-                        let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
-                        if destExists {
-                            throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(EEXIST), operation: .copyfile)
-                        }
-
-                        let result = unsafe copyfile(srcPtr, dstPtr, nil, copyfile_flags_t(COPYFILE_CLONE | COPYFILE_ALL))
-
-                        guard result == 0 else {
-                            throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .copyfile)
-                        }
+                    var statBuf = stat()
+                    let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
+                    if destExists {
+                        throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(EEXIST), operation: .copyfile)
                     }
-                }
-            }
 
-            /// Copies a file using copyfile() without clone attempt.
-            public static func data(
-                source: borrowing Path.Borrowed,
-                destination: borrowing Path.Borrowed
-            ) throws(ISO_9945.Kernel.File.Clone.Error.Syscall) {
-                try unsafe source.withUnsafePointer { srcCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
-                    try unsafe destination.withUnsafePointer { dstCString throws(ISO_9945.Kernel.File.Clone.Error.Syscall) in
-                        let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self)
-                        let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
+                    let result = unsafe copyfile(srcPtr, dstPtr, nil, copyfile_flags_t(COPYFILE_DATA))
 
-                        var statBuf = stat()
-                        let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
-                        if destExists {
-                            throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(EEXIST), operation: .copyfile)
-                        }
-
-                        let result = unsafe copyfile(srcPtr, dstPtr, nil, copyfile_flags_t(COPYFILE_DATA))
-
-                        guard result == 0 else {
-                            throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .copyfile)
-                        }
+                    guard result == 0 else {
+                        throw ISO_9945.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .copyfile)
                     }
                 }
             }

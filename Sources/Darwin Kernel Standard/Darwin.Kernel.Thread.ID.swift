@@ -32,9 +32,11 @@
             public init(rawValue: UInt32) {
                 self.rawValue = rawValue
             }
-
-            public var description: String { "mach_port(\(rawValue))" }
         }
+    }
+
+    extension ISO_9945.Kernel.Thread.ID {
+        public var description: String { "mach_port(\(rawValue))" }
     }
 
     extension ISO_9945.Kernel.Thread.ID {

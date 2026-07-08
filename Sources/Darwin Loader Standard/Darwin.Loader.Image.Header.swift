@@ -43,21 +43,23 @@
             public init(rawValue: UnsafeRawPointer) {
                 unsafe (self.rawValue = rawValue)
             }
+        }
+    }
 
-            /// Whether this image is in the dyld shared cache.
-            ///
-            /// Images in the shared cache are system images and typically
-            /// do not contain user-defined metadata sections.
-            public var isInSharedCache: Bool {
-                let header64 = unsafe rawValue.assumingMemoryBound(to: mach_header_64.self)
-                return unsafe (header64.pointee.flags & UInt32(MH_DYLIB_IN_CACHE)) != 0
-            }
+    extension Darwin_Standard_Core.Darwin.Loader.Image.Header {
+        /// Whether this image is in the dyld shared cache.
+        ///
+        /// Images in the shared cache are system images and typically
+        /// do not contain user-defined metadata sections.
+        public var isInSharedCache: Bool {
+            let header64 = unsafe rawValue.assumingMemoryBound(to: mach_header_64.self)
+            return unsafe (header64.pointee.flags & UInt32(MH_DYLIB_IN_CACHE)) != 0
+        }
 
-            /// Equatable conformance based on pointer identity.
-            @inlinable
-            public static func == (lhs: Self, rhs: Self) -> Bool {
-                unsafe lhs.rawValue == rhs.rawValue
-            }
+        /// Equatable conformance based on pointer identity.
+        @inlinable
+        public static func == (lhs: Self, rhs: Self) -> Bool {
+            unsafe lhs.rawValue == rhs.rawValue
         }
     }
 

@@ -38,12 +38,14 @@
             public init(code: Error_Primitives.Error.Code) {
                 self.code = code
             }
+        }
+    }
 
-            /// Creates an error from the current errno.
-            @usableFromInline
-            internal static func current() -> Self {
-                Self(code: .posix(errno))
-            }
+    extension Darwin_Standard_Core.Darwin.Kernel.Sysctl.Error {
+        /// Creates an error from the current errno.
+        @usableFromInline
+        internal static func current() -> Self {
+            Self(code: .posix(errno))
         }
     }
 

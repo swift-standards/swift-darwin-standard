@@ -212,47 +212,53 @@
             init(name: Name) {
                 self.name = name
             }
+        }
+    }
 
-            public func makeIterator() -> Iterator {
-                Iterator(name: name, currentIndex: .zero)
+    extension Darwin_Standard_Core.Darwin.Loader.Section.AllSectionsSequence {
+        public func makeIterator() -> Iterator {
+            Iterator(name: name, currentIndex: .zero)
+        }
+    }
+
+    extension Darwin_Standard_Core.Darwin.Loader.Section.AllSectionsSequence {
+        // SAFETY: Encapsulates unsafe internals behind a safe API; see
+        // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
+        @safe
+        public struct Iterator: @unsafe IteratorProtocol {
+            let name: Darwin_Standard_Core.Darwin.Loader.Section.Name
+            var currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index
+
+            init(name: Darwin_Standard_Core.Darwin.Loader.Section.Name, currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index) {
+                self.name = name
+                self.currentIndex = currentIndex
             }
+        }
+    }
 
-            // SAFETY: Encapsulates unsafe internals behind a safe API; see
-            // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
-            @safe
-            public struct Iterator: @unsafe IteratorProtocol {
-                let name: Name
-                var currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index
+    extension Darwin_Standard_Core.Darwin.Loader.Section.AllSectionsSequence.Iterator {
+        public mutating func next() -> Darwin_Standard_Core.Darwin.Loader.Section.Bounds? {
+            let end = Darwin_Standard_Core.Darwin.Loader.Image.count.map(Ordinal.init)
 
-                init(name: Name, currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index) {
-                    self.name = name
-                    self.currentIndex = currentIndex
+            while currentIndex < end {
+                let index = currentIndex
+                currentIndex += .one
+
+                guard let header = Darwin_Standard_Core.Darwin.Loader.Image.header(at: index) else {
+                    continue
                 }
 
-                public mutating func next() -> Bounds? {
-                    let end = Darwin_Standard_Core.Darwin.Loader.Image.count.map(Ordinal.init)
+                // Skip images in the shared cache (system libraries)
+                guard !header.isInSharedCache else {
+                    continue
+                }
 
-                    while currentIndex < end {
-                        let index = currentIndex
-                        currentIndex += .one
-
-                        guard let header = Darwin_Standard_Core.Darwin.Loader.Image.header(at: index) else {
-                            continue
-                        }
-
-                        // Skip images in the shared cache (system libraries)
-                        guard !header.isInSharedCache else {
-                            continue
-                        }
-
-                        if let bounds = Darwin_Standard_Core.Darwin.Loader.Section.data(for: name, in: header) {
-                            return bounds
-                        }
-                    }
-
-                    return nil
+                if let bounds = Darwin_Standard_Core.Darwin.Loader.Section.data(for: name, in: header) {
+                    return bounds
                 }
             }
+
+            return nil
         }
     }
 

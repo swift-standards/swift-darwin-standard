@@ -21,8 +21,8 @@
     // Kernel.Event.Queue.Event.Data is a typealias to Tagged<Kernel.Event.Queue.Event, UInt64>
     // Use a custom test suite since #Tests cannot be used on typealiases
 
-    @Suite("Kernel.Event.Queue.Event.Data Tests")
-    struct KqueueEventDataTests {
+    @Suite
+    struct `Kernel.Event.Queue.Event.Data Tests` {
 
         // MARK: - Unit Tests
 

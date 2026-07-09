@@ -21,8 +21,8 @@
     // Kernel.Event.Queue.Filter.Data is a typealias to Tagged<Kernel.Event.Queue.Filter, Int>
     // Use a custom test suite since #Tests cannot be used on typealiases
 
-    @Suite("Kernel.Event.Queue.Filter.Data Tests")
-    struct KqueueFilterDataTests {
+    @Suite
+    struct `Kernel.Event.Queue.Filter.Data Tests` {
 
         // MARK: - Unit Tests
 

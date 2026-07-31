@@ -10,6 +10,8 @@
 // ===----------------------------------------------------------------------===//
 
 public import ISO_9945_Core
+public import ISO_9945_Loader
+public import Loader_Primitives
 
 // MARK: - Non-POSIX Extension Options (Darwin)
 //

@@ -113,6 +113,7 @@ let package = Package(
                 .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
                 .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
                 .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
+                .product(name: "ISO 9945 Loader", package: "swift-iso-9945"),
             ]
         ),
 

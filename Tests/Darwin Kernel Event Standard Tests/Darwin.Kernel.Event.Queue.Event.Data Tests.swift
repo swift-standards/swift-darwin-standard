@@ -15,8 +15,9 @@
 
     @_spi(Syscall) import ISO_9945_Core
     @testable import Darwin_Kernel_Event_Standard
+    import Darwin_Standard_Core
 
-    private typealias Kernel = ISO_9945.Kernel
+    private typealias Kernel = Darwin.Kernel
 
     // Kernel.Event.Queue.Event.Data is a typealias to Tagged<Kernel.Event.Queue.Event, UInt64>
     // Use a custom test suite since #Tests cannot be used on typealiases

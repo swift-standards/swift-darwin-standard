@@ -22,7 +22,7 @@ public import ISO_9945_Core
         /// `swift-kernel/README.md`) and is the consumer-facing name. Both
         /// forms resolve to the same type — pick whichever reads better at
         /// the call site.
-        public typealias Kqueue = ISO_9945.Kernel.Event.Queue
+        public typealias Kqueue = Darwin.Kernel.Event.Queue
     }
 
 #endif

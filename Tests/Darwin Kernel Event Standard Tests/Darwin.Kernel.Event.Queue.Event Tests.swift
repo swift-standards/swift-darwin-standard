@@ -17,8 +17,9 @@
     import ISO_9945_Kernel_File
     import ISO_9945_Kernel_Test_Support
     @testable import Darwin_Kernel_Event_Standard
+    import Darwin_Standard_Core
 
-    private typealias Kernel = ISO_9945.Kernel
+    private typealias Kernel = Darwin.Kernel
 
     extension Kernel.Event.Queue.Event {
         enum Test {
@@ -39,7 +40,7 @@
             // (best-effort, per ISO_9945.Kernel.Close docs) — no manual
             // close needed, and `.read`/`.write` are borrow-only so
             // there's nothing consumable to extract ahead of that.
-            let pipe = try Kernel.Event.Test.makePipe()
+            let pipe = try ISO_9945.Kernel.Event.Test.makePipe()
 
             let original = Kernel.Event.Queue.Event(
                 id: Kernel.Event.ID(pipe.read._rawValue),

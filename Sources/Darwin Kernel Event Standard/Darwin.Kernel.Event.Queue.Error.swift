@@ -13,7 +13,7 @@ public import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-    extension ISO_9945.Kernel.Event.Queue {
+    extension Darwin.Kernel.Event.Queue {
         /// Errors from kqueue operations.
         ///
         /// Low-level errors from kqueue syscalls. Each case wraps the
@@ -25,8 +25,8 @@ public import ISO_9945_Core
         ///
         /// ```swift
         /// do {
-        ///     let kq = try ISO_9945.Kernel.Event.Queue.create()
-        /// } catch let error as ISO_9945.Kernel.Event.Queue.Error {
+        ///     let kq = try Darwin.Kernel.Event.Queue.create()
+        /// } catch let error as Darwin.Kernel.Event.Queue.Error {
         ///     switch error {
         ///     case .create(let code):
         ///         print("kqueue creation failed: \(code)")
@@ -62,7 +62,7 @@ public import ISO_9945_Core
         }
     }
 
-    extension ISO_9945.Kernel.Event.Queue.Error: CustomStringConvertible {
+    extension Darwin.Kernel.Event.Queue.Error: CustomStringConvertible {
         public var description: Swift.String {
             switch self {
             case .create(let code):

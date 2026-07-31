@@ -16,8 +16,9 @@
     @_spi(Syscall) import ISO_9945_Core
     import ISO_9945_Kernel_Test_Support
     @testable import Darwin_Kernel_Event_Standard
+    import Darwin_Standard_Core
 
-    private typealias Kernel = ISO_9945.Kernel
+    private typealias Kernel = Darwin.Kernel
 
     extension ISO_9945.Kernel.Event.Test {
         /// Best-effort close, ignoring errors (test cleanup only).
@@ -44,7 +45,7 @@
         @Test
         func `create returns valid kqueue descriptor`() throws {
             let kq = try Kernel.Event.Queue.create()
-            defer { Kernel.Event.Test.closeNoThrow(kq) }
+            defer { ISO_9945.Kernel.Event.Test.closeNoThrow(kq) }
 
             #expect(kq >= 0)
         }

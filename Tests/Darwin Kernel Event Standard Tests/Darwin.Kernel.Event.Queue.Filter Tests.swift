@@ -15,8 +15,9 @@
 
     @_spi(Syscall) import ISO_9945_Core
     @testable import Darwin_Kernel_Event_Standard
+    import Darwin_Standard_Core
 
-    private typealias Kernel = ISO_9945.Kernel
+    private typealias Kernel = Darwin.Kernel
 
     extension Kernel.Event.Queue.Filter {
         enum Test {

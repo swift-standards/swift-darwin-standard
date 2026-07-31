@@ -76,6 +76,7 @@ let package = Package(
                 .target(name: "CDarwinKernelShim"),
                 .product(name: "Random Primitives", package: "swift-random-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
+                .product(name: "Error Primitives", package: "swift-error-primitives"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
                 .product(name: "ISO 9945 Kernel Thread", package: "swift-iso-9945"),
             ]
@@ -111,6 +112,7 @@ let package = Package(
                 .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
                 .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
                 .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
+                .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
             ]
         ),
 
@@ -137,6 +139,7 @@ let package = Package(
             name: "Darwin Kernel Event Standard Tests",
             dependencies: [
                 "Darwin Kernel Event Standard",
+                .target(name: "Darwin Standard Core"),
                 .product(name: "ISO 9945 Kernel Test Support", package: "swift-iso-9945"),
             ]
         ),

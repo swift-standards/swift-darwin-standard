@@ -20,7 +20,39 @@ internal import ISO_9945_Kernel
     /// Type alias for C kevent struct to avoid ambiguity with Swift kevent method.
     internal typealias CKevent = kevent
 
-    extension ISO_9945.Kernel.Event {
+    // MARK: - Event Namespace Root
+    //
+    // Per swift-standards/swift-darwin-standard#3: the Event vocabulary family
+    // (kqueue) was hoisted from swift-iso-9945's "ISO 9945 Kernel" Event
+    // namespace (L2 POSIX) to swift-kernel (L3), so this Darwin-specific
+    // mechanism can no longer anchor on it — a platform L2 standard cannot
+    // depend on the L3 unifier. The kqueue
+    // mechanism re-anchors onto the package's own `Darwin.Kernel` root,
+    // following the intermediate-namespace-enum pattern `Darwin.Kernel`
+    // itself uses (declared in `Sources/Darwin Standard Core`).
+
+    extension Darwin_Standard_Core.Darwin.Kernel {
+        /// Darwin kqueue event vocabulary namespace.
+        public enum Event: Sendable {}
+    }
+
+    extension Darwin.Kernel.Event {
+        /// Event source identifier (kqueue `ident`/`udata`-scale identifier).
+        ///
+        /// Identifies the source of an event, which may be a file descriptor,
+        /// timer ID, signal number, or other platform-specific identifier.
+        public typealias ID = Tagged<Darwin.Kernel.Event, UInt>
+    }
+
+    extension Tagged where Tag == Darwin.Kernel.Event, Underlying == UInt {
+        /// Creates an identifier from an Int32 (for signals, etc.).
+        @inlinable
+        public init(_ value: Int32) {
+            self.init(_unchecked: UInt(bitPattern: Int(value)))
+        }
+    }
+
+    extension Darwin.Kernel.Event {
         // SAFETY: Encapsulates unsafe internals behind a safe API; see
         // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
         /// Kqueue event notification (Darwin).
@@ -32,7 +64,7 @@ internal import ISO_9945_Kernel
         /// ## Usage
         ///
         /// ```swift
-        /// var kq = try ISO_9945.Kernel.Event.Queue()
+        /// var kq = try Darwin.Kernel.Event.Queue()
         /// try kq.register(events: [event])
         /// let count = try kq.poll(into: &events, timeout: .seconds(1))
         /// // kq deinit closes the kqueue fd
@@ -53,7 +85,7 @@ internal import ISO_9945_Kernel
 
     // MARK: - Public Instance API
 
-    extension ISO_9945.Kernel.Event.Queue {
+    extension Darwin.Kernel.Event.Queue {
         /// Registers events without waiting.
         ///
         /// - Parameter events: Array of events to register/modify.
@@ -121,7 +153,7 @@ internal import ISO_9945_Kernel
 
     // MARK: - Package Statics (C API Mirror)
 
-    extension ISO_9945.Kernel.Event.Queue {
+    extension Darwin.Kernel.Event.Queue {
         /// Creates a new kqueue, returning the raw fd.
         ///
         /// Spec-literal: returns the raw `Int32` fd. Zero descriptor construction:
@@ -129,7 +161,7 @@ internal import ISO_9945_Kernel
         /// `ISO_9945.Kernel.Descriptor(_rawValue:)` per [PLAT-ARCH-005] / [PLAT-ARCH-008e].
         ///
         /// § 5.6 handle-returning bifurcation.
-        package static func create() throws(ISO_9945.Kernel.Event.Queue.Error) -> Int32 {
+        package static func create() throws(Darwin.Kernel.Event.Queue.Error) -> Int32 {
             let kq = kqueue()
             guard kq >= 0 else {
                 throw .create(.posix(errno))
@@ -139,15 +171,15 @@ internal import ISO_9945_Kernel
 
         /// Registers events without waiting.
         package static func register(
-            _ kq: borrowing ISO_9945.Kernel.Event.Queue,
+            _ kq: borrowing Darwin.Kernel.Event.Queue,
             events: [Event]
-        ) throws(ISO_9945.Kernel.Event.Queue.Error) {
+        ) throws(Darwin.Kernel.Event.Queue.Error) {
             guard !events.isEmpty else { return }
 
             try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: events.count
-            ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) in
+            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) in
                 for i in 0..<events.count {
                     unsafe (buffer[i] = unsafe events[i].cValue)
                 }
@@ -174,13 +206,13 @@ internal import ISO_9945_Kernel
         package static func register(
             rawDescriptor kq: Int32,
             events: [Event]
-        ) throws(ISO_9945.Kernel.Event.Queue.Error) {
+        ) throws(Darwin.Kernel.Event.Queue.Error) {
             guard !events.isEmpty else { return }
 
             try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: events.count
-            ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) in
+            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) in
                 for i in 0..<events.count {
                     unsafe (buffer[i] = unsafe events[i].cValue)
                 }
@@ -203,20 +235,20 @@ internal import ISO_9945_Kernel
 
     // MARK: - Package Statics: Polling
 
-    extension ISO_9945.Kernel.Event.Queue {
+    extension Darwin.Kernel.Event.Queue {
         /// Waits for events (array variant).
         package static func poll(
-            _ kq: borrowing ISO_9945.Kernel.Event.Queue,
+            _ kq: borrowing Darwin.Kernel.Event.Queue,
             into events: inout [Event],
             timeout: Duration?
-        ) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int {
+        ) throws(Darwin.Kernel.Event.Queue.Error) -> Int {
             guard !events.isEmpty else { return 0 }
             let count = events.count
 
             return try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: count
-            ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int in
+            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) -> Int in
                 let result: Int32
                 if var ts = timespec(timeout) {
                     result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)
@@ -238,17 +270,17 @@ internal import ISO_9945_Kernel
 
         /// Waits for events (buffer pointer variant).
         package static func poll(
-            _ kq: borrowing ISO_9945.Kernel.Event.Queue,
+            _ kq: borrowing Darwin.Kernel.Event.Queue,
             into events: UnsafeMutableBufferPointer<Event>,
             timeout: Duration?
-        ) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int {
+        ) throws(Darwin.Kernel.Event.Queue.Error) -> Int {
             guard !events.isEmpty else { return 0 }
             let count = events.count
 
             return try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: count
-            ) { (buffer) throws(ISO_9945.Kernel.Event.Queue.Error) -> Int in
+            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) -> Int in
                 let result: Int32
                 if var ts = timespec(timeout) {
                     result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)

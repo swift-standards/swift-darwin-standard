@@ -13,7 +13,7 @@ public import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-    extension ISO_9945.Kernel.Event.Queue.Filter {
+    extension Darwin.Kernel.Event.Queue.Filter {
         /// Kernel-returned data from a kqueue event.
         ///
         /// This is an opaque value whose interpretation depends on the filter type.
@@ -49,12 +49,12 @@ public import ISO_9945_Core
         ///
         /// - ``Kernel/Event/Queue/Event``
         /// - ``Kernel/Event/Queue/Filter``
-        public typealias Data = Tagged<ISO_9945.Kernel.Event.Queue.Filter, Int>
+        public typealias Data = Tagged<Darwin.Kernel.Event.Queue.Filter, Int>
     }
 
     // MARK: - Common Values
 
-    extension ISO_9945.Kernel.Event.Queue.Filter.Data {
+    extension Darwin.Kernel.Event.Queue.Filter.Data {
         /// Zero filter data (default for event registration).
         public static let zero: Self = Self(_unchecked: 0)
     }

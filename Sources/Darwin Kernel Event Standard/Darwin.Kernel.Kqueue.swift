@@ -13,7 +13,7 @@ public import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
-    extension ISO_9945.Kernel {
+    extension Darwin.Kernel {
         /// Spec-literal alias for ``Kernel/Event/Queue`` matching the
         /// `kqueue(2)` man-page name (per [API-NAME-003] specification-
         /// mirroring). The nested form ``Kernel/Event/Queue`` fits the broader
@@ -22,7 +22,7 @@ public import ISO_9945_Core
         /// `swift-kernel/README.md`) and is the consumer-facing name. Both
         /// forms resolve to the same type — pick whichever reads better at
         /// the call site.
-        public typealias Kqueue = Darwin.Kernel.Event.Queue
+        public typealias Kqueue = Event.Queue
     }
 
 #endif

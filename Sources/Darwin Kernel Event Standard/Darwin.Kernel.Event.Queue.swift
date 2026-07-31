@@ -179,7 +179,7 @@ internal import ISO_9945_Kernel
             try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: events.count
-            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) in
+            ) { buffer throws(Darwin.Kernel.Event.Queue.Error) in
                 for i in 0..<events.count {
                     unsafe (buffer[i] = unsafe events[i].cValue)
                 }
@@ -212,7 +212,7 @@ internal import ISO_9945_Kernel
             try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: events.count
-            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) in
+            ) { buffer throws(Darwin.Kernel.Event.Queue.Error) in
                 for i in 0..<events.count {
                     unsafe (buffer[i] = unsafe events[i].cValue)
                 }
@@ -248,7 +248,7 @@ internal import ISO_9945_Kernel
             return try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: count
-            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) -> Int in
+            ) { buffer throws(Darwin.Kernel.Event.Queue.Error) -> Int in
                 let result: Int32
                 if var ts = timespec(timeout) {
                     result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)
@@ -280,7 +280,7 @@ internal import ISO_9945_Kernel
             return try unsafe withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: count
-            ) { (buffer) throws(Darwin.Kernel.Event.Queue.Error) -> Int in
+            ) { buffer throws(Darwin.Kernel.Event.Queue.Error) -> Int in
                 let result: Int32
                 if var ts = timespec(timeout) {
                     result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)

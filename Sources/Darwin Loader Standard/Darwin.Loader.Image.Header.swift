@@ -33,7 +33,7 @@
         @safe
         public struct Header: Sendable, Equatable {
             /// The raw header pointer.
-            public nonisolated(unsafe) let rawValue: UnsafeRawPointer
+            nonisolated(unsafe) public let rawValue: UnsafeRawPointer
 
             /// Creates an image header from a raw pointer.
             ///

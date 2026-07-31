@@ -67,8 +67,10 @@ public import ISO_9945_Core
             switch self {
             case .create(let code):
                 return "kqueue creation failed (\(code))"
+
             case .kevent(let code):
                 return "kevent failed (\(code))"
+
             case .interrupted:
                 return "operation interrupted"
             }

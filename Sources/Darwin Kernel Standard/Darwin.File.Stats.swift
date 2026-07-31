@@ -264,18 +264,25 @@ internal import Time_Primitives
             switch fileType {
             case S_IFREG:
                 self = .regular
+
             case S_IFDIR:
                 self = .directory
+
             case S_IFLNK:
                 self = .link(.symbolic)
+
             case S_IFBLK:
                 self = .device(.block)
+
             case S_IFCHR:
                 self = .device(.character)
+
             case S_IFIFO:
                 self = .fifo
+
             case S_IFSOCK:
                 self = .socket
+
             default:
                 self = .unknown
             }

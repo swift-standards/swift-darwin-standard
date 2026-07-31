@@ -85,6 +85,7 @@
                 QOS_CLASS_UTILITY.rawValue,
                 QOS_CLASS_BACKGROUND.rawValue:
                 self.init(rawValue: priority)
+
             default:
                 return nil
             }

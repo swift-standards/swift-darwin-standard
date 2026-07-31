@@ -38,8 +38,10 @@
                 switch code.posix {
                 case EEXIST:
                     throw .exists
+
                 case EPERM, EACCES:
                     throw .permission(code)
+
                 default:
                     throw .platform(code)
                 }
@@ -81,6 +83,7 @@
                 switch code.posix {
                 case EPERM, EACCES:
                     throw .permission(code)
+
                 default:
                     throw .platform(code)
                 }

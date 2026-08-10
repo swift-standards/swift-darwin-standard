@@ -60,11 +60,11 @@ let package = Package(
 
         // MARK: - C Shims
         .target(
-            name: "CDarwinKernelShim",
+            name: "Darwin Kernel Shims",
             dependencies: []
         ),
         .target(
-            name: "CDarwinMemoryShim",
+            name: "Darwin Memory Shims",
             dependencies: []
         ),
 
@@ -73,7 +73,7 @@ let package = Package(
             name: "Darwin Kernel Standard",
             dependencies: [
                 .target(name: "Darwin Standard Core"),
-                .target(name: "CDarwinKernelShim"),
+                .target(name: "Darwin Kernel Shims"),
                 .product(name: "Random Primitives", package: "swift-random-primitives"),
                 .product(name: "Time Primitives", package: "swift-time-primitives"),
                 .product(name: "Error Primitives", package: "swift-error-primitives"),
@@ -106,7 +106,7 @@ let package = Package(
             name: "Darwin Loader Standard",
             dependencies: [
                 .target(name: "Darwin Standard Core"),
-                .target(name: "CDarwinKernelShim"),
+                .target(name: "Darwin Kernel Shims"),
                 .product(name: "Loader Primitives", package: "swift-loader-primitives"),
                 .product(name: "String Primitives", package: "swift-string-primitives"),
                 .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
@@ -122,7 +122,7 @@ let package = Package(
             name: "Darwin Memory Standard",
             dependencies: [
                 .target(name: "Darwin Standard Core"),
-                .target(name: "CDarwinMemoryShim")
+                .target(name: "Darwin Memory Shims")
             ]
         ),
 

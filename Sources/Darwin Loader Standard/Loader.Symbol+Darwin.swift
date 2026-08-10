@@ -14,14 +14,14 @@
     public import Loader_Primitives
     internal import String_Primitives
     internal import Darwin
-    internal import CDarwinKernelShim
+    internal import Darwin_Kernel_Shims
 
     // MARK: - dlsym Handle Conversion
 
     extension Loader.Symbol.Scope {
         /// Converts scope to the `dlsym` handle pointer for Darwin.
         ///
-        /// Uses constants from `<dlfcn.h>` via `CDarwinKernelShim`.
+        /// Uses constants from `<dlfcn.h>` via `Darwin_Kernel_Shims`.
         @unsafe
         fileprivate var dlsymHandle: UnsafeMutableRawPointer? {
             switch unsafe self {

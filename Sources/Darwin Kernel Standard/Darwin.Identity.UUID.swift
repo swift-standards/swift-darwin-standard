@@ -2,7 +2,7 @@
 // Native UUID parsing using Darwin's uuid_parse
 
 #if canImport(Darwin)
-    import CDarwinKernelShim
+    import Darwin_Kernel_Shims
     public import Darwin_Standard_Core
 
     extension Darwin_Standard_Core.Darwin {

@@ -12,7 +12,7 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
     public import Darwin_Standard_Core
-    import CDarwinMemoryShim
+    import Darwin_Memory_Shims
 
     extension Darwin_Standard_Core.Darwin.Memory.Allocation {
         /// Memory allocation statistics for Darwin platforms.

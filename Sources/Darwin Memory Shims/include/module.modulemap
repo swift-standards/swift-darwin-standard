@@ -1,4 +1,4 @@
-module CDarwinKernelShim {
+module Darwin_Memory_Shims {
     header "shim.h"
     export *
 }

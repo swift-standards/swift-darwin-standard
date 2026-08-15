@@ -148,13 +148,22 @@
 
     extension Darwin.Kernel.File.Clone.Capability {
         /// Probes whether the filesystem at the given path supports cloning.
-        public static func probe(at path: borrowing Path.Borrowed) throws(Darwin.Kernel.File.Clone.Error.Syscall) -> Darwin.Kernel.File.Clone.Capability {
-            try unsafe path.withUnsafePointer { cString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+        public static func probe(
+            at path: borrowing Path.Borrowed
+        ) throws(Darwin.Kernel.File.Clone.Error.Syscall) -> Darwin.Kernel.File.Clone.Capability {
+            try unsafe path.withUnsafePointer {
+                cString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
                 var statfsBuf = statfs()
-                let result = unsafe statfs(UnsafeRawPointer(cString).assumingMemoryBound(to: CChar.self), &statfsBuf)
+                let result = unsafe statfs(
+                    UnsafeRawPointer(cString).assumingMemoryBound(to: CChar.self),
+                    &statfsBuf
+                )
 
                 guard result == 0 else {
-                    throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .statfs)
+                    throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                        code: .posix(errno),
+                        operation: .statfs
+                    )
                 }
 
                 let isAPFS = unsafe withUnsafeBytes(of: statfsBuf.f_fstypename) { buf in
@@ -174,13 +183,22 @@
 
     extension Darwin.Kernel.File.Clone.Metadata {
         /// Gets the size of a file.
-        public static func size(at path: borrowing Path.Borrowed) throws(Darwin.Kernel.File.Clone.Error.Syscall) -> Int {
-            try unsafe path.withUnsafePointer { cString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+        public static func size(
+            at path: borrowing Path.Borrowed
+        ) throws(Darwin.Kernel.File.Clone.Error.Syscall) -> Int {
+            try unsafe path.withUnsafePointer {
+                cString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
                 var statBuf = stat()
-                let result = unsafe stat(UnsafeRawPointer(cString).assumingMemoryBound(to: CChar.self), &statBuf)
+                let result = unsafe stat(
+                    UnsafeRawPointer(cString).assumingMemoryBound(to: CChar.self),
+                    &statBuf
+                )
 
                 guard result == 0 else {
-                    throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .stat)
+                    throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                        code: .posix(errno),
+                        operation: .stat
+                    )
                 }
 
                 return Int(statBuf.st_size)
@@ -204,9 +222,15 @@
             source: borrowing Path.Borrowed,
             destination: borrowing Path.Borrowed
         ) throws(Darwin.Kernel.File.Clone.Error.Syscall) -> Bool {
-            try unsafe source.withUnsafePointer { srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                try unsafe destination.withUnsafePointer { dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                    let result = unsafe clonefile(UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self), UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self), 0)
+            try unsafe source.withUnsafePointer {
+                srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+                try unsafe destination.withUnsafePointer {
+                    dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+                    let result = unsafe clonefile(
+                        UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self),
+                        UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self),
+                        0
+                    )
 
                     if result == 0 {
                         return true
@@ -217,7 +241,10 @@
                         return false
                     }
 
-                    throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(err), operation: .clonefile)
+                    throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                        code: .posix(err),
+                        operation: .clonefile
+                    )
                 }
             }
         }
@@ -229,21 +256,38 @@
             source: borrowing Path.Borrowed,
             destination: borrowing Path.Borrowed
         ) throws(Darwin.Kernel.File.Clone.Error.Syscall) {
-            try unsafe source.withUnsafePointer { srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                try unsafe destination.withUnsafePointer { dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                    let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self)
-                    let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
+            try unsafe source.withUnsafePointer {
+                srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+                try unsafe destination.withUnsafePointer {
+                    dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+                    let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(
+                        to: CChar.self
+                    )
+                    let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(
+                        to: CChar.self
+                    )
 
                     var statBuf = stat()
                     let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
                     if destExists {
-                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(EEXIST), operation: .copyfile)
+                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                            code: .posix(EEXIST),
+                            operation: .copyfile
+                        )
                     }
 
-                    let result = unsafe copyfile(srcPtr, dstPtr, nil, copyfile_flags_t(COPYFILE_CLONE | COPYFILE_ALL))
+                    let result = unsafe copyfile(
+                        srcPtr,
+                        dstPtr,
+                        nil,
+                        copyfile_flags_t(COPYFILE_CLONE | COPYFILE_ALL)
+                    )
 
                     guard result == 0 else {
-                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .copyfile)
+                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                            code: .posix(errno),
+                            operation: .copyfile
+                        )
                     }
                 }
             }
@@ -254,21 +298,38 @@
             source: borrowing Path.Borrowed,
             destination: borrowing Path.Borrowed
         ) throws(Darwin.Kernel.File.Clone.Error.Syscall) {
-            try unsafe source.withUnsafePointer { srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                try unsafe destination.withUnsafePointer { dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                    let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self)
-                    let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
+            try unsafe source.withUnsafePointer {
+                srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+                try unsafe destination.withUnsafePointer {
+                    dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
+                    let srcPtr = unsafe UnsafeRawPointer(srcCString).assumingMemoryBound(
+                        to: CChar.self
+                    )
+                    let dstPtr = unsafe UnsafeRawPointer(dstCString).assumingMemoryBound(
+                        to: CChar.self
+                    )
 
                     var statBuf = stat()
                     let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
                     if destExists {
-                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(EEXIST), operation: .copyfile)
+                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                            code: .posix(EEXIST),
+                            operation: .copyfile
+                        )
                     }
 
-                    let result = unsafe copyfile(srcPtr, dstPtr, nil, copyfile_flags_t(COPYFILE_DATA))
+                    let result = unsafe copyfile(
+                        srcPtr,
+                        dstPtr,
+                        nil,
+                        copyfile_flags_t(COPYFILE_DATA)
+                    )
 
                     guard result == 0 else {
-                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(code: .posix(errno), operation: .copyfile)
+                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
+                            code: .posix(errno),
+                            operation: .copyfile
+                        )
                     }
                 }
             }

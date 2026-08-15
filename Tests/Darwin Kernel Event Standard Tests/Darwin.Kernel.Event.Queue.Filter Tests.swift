@@ -35,7 +35,9 @@
         @Test
         func `read and write filters are distinct`() {
             #expect(Kernel.Event.Queue.Filter.read != .write)
-            #expect(Kernel.Event.Queue.Filter.read.rawValue != Kernel.Event.Queue.Filter.write.rawValue)
+            #expect(
+                Kernel.Event.Queue.Filter.read.rawValue != Kernel.Event.Queue.Filter.write.rawValue
+            )
         }
 
         @Test

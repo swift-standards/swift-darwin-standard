@@ -68,7 +68,9 @@
             var utf8 = Array(name.utf8)
             utf8.append(0)
             return try unsafe utf8.withUnsafeBufferPointer { buffer throws(Loader.Error) in
-                let cName = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: CChar.self)
+                let cName = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                    to: CChar.self
+                )
                 return try unsafe lookup(name: cName, in: scope)
             }
         }
@@ -101,7 +103,10 @@
 
             if let errorCStr = unsafe dlerror() {
                 let u8Ptr = unsafe UnsafeRawPointer(errorCStr).assumingMemoryBound(to: UInt8.self)
-                let view = unsafe String_Primitives.String.Borrowed(u8Ptr, count: String_Primitives.String.length(of: u8Ptr))
+                let view = unsafe String_Primitives.String.Borrowed(
+                    u8Ptr,
+                    count: String_Primitives.String.length(of: u8Ptr)
+                )
                 throw .symbol(unsafe Loader.Message(copying: view))
             }
 

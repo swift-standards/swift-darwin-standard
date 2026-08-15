@@ -251,9 +251,23 @@ internal import ISO_9945_Kernel
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) -> Int in
                 let result: Int32
                 if var ts = timespec(timeout) {
-                    result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)
+                    result = unsafe _kevent(
+                        kq.descriptor._rawValue,
+                        nil,
+                        0,
+                        buffer.baseAddress,
+                        Int32(count),
+                        &ts
+                    )
                 } else {
-                    result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), nil)
+                    result = unsafe _kevent(
+                        kq.descriptor._rawValue,
+                        nil,
+                        0,
+                        buffer.baseAddress,
+                        Int32(count),
+                        nil
+                    )
                 }
                 guard result >= 0 else {
                     let code = Error_Primitives.Error.Code.posix(errno)
@@ -283,9 +297,23 @@ internal import ISO_9945_Kernel
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) -> Int in
                 let result: Int32
                 if var ts = timespec(timeout) {
-                    result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), &ts)
+                    result = unsafe _kevent(
+                        kq.descriptor._rawValue,
+                        nil,
+                        0,
+                        buffer.baseAddress,
+                        Int32(count),
+                        &ts
+                    )
                 } else {
-                    result = unsafe _kevent(kq.descriptor._rawValue, nil, 0, buffer.baseAddress, Int32(count), nil)
+                    result = unsafe _kevent(
+                        kq.descriptor._rawValue,
+                        nil,
+                        0,
+                        buffer.baseAddress,
+                        Int32(count),
+                        nil
+                    )
                 }
                 guard result >= 0 else {
                     let code = Error_Primitives.Error.Code.posix(errno)

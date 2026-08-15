@@ -47,7 +47,11 @@
         /// This function is thread-safe. The returned header is valid
         /// while the image remains loaded.
         public static func header(at index: Index) -> Header? {
-            guard let header = unsafe _dyld_get_image_header(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
+            guard
+                let header = unsafe _dyld_get_image_header(
+                    UInt32(truncatingIfNeeded: index.underlying.rawValue)
+                )
+            else {
                 return nil
             }
             return unsafe Header(rawValue: UnsafeRawPointer(header))
@@ -95,7 +99,11 @@
             at index: Index,
             _ body: (Swift.Span<CChar>) -> R
         ) -> R? {
-            guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
+            guard
+                let ptr = unsafe _dyld_get_image_name(
+                    UInt32(truncatingIfNeeded: index.underlying.rawValue)
+                )
+            else {
                 return nil
             }
 
@@ -123,7 +131,11 @@
             at index: Index,
             _ body: (Swift.String) -> R
         ) -> R? {
-            guard let ptr = unsafe _dyld_get_image_name(UInt32(truncatingIfNeeded: index.underlying.rawValue)) else {
+            guard
+                let ptr = unsafe _dyld_get_image_name(
+                    UInt32(truncatingIfNeeded: index.underlying.rawValue)
+                )
+            else {
                 return nil
             }
 

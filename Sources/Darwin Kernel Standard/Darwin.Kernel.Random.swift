@@ -36,7 +36,8 @@
         ///
         /// - Parameter span: The mutable span to fill with random bytes.
         public static func arc4random(_ span: inout MutableSpan<UInt8>) throws(Random.Error) {
-            try unsafe span.withUnsafeMutableBytes { (buffer: UnsafeMutableRawBufferPointer) throws(Random.Error) in
+            try unsafe span.withUnsafeMutableBytes {
+                (buffer: UnsafeMutableRawBufferPointer) throws(Random.Error) in
                 // Resolves to the local overload below (spec-mirroring wrapper name,
                 // not the process-global legacy libc RNG); see [API-NAME-003].
                 // swiftlint:disable:next legacy_random
@@ -54,7 +55,8 @@
         ///
         /// - Parameter buffer: The buffer to fill with random bytes.
         @unsafe
-        public static func arc4random(_ buffer: UnsafeMutableRawBufferPointer) throws(Random.Error) {
+        public static func arc4random(_ buffer: UnsafeMutableRawBufferPointer) throws(Random.Error)
+        {
             guard let base = buffer.baseAddress, buffer.count > 0 else { return }
             unsafe arc4random_buf(base, buffer.count)
         }
@@ -64,7 +66,9 @@
         ///
         /// - Parameter buffer: The buffer to fill with random bytes.
         @unsafe
-        public static func arc4random(_ buffer: UnsafeMutableBufferPointer<UInt8>) throws(Random.Error) {
+        public static func arc4random(
+            _ buffer: UnsafeMutableBufferPointer<UInt8>
+        ) throws(Random.Error) {
             // Resolves to the raw-buffer overload above (spec-mirroring wrapper
             // name, not the process-global legacy libc RNG); see [API-NAME-003].
             // swiftlint:disable:next legacy_random

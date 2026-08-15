@@ -31,10 +31,6 @@
             /// The `qos_class_t` raw value, expressed as `UInt32` so the platform
             /// C typedef does not appear on the API surface ([PLAT-ARCH-015]).
             public let rawValue: UInt32
-
-            internal init(rawValue: UInt32) {
-                self.rawValue = rawValue
-            }
         }
     }
 

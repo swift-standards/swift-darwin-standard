@@ -157,8 +157,13 @@
             to destPath: borrowing Path.Borrowed
         ) throws(Darwin.Kernel.Copy.Error) {
             try unsafe sourcePath.withUnsafePointer { srcCString throws(Darwin.Kernel.Copy.Error) in
-                try unsafe destPath.withUnsafePointer { dstCString throws(Darwin.Kernel.Copy.Error) in
-                    let result = unsafe clonefile(UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self), UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self), 0)
+                try unsafe destPath.withUnsafePointer {
+                    dstCString throws(Darwin.Kernel.Copy.Error) in
+                    let result = unsafe clonefile(
+                        UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self),
+                        UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self),
+                        0
+                    )
                     guard result == 0 else {
                         throw Darwin.Kernel.Copy.Error(posixErrno: errno)
                     }

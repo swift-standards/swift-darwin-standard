@@ -35,7 +35,9 @@
         @Test
         func `add and delete flags are distinct`() {
             #expect(Kernel.Event.Queue.Flags.add != .delete)
-            #expect(Kernel.Event.Queue.Flags.add.rawValue != Kernel.Event.Queue.Flags.delete.rawValue)
+            #expect(
+                Kernel.Event.Queue.Flags.add.rawValue != Kernel.Event.Queue.Flags.delete.rawValue
+            )
         }
 
         @Test

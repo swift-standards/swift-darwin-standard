@@ -34,7 +34,10 @@
             var bytes: Bytes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
             let result = unsafe string.withCString { cString in
                 unsafe withUnsafeMutableBytes(of: &bytes) { buffer in
-                    unsafe swift_uuid_parse(cString, buffer.baseAddress!.assumingMemoryBound(to: UInt8.self))
+                    unsafe swift_uuid_parse(
+                        cString,
+                        buffer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                    )
                 }
             }
             return result == 0 ? bytes : nil
@@ -71,7 +74,9 @@
             )
             unsafe withUnsafeBytes(of: bytes) { input in
                 unsafe withUnsafeMutableBytes(of: &output) { outputBuffer in
-                    let outputPtr = unsafe outputBuffer.baseAddress!.assumingMemoryBound(to: CChar.self)
+                    let outputPtr = unsafe outputBuffer.baseAddress!.assumingMemoryBound(
+                        to: CChar.self
+                    )
                     if uppercase {
                         unsafe swift_uuid_unparse_upper(
                             input.baseAddress!.assumingMemoryBound(to: UInt8.self),
@@ -117,7 +122,9 @@
             )
             unsafe withUnsafeBytes(of: bytes) { input in
                 unsafe withUnsafeMutableBytes(of: &output) { outputBuffer in
-                    let outputPtr = unsafe outputBuffer.baseAddress!.assumingMemoryBound(to: CChar.self)
+                    let outputPtr = unsafe outputBuffer.baseAddress!.assumingMemoryBound(
+                        to: CChar.self
+                    )
                     if uppercase {
                         unsafe swift_uuid_unparse_upper(
                             input.baseAddress!.assumingMemoryBound(to: UInt8.self),

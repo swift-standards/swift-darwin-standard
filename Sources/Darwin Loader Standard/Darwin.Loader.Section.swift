@@ -208,10 +208,6 @@
         @safe
         public struct AllSectionsSequence: @unsafe Sequence {
             let name: Name
-
-            init(name: Name) {
-                self.name = name
-            }
         }
     }
 
@@ -228,11 +224,6 @@
         public struct Iterator: @unsafe IteratorProtocol {
             let name: Darwin_Standard_Core.Darwin.Loader.Section.Name
             var currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index
-
-            init(name: Darwin_Standard_Core.Darwin.Loader.Section.Name, currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index) {
-                self.name = name
-                self.currentIndex = currentIndex
-            }
         }
     }
 
@@ -253,7 +244,10 @@
                     continue
                 }
 
-                if let bounds = Darwin_Standard_Core.Darwin.Loader.Section.data(for: name, in: header) {
+                if let bounds = Darwin_Standard_Core.Darwin.Loader.Section.data(
+                    for: name,
+                    in: header
+                ) {
                     return bounds
                 }
             }

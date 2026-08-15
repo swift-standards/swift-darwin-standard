@@ -123,7 +123,9 @@ internal import Time_Primitives
         ///
         /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
         public static func get(path: borrowing Path) throws(Error) -> Self {
-            let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(to: CChar.self)
+            let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(
+                to: CChar.self
+            )
             return try unsafe get(path: cPath)
         }
 
@@ -151,7 +153,9 @@ internal import Time_Primitives
         ///
         /// - Throws: ``Kernel/File/Stats/Error`` if the syscall fails.
         public static func lget(path: borrowing Path) throws(Error) -> Self {
-            let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(to: CChar.self)
+            let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(
+                to: CChar.self
+            )
             return try unsafe lget(path: cPath)
         }
 
@@ -192,7 +196,9 @@ internal import Time_Primitives
         /// Gets Darwin-specific file metadata for a typed descriptor.
         ///
         /// Phase 1.5 typed L2 form. Delegates to the raw `get(fd:)` SPI.
-        public static func get(_ descriptor: borrowing ISO_9945.Kernel.Descriptor) throws(Error) -> Self {
+        public static func get(
+            _ descriptor: borrowing ISO_9945.Kernel.Descriptor
+        ) throws(Error) -> Self {
             try get(fd: descriptor._rawValue)
         }
     }
@@ -226,7 +232,9 @@ internal import Time_Primitives
             let base = ISO_9945.Kernel.File.Stats(
                 size: ISO_9945.Kernel.File.Size(Int64(sb.st_size)),
                 type: ISO_9945.Kernel.File.Stats.Kind(_mode: sb.st_mode),
-                permissions: ISO_9945.Kernel.File.Permissions(rawValue: UInt16(sb.st_mode & 0o7777)),
+                permissions: ISO_9945.Kernel.File.Permissions(
+                    rawValue: UInt16(sb.st_mode & 0o7777)
+                ),
                 uid: ISO_9945.Kernel.User.ID(_unchecked: UInt32(sb.st_uid)),
                 gid: ISO_9945.Kernel.Group.ID(_unchecked: UInt32(sb.st_gid)),
                 inode: ISO_9945.Kernel.Inode(UInt64(sb.st_ino)),

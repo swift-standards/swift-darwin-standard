@@ -53,9 +53,14 @@
             from oldPath: borrowing Path.Borrowed,
             to newPath: borrowing Path.Borrowed
         ) throws(ISO_9945.Kernel.File.Rename.Error) {
-            try unsafe oldPath.withUnsafePointer { oldPtr throws(ISO_9945.Kernel.File.Rename.Error) in
-                try unsafe newPath.withUnsafePointer { newPtr throws(ISO_9945.Kernel.File.Rename.Error) in
-                    try unsafe noClobber(from: UnsafeRawPointer(oldPtr).assumingMemoryBound(to: CChar.self), to: UnsafeRawPointer(newPtr).assumingMemoryBound(to: CChar.self))
+            try unsafe oldPath.withUnsafePointer {
+                oldPtr throws(ISO_9945.Kernel.File.Rename.Error) in
+                try unsafe newPath.withUnsafePointer {
+                    newPtr throws(ISO_9945.Kernel.File.Rename.Error) in
+                    try unsafe noClobber(
+                        from: UnsafeRawPointer(oldPtr).assumingMemoryBound(to: CChar.self),
+                        to: UnsafeRawPointer(newPtr).assumingMemoryBound(to: CChar.self)
+                    )
                 }
             }
         }
@@ -96,8 +101,12 @@
             _ path2: borrowing Path.Borrowed
         ) throws(ISO_9945.Kernel.File.Rename.Error) {
             try unsafe path1.withUnsafePointer { ptr1 throws(ISO_9945.Kernel.File.Rename.Error) in
-                try unsafe path2.withUnsafePointer { ptr2 throws(ISO_9945.Kernel.File.Rename.Error) in
-                    try unsafe exchange(UnsafeRawPointer(ptr1).assumingMemoryBound(to: CChar.self), UnsafeRawPointer(ptr2).assumingMemoryBound(to: CChar.self))
+                try unsafe path2.withUnsafePointer {
+                    ptr2 throws(ISO_9945.Kernel.File.Rename.Error) in
+                    try unsafe exchange(
+                        UnsafeRawPointer(ptr1).assumingMemoryBound(to: CChar.self),
+                        UnsafeRawPointer(ptr2).assumingMemoryBound(to: CChar.self)
+                    )
                 }
             }
         }

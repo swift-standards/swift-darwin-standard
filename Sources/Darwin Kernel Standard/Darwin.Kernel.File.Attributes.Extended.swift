@@ -327,7 +327,9 @@
                 var utf8 = Array(name.utf8)
                 utf8.append(0)
                 try unsafe utf8.withUnsafeBufferPointer { buffer throws(Error) in
-                    let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: CChar.self)
+                    let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                        to: CChar.self
+                    )
                     let value = try unsafe get(name: namePtr, source)
                     // Use withUnsafeBufferPointer for typed throws support
                     try unsafe value.withUnsafeBufferPointer { valueBuffer throws(Error) in
@@ -346,7 +348,10 @@
 
     extension ISO_9945.Kernel.File.Attributes.Extended {
         /// Parses a buffer of null-separated strings.
-        private static func parseNullSeparatedStrings(_ buffer: [CChar], count: Int) -> [Swift.String] {
+        private static func parseNullSeparatedStrings(
+            _ buffer: [CChar],
+            count: Int
+        ) -> [Swift.String] {
             var names: [Swift.String] = []
             var start = 0
 
@@ -378,7 +383,9 @@
             var utf8 = Array(name.utf8)
             utf8.append(0)
             return try unsafe utf8.withUnsafeBufferPointer { buffer throws(E) in
-                let ptr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: CChar.self)
+                let ptr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                    to: CChar.self
+                )
                 return try unsafe body(ptr)
             }
         }

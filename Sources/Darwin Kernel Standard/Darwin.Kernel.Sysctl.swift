@@ -77,7 +77,9 @@
             var utf8 = Array(name.utf8)
             utf8.append(0)
             let result = unsafe utf8.withUnsafeBufferPointer { buffer -> Int32 in
-                let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: CChar.self)
+                let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                    to: CChar.self
+                )
                 return unsafe sysctlbyname(namePtr, &value, &size, nil, 0)
             }
             guard result == 0 else {

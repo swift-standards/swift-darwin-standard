@@ -49,7 +49,8 @@
 
         @Test
         func `flags can be combined with |`() {
-            let combined = Kernel.Event.Queue.Filter.Flags.trigger | Kernel.Event.Queue.Filter.Flags.none
+            let combined =
+                Kernel.Event.Queue.Filter.Flags.trigger | Kernel.Event.Queue.Filter.Flags.none
             #expect(combined.rawValue == Kernel.Event.Queue.Filter.Flags.trigger.rawValue)
         }
 

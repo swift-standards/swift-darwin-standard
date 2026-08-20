@@ -9,7 +9,7 @@
 //
 // ===----------------------------------------------------------------------===//
 public import Error_Primitives
-public import ISO_9945_Core
+import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 

@@ -32,8 +32,8 @@
         /// - Returns: 16 bytes in big-endian order, or nil if parsing fails.
         public static func parse(_ string: Swift.String) -> Bytes? {
             var bytes: Bytes = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-            let result = unsafe string.withCString { cString in
-                unsafe withUnsafeMutableBytes(of: &bytes) { buffer in
+            let result = string.withCString { cString in
+                withUnsafeMutableBytes(of: &bytes) { buffer in
                     unsafe swift_uuid_parse(
                         cString,
                         buffer.baseAddress!.assumingMemoryBound(to: UInt8.self)
@@ -72,8 +72,8 @@
                 CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0),
                 CChar(0), CChar(0), CChar(0), CChar(0), CChar(0)
             )
-            unsafe withUnsafeBytes(of: bytes) { input in
-                unsafe withUnsafeMutableBytes(of: &output) { outputBuffer in
+            withUnsafeBytes(of: bytes) { input in
+                withUnsafeMutableBytes(of: &output) { outputBuffer in
                     let outputPtr = unsafe outputBuffer.baseAddress!.assumingMemoryBound(
                         to: CChar.self
                     )
@@ -90,7 +90,7 @@
                     }
                 }
             }
-            return unsafe withUnsafeBytes(of: output) { buffer in
+            return withUnsafeBytes(of: output) { buffer in
                 let ptr = unsafe buffer.baseAddress!.assumingMemoryBound(to: CChar.self)
                 let span = unsafe Span(_unsafeStart: ptr, count: 36)
                 return body(span)
@@ -120,8 +120,8 @@
                 CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0), CChar(0),
                 CChar(0), CChar(0), CChar(0), CChar(0), CChar(0)
             )
-            unsafe withUnsafeBytes(of: bytes) { input in
-                unsafe withUnsafeMutableBytes(of: &output) { outputBuffer in
+            withUnsafeBytes(of: bytes) { input in
+                withUnsafeMutableBytes(of: &output) { outputBuffer in
                     let outputPtr = unsafe outputBuffer.baseAddress!.assumingMemoryBound(
                         to: CChar.self
                     )
@@ -138,7 +138,7 @@
                     }
                 }
             }
-            return unsafe withUnsafeBytes(of: output) { buffer in
+            return withUnsafeBytes(of: output) { buffer in
                 let ptr = unsafe buffer.baseAddress!.assumingMemoryBound(to: CChar.self)
                 let str = unsafe Swift.String(cString: ptr)
                 return body(str)

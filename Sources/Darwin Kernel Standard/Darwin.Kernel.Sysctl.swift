@@ -76,7 +76,7 @@
             // typed throws on Swift 6.3.
             var utf8 = Array(name.utf8)
             utf8.append(0)
-            let result = unsafe utf8.withUnsafeBufferPointer { buffer -> Int32 in
+            let result = utf8.withUnsafeBufferPointer { buffer -> Int32 in
                 let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
                     to: CChar.self
                 )

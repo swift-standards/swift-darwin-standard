@@ -326,13 +326,13 @@
                 // Use manual C string conversion to avoid untyped throws in withCString
                 var utf8 = Array(name.utf8)
                 utf8.append(0)
-                try unsafe utf8.withUnsafeBufferPointer { buffer throws(Error) in
+                try utf8.withUnsafeBufferPointer { buffer throws(Error) in
                     let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
                         to: CChar.self
                     )
                     let value = try unsafe get(name: namePtr, source)
                     // Use withUnsafeBufferPointer for typed throws support
-                    try unsafe value.withUnsafeBufferPointer { valueBuffer throws(Error) in
+                    try value.withUnsafeBufferPointer { valueBuffer throws(Error) in
                         try unsafe set(
                             name: namePtr,
                             value: UnsafeRawBufferPointer(valueBuffer),
@@ -382,7 +382,7 @@
         ) throws(E) -> R {
             var utf8 = Array(name.utf8)
             utf8.append(0)
-            return try unsafe utf8.withUnsafeBufferPointer { buffer throws(E) in
+            return try utf8.withUnsafeBufferPointer { buffer throws(E) in
                 let ptr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
                     to: CChar.self
                 )

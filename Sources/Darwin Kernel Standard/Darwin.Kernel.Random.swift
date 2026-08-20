@@ -36,7 +36,7 @@
         ///
         /// - Parameter span: The mutable span to fill with random bytes.
         public static func arc4random(_ span: inout MutableSpan<UInt8>) throws(Random.Error) {
-            try unsafe span.withUnsafeMutableBytes {
+            try span.withUnsafeMutableBytes {
                 (buffer: UnsafeMutableRawBufferPointer) throws(Random.Error) in
                 // Resolves to the local overload below (spec-mirroring wrapper name,
                 // not the process-global legacy libc RNG); see [API-NAME-003].

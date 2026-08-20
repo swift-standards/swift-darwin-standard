@@ -12,7 +12,7 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
     public import ISO_9945_Kernel_File
-    public import ISO_9945_Core
+    import ISO_9945_Core
     public import Error_Primitives
     internal import Darwin
 
@@ -166,7 +166,7 @@
                     )
                 }
 
-                let isAPFS = unsafe withUnsafeBytes(of: statfsBuf.f_fstypename) { buf in
+                let isAPFS = withUnsafeBytes(of: statfsBuf.f_fstypename) { buf in
                     let ptr = unsafe buf.baseAddress!.assumingMemoryBound(to: CChar.self)
                     return unsafe strcmp(ptr, "apfs") == 0
                 }

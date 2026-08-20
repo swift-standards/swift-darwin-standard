@@ -67,7 +67,7 @@
             // Darwin.Kernel.File.Attributes.Extended.copyAll.
             var utf8 = Array(name.utf8)
             utf8.append(0)
-            return try unsafe utf8.withUnsafeBufferPointer { buffer throws(Loader.Error) in
+            return try utf8.withUnsafeBufferPointer { buffer throws(Loader.Error) in
                 let cName = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
                     to: CChar.self
                 )

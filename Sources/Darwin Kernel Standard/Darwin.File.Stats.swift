@@ -13,7 +13,7 @@ public import Darwin_Standard_Core
 @_spi(Syscall) public import ISO_9945_Core
 // L2 init?(code:) extensions for ISO_9945.Kernel.Descriptor.Validity.Error and ISO_9945.Kernel.IO.Error
 internal import ISO_9945_Kernel
-public import ISO_9945_Kernel_File
+import ISO_9945_Kernel_File
 internal import Time_Primitives
 
 #if canImport(Darwin)

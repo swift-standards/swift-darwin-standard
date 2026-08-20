@@ -1,15 +1,15 @@
-// swift-tools-version: 6.3.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
 let package = Package(
     name: "swift-darwin-standard",
     platforms: [
-        .macOS("27"),
-        .iOS("27"),
-        .tvOS("27"),
-        .watchOS("27"),
-        .visionOS("27")
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         .library(
@@ -35,17 +35,41 @@ let package = Package(
         .library(
             name: "Darwin Kernel Standard Test Support",
             targets: ["Darwin Kernel Standard Test Support"]
-        )
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-primitives/swift-time-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-loader-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-string-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-error-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-random-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-cardinal-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-ordinal-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-time-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-loader-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-string-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-error-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-random-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-tagged-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-cardinal-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-ordinal-primitives.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-iso/swift-iso-9945.git", branch: "main"),
     ],
     targets: [
@@ -54,7 +78,7 @@ let package = Package(
         .target(
             name: "Darwin Standard Core",
             dependencies: [
-                .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
+                .product(name: "ISO 9945 Core", package: "swift-iso-9945")
             ]
         ),
 
@@ -97,7 +121,7 @@ let package = Package(
         .target(
             name: "Darwin Kernel Time Standard",
             dependencies: [
-                .target(name: "Darwin Standard Core"),
+                .target(name: "Darwin Standard Core")
             ]
         ),
 
@@ -122,7 +146,7 @@ let package = Package(
             name: "Darwin Memory Standard",
             dependencies: [
                 .target(name: "Darwin Standard Core"),
-                .target(name: "Darwin Memory Shims")
+                .target(name: "Darwin Memory Shims"),
             ]
         ),
 
@@ -130,7 +154,7 @@ let package = Package(
         .target(
             name: "Darwin Kernel Standard Test Support",
             dependencies: [
-                "Darwin Kernel Standard",
+                "Darwin Kernel Standard"
             ],
             path: "Tests/Support"
         ),

@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-kernel open source project
-//
-// Copyright (c) 2024-2025 Coen ten Thije Boonkkamp and the swift-kernel project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 #if canImport(Darwin)
     import Darwin
     import Testing
@@ -19,13 +8,8 @@
 
     private typealias Kernel = Darwin.Kernel
 
-    // Kernel.Event.Queue.Filter.Data is a typealias to Tagged<Kernel.Event.Queue.Filter, Int>
-    // Use a custom test suite since #Tests cannot be used on typealiases
-
     @Suite
     struct `Kernel.Event.Queue.Filter.Data Tests` {
-
-        // MARK: - Unit Tests
 
         @Test
         func `zero constant equals 0`() {
@@ -51,8 +35,6 @@
             #expect(data == -1)
         }
 
-        // MARK: - Conformance Tests
-
         @Test
         func `Data is Sendable`() {
             let data: any Sendable = Kernel.Event.Queue.Filter.Data.zero
@@ -73,11 +55,9 @@
             var set = Set<Kernel.Event.Queue.Filter.Data>()
             set.insert(Kernel.Event.Queue.Filter.Data(1))
             set.insert(Kernel.Event.Queue.Filter.Data(2))
-            set.insert(Kernel.Event.Queue.Filter.Data(1))  // duplicate
+            set.insert(Kernel.Event.Queue.Filter.Data(1))
             #expect(set.count == 2)
         }
-
-        // MARK: - Edge Cases
 
         @Test
         func `Int.max is preserved`() {

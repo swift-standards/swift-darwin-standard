@@ -1,51 +1,25 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-kernel open source project
-//
-// Copyright (c) 2024 Coen ten Thije Boonkkamp and the swift-kernel project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
 internal import Darwin_Kernel_Time_Standard
 package import Darwin_Standard_Core
 @_spi(Syscall) public import ISO_9945_Core
-// L2 .POSIX namespace constants
 internal import ISO_9945_Kernel
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     internal import Darwin
 
-    /// Type alias for C kevent struct to avoid ambiguity with Swift kevent method.
     internal typealias CKevent = kevent
 
-    // MARK: - Event Namespace Root
-    //
-    // Per swift-standards/swift-darwin-standard#3: the Event vocabulary family
-    // (kqueue) was hoisted from swift-iso-9945's "ISO 9945 Kernel" Event
-    // namespace (L2 POSIX) to swift-kernel (L3), so this Darwin-specific
-    // mechanism can no longer anchor on it — a platform L2 standard cannot
-    // depend on the L3 unifier. The kqueue
-    // mechanism re-anchors onto the package's own `Darwin.Kernel` root,
-    // following the intermediate-namespace-enum pattern `Darwin.Kernel`
-    // itself uses (declared in `Sources/Darwin Standard Core`).
-
     extension Darwin_Standard_Core.Darwin.Kernel {
-        /// Darwin kqueue event vocabulary namespace.
+
         public enum Event: Sendable {}
     }
 
     extension Darwin.Kernel.Event {
-        /// Event source identifier (kqueue `ident`/`udata`-scale identifier).
-        ///
-        /// Identifies the source of an event, which may be a file descriptor,
-        /// timer ID, signal number, or other platform-specific identifier.
+
         public typealias ID = Tagged<Darwin.Kernel.Event, UInt>
     }
 
     extension Tagged where Tag == Darwin.Kernel.Event, Underlying == UInt {
-        /// Creates an identifier from an Int32 (for signals, etc.).
+
         @inlinable
         public init(_ value: Int32) {
             self.init(_unchecked: UInt(bitPattern: Int(value)))
@@ -53,70 +27,28 @@ internal import ISO_9945_Kernel
     }
 
     extension Darwin.Kernel.Event {
-        // SAFETY: Encapsulates unsafe internals behind a safe API; see
-        // SAFETY: [MEM-SAFE-024] for the absorber-pattern taxonomy.
-        /// Kqueue event notification (Darwin).
-        ///
-        /// Owns the kqueue file descriptor via `~Copyable` — deinit closes
-        /// the fd automatically. Instance methods provide the modern Swift API;
-        /// package statics preserve the C API mirror for platform-stack internal use.
-        ///
-        /// ## Usage
-        ///
-        /// ```swift
-        /// var kq = try Darwin.Kernel.Event.Queue()
-        /// try kq.register(events: [event])
-        /// let count = try kq.poll(into: &events, timeout: .seconds(1))
-        /// // kq deinit closes the kqueue fd
-        /// ```
+
         @safe
         public struct Queue: ~Copyable, Sendable {
-            /// The underlying kqueue file descriptor.
+
             internal let descriptor: ISO_9945.Kernel.Descriptor
 
-            /// Creates a new kqueue instance.
-            ///
-            /// - Throws: `Error.create` if kqueue creation fails.
             public init() throws(Error) {
                 self.descriptor = try ISO_9945.Kernel.Descriptor(_rawValue: Self.create())
             }
         }
     }
 
-    // MARK: - Public Instance API
-
     extension Darwin.Kernel.Event.Queue {
-        /// Registers events without waiting.
-        ///
-        /// - Parameter events: Array of events to register/modify.
-        ///
-        /// - Throws: `Error.kevent` on failure.
+
         public func register(events: [Event]) throws(Error) {
             try Self.register(self, events: events)
         }
 
-        /// Waits for events.
-        ///
-        /// - Parameters:
-        ///   - events: Buffer for returned events (pre-sized).
-        ///   - timeout: Timeout duration, or `nil` for infinite.
-        ///
-        /// - Returns: Number of events written to buffer.
-        ///
-        /// - Throws: `Error.kevent` on failure, `.interrupted` on EINTR.
         public func poll(into events: inout [Event], timeout: Duration?) throws(Error) -> Int {
             try Self.poll(self, into: &events, timeout: timeout)
         }
 
-        /// Creates a Sendable signal closure for cross-thread poll interruption.
-        ///
-        /// Registers `EVFILT_USER` on this kqueue instance and returns a
-        /// `@Sendable` closure that triggers it from any thread. Call before
-        /// transferring the Queue to the poll thread via `sending`.
-        ///
-        /// L3 consumers wrap the returned closure into `Kernel.Wakeup.Channel(signal:)`
-        /// at the site of use; the closure carries the raw fd capture so L3 callers
-        /// never see `_rawValue` (typed-everywhere discipline per [PLAT-ARCH-008j]).
         public func wakeup() throws(Error) -> @Sendable () -> Void {
             let wakeupEvent = Event(id: .zero, filter: .user, flags: .add | .clear)
             try self.register(events: [wakeupEvent])
@@ -130,7 +62,7 @@ internal import ISO_9945_Kernel
                     if case .kevent(let code) = error,
                         code == .POSIX.EBADF || code == .POSIX.ENOENT
                     {
-                        // Benign: kqueue fd closed during shutdown.
+
                     } else {
                         assertionFailure("wakeup trigger failed: \(error)")
                     }
@@ -138,8 +70,6 @@ internal import ISO_9945_Kernel
             }
         }
     }
-
-    // MARK: - Syscall Bridge
 
     @_silgen_name("kevent")
     internal func _kevent(
@@ -151,16 +81,8 @@ internal import ISO_9945_Kernel
         _ timeout: UnsafePointer<timespec>?
     ) -> Int32
 
-    // MARK: - Package Statics (C API Mirror)
-
     extension Darwin.Kernel.Event.Queue {
-        /// Creates a new kqueue, returning the raw fd.
-        ///
-        /// Spec-literal: returns the raw `Int32` fd. Zero descriptor construction:
-        /// the L3-policy wrapper at swift-darwin wraps the result via
-        /// `ISO_9945.Kernel.Descriptor(_rawValue:)` per [PLAT-ARCH-005] / [PLAT-ARCH-008e].
-        ///
-        /// § 5.6 handle-returning bifurcation.
+
         package static func create() throws(Darwin.Kernel.Event.Queue.Error) -> Int32 {
             let kq = kqueue()
             guard kq >= 0 else {
@@ -169,7 +91,6 @@ internal import ISO_9945_Kernel
             return kq
         }
 
-        /// Registers events without waiting.
         package static func register(
             _ kq: borrowing Darwin.Kernel.Event.Queue,
             events: [Event]
@@ -199,10 +120,6 @@ internal import ISO_9945_Kernel
             }
         }
 
-        /// Registers events using a raw file descriptor value.
-        ///
-        /// For contexts where a `ISO_9945.Kernel.Descriptor` borrow cannot be maintained
-        /// (for example, `@Sendable` closures that outlive the descriptor's lexical scope).
         package static func register(
             rawDescriptor kq: Int32,
             events: [Event]
@@ -233,10 +150,8 @@ internal import ISO_9945_Kernel
         }
     }
 
-    // MARK: - Package Statics: Polling
-
     extension Darwin.Kernel.Event.Queue {
-        /// Waits for events (array variant).
+
         package static func poll(
             _ kq: borrowing Darwin.Kernel.Event.Queue,
             into events: inout [Event],
@@ -282,7 +197,6 @@ internal import ISO_9945_Kernel
             }
         }
 
-        /// Waits for events (buffer pointer variant).
         package static func poll(
             _ kq: borrowing Darwin.Kernel.Event.Queue,
             into events: UnsafeMutableBufferPointer<Event>,

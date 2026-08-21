@@ -74,7 +74,6 @@ let package = Package(
     ],
     targets: [
 
-        // MARK: - Core
         .target(
             name: "Darwin Standard Core",
             dependencies: [
@@ -82,7 +81,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - C Shims
         .target(
             name: "Darwin Kernel Shims",
             dependencies: []
@@ -92,7 +90,6 @@ let package = Package(
             dependencies: []
         ),
 
-        // MARK: - Kernel
         .target(
             name: "Darwin Kernel Standard",
             dependencies: [
@@ -106,7 +103,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Kernel Event
         .target(
             name: "Darwin Kernel Event Standard",
             dependencies: [
@@ -117,7 +113,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Kernel Time
         .target(
             name: "Darwin Kernel Time Standard",
             dependencies: [
@@ -125,7 +120,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Loader
         .target(
             name: "Darwin Loader Standard",
             dependencies: [
@@ -141,7 +135,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Memory
         .target(
             name: "Darwin Memory Standard",
             dependencies: [
@@ -150,7 +143,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support
         .target(
             name: "Darwin Kernel Standard Test Support",
             dependencies: [
@@ -159,7 +151,6 @@ let package = Package(
             path: "Tests/Support"
         ),
 
-        // MARK: - Tests
         .testTarget(
             name: "Darwin Kernel Event Standard Tests",
             dependencies: [

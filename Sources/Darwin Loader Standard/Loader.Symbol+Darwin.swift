@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-darwin open source project
-//
-// Copyright (c) 2024-2025 Coen ten Thije Boonkkamp and the swift-darwin project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 #if canImport(Darwin)
 
     public import Loader_Primitives
@@ -16,12 +5,8 @@
     internal import Darwin
     internal import Darwin_Kernel_Shims
 
-    // MARK: - dlsym Handle Conversion
-
     extension Loader.Symbol.Scope {
-        /// Converts scope to the `dlsym` handle pointer for Darwin.
-        ///
-        /// Uses constants from `<dlfcn.h>` via `Darwin_Kernel_Shims`.
+
         @unsafe
         fileprivate var dlsymHandle: UnsafeMutableRawPointer? {
             switch unsafe self {
@@ -37,34 +22,14 @@
         }
     }
 
-    // MARK: - Symbol Lookup
-
     extension Loader.Symbol {
-        /// Looks up a symbol in a library or scope on Darwin.
-        ///
-        /// Wraps `dlsym(3)`.
-        ///
-        /// - Parameters:
-        ///   - name: The symbol name.
-        ///   - scope: Where to search — a loaded `Handle` or special scope.
-        ///
-        /// - Returns: Pointer to the symbol.
-        ///
-        /// - Throws: `Loader.Error.symbol` if not found.
-        ///
-        /// ## Pointer Lifetime
-        ///
-        /// - Returned `UnsafeRawPointer` is valid only while the owning library remains loaded.
-        ///
-        /// - Caller is responsible for correct casting and calling convention.
+
         @unsafe
         public static func lookup(
             name: Swift.String,
             in scope: Scope
         ) throws(Loader.Error) -> UnsafeRawPointer {
-            // Manual NUL-terminated UTF-8 buffer: withCString does not preserve
-            // typed throws on Swift 6.3, so we use the same pattern as
-            // Darwin.Kernel.File.Attributes.Extended.copyAll.
+
             var utf8 = Array(name.utf8)
             utf8.append(0)
             return try utf8.withUnsafeBufferPointer { buffer throws(Loader.Error) in
@@ -75,23 +40,6 @@
             }
         }
 
-        /// Looks up a symbol in a library or scope on Darwin (raw C-string variant).
-        ///
-        /// Wraps `dlsym(3)`.
-        ///
-        /// - Parameters:
-        ///   - name: The symbol name (C string).
-        ///   - scope: Where to search — a loaded `Handle` or special scope.
-        ///
-        /// - Returns: Pointer to the symbol.
-        ///
-        /// - Throws: `Loader.Error.symbol` if not found.
-        ///
-        /// ## Pointer Lifetime
-        ///
-        /// - Returned `UnsafeRawPointer` is valid only while the owning library remains loaded.
-        ///
-        /// - Caller is responsible for correct casting and calling convention.
         @unsafe
         internal static func lookup(
             name: UnsafePointer<CChar>,

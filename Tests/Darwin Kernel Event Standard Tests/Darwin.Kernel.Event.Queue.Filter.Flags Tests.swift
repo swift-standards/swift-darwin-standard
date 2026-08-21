@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-kernel open source project
-//
-// Copyright (c) 2024-2025 Coen ten Thije Boonkkamp and the swift-kernel project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 #if canImport(Darwin)
     import Darwin
     import Testing
@@ -27,8 +16,6 @@
             @Suite(.serialized) struct Performance {}
         }
     }
-
-    // MARK: - Unit Tests
 
     extension Kernel.Event.Queue.Filter.Flags.Test.Unit {
         @Test
@@ -80,8 +67,6 @@
         }
     }
 
-    // MARK: - Conformance Tests
-
     extension Kernel.Event.Queue.Filter.Flags.Test.Unit {
         @Test
         func `Flags is Sendable`() {
@@ -103,12 +88,10 @@
             var set = Set<Kernel.Event.Queue.Filter.Flags>()
             set.insert(.trigger)
             set.insert(.none)
-            set.insert(.trigger)  // duplicate
+            set.insert(.trigger)
             #expect(set.count == 2)
         }
     }
-
-    // MARK: - Edge Cases
 
     extension Kernel.Event.Queue.Filter.Flags.Test.EdgeCase {
         @Test

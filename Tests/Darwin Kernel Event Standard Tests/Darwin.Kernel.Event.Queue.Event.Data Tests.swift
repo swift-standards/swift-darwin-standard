@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-kernel open source project
-//
-// Copyright (c) 2024-2025 Coen ten Thije Boonkkamp and the swift-kernel project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 #if canImport(Darwin)
     import Darwin
     import Testing
@@ -19,13 +8,8 @@
 
     private typealias Kernel = Darwin.Kernel
 
-    // Kernel.Event.Queue.Event.Data is a typealias to Tagged<Kernel.Event.Queue.Event, UInt64>
-    // Use a custom test suite since #Tests cannot be used on typealiases
-
     @Suite
     struct `Kernel.Event.Queue.Event.Data Tests` {
-
-        // MARK: - Unit Tests
 
         @Test
         func `zero constant equals 0`() {
@@ -44,8 +28,6 @@
             let data: Kernel.Event.Queue.Event.Data = 100
             #expect(data == 100)
         }
-
-        // MARK: - Pointer Conversion Tests
 
         @Test
         func `init from optional mutable raw pointer preserves bitPattern`() {
@@ -91,8 +73,6 @@
             #expect(data != 0)
         }
 
-        // MARK: - Pointer Extraction Tests
-
         @Test
         func `UnsafeMutableRawPointer init from non-zero data returns pointer`() {
             var value: Int = 42
@@ -122,8 +102,6 @@
             }
         }
 
-        // MARK: - Conformance Tests
-
         @Test
         func `Data is Sendable`() {
             let data: any Sendable = Kernel.Event.Queue.Event.Data.zero
@@ -144,11 +122,9 @@
             var set = Set<Kernel.Event.Queue.Event.Data>()
             set.insert(Kernel.Event.Queue.Event.Data(1))
             set.insert(Kernel.Event.Queue.Event.Data(2))
-            set.insert(Kernel.Event.Queue.Event.Data(1))  // duplicate
+            set.insert(Kernel.Event.Queue.Event.Data(1))
             #expect(set.count == 2)
         }
-
-        // MARK: - Edge Cases
 
         @Test
         func `UInt64.max is preserved`() {
@@ -158,7 +134,7 @@
 
         @Test
         func `large pointer values are preserved`() {
-            // Create data from a large value simulating a high memory address
+
             let largeValue: UInt64 = 0x7FFF_FFFF_FFFF_FFFF
             let data = Kernel.Event.Queue.Event.Data(largeValue)
             #expect(data.underlying == largeValue)

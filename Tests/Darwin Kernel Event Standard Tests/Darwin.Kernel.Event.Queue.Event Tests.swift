@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-kernel open source project
-//
-// Copyright (c) 2024-2025 Coen ten Thije Boonkkamp and the swift-kernel project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 #if canImport(Darwin)
     import Darwin
     import Testing
@@ -30,16 +19,11 @@
         }
     }
 
-    // MARK: - Bridging Unit Tests
-
     extension Kernel.Event.Queue.Event.Test.Unit {
 
         @Test
         func `event roundtrips through C conversion`() throws {
-            // `pipe`'s Descriptor fields close themselves on deinit
-            // (best-effort, per ISO_9945.Kernel.Close docs) — no manual
-            // close needed, and `.read`/`.write` are borrow-only so
-            // there's nothing consumable to extract ahead of that.
+
             let pipe = try ISO_9945.Kernel.Event.Test.makePipe()
 
             let original = Kernel.Event.Queue.Event(
@@ -51,7 +35,6 @@
                 data: Kernel.Event.Queue.Event.Data(42)
             )
 
-            // Convert to C and back
             let cEvent = original.cValue
             let restored = Kernel.Event.Queue.Event(cEvent)
 
@@ -59,7 +42,7 @@
             #expect(restored.filter == original.filter)
             #expect(restored.flags == original.flags)
             #expect(restored.fflags == original.fflags)
-            // Note: data may not roundtrip perfectly due to pointer conversion
+
         }
 
         @Test

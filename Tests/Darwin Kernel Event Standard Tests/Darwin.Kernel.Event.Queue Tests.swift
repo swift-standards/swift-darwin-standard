@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-kernel open source project
-//
-// Copyright (c) 2024-2025 Coen ten Thije Boonkkamp and the swift-kernel project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 #if canImport(Darwin)
     import Darwin
     import Testing
@@ -21,7 +10,7 @@
     private typealias Kernel = Darwin.Kernel
 
     extension ISO_9945.Kernel.Event.Test {
-        /// Best-effort close, ignoring errors (test cleanup only).
+
         static func closeNoThrow(_ rawDescriptor: Int32) {
             try? ISO_9945.Kernel.Close.close(ISO_9945.Kernel.Descriptor(_rawValue: rawDescriptor))
         }
@@ -36,11 +25,7 @@
         }
     }
 
-    // MARK: - Syscall Unit Tests
-
     extension Kernel.Event.Queue.Test.Unit {
-
-        // MARK: - Lifecycle Tests
 
         @Test
         func `create returns valid kqueue descriptor`() throws {
@@ -52,7 +37,7 @@
 
         @Test
         func `Kqueue namespace exists`() {
-            // Type check - ensures the namespace compiles
+
             _ = Kernel.Event.Queue.self
         }
     }

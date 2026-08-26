@@ -1,10 +1,10 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
     public import Darwin_Standard_Core
-    public import Loader_Primitives
-    internal import Tagged_Primitives
-    internal import Cardinal_Primitives
-    internal import Ordinal_Primitives
+    public import Loader
+    internal import Tagged
+    internal import Cardinal
+    internal import Ordinal
     internal import Darwin.Mach
     internal import MachO
 

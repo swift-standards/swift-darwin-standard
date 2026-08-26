@@ -11,9 +11,9 @@
     extension ISO_9945.Kernel.File.Attributes.Extended {
 
         public struct Error: Swift.Error, Sendable {
-            public let code: Error_Primitives.Error.Code
+            public let code: Error.Error.Code
 
-            public init(code: Error_Primitives.Error.Code) {
+            public init(code: Error.Error.Code) {
                 self.code = code
             }
         }

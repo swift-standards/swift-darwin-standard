@@ -1,7 +1,7 @@
 #if canImport(Darwin)
 
     public import Darwin_Standard_Core
-    public import Error_Primitives
+    public import Error
     internal import Darwin
 
     extension Darwin_Standard_Core.Darwin.Kernel {
@@ -12,9 +12,9 @@
     extension Darwin_Standard_Core.Darwin.Kernel.Sysctl {
 
         public struct Error: Swift.Error, Sendable {
-            public let code: Error_Primitives.Error.Code
+            public let code: Error.Error.Code
 
-            public init(code: Error_Primitives.Error.Code) {
+            public init(code: Error.Error.Code) {
                 self.code = code
             }
         }

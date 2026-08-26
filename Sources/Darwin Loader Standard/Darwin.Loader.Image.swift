@@ -1,9 +1,9 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
     public import Darwin_Standard_Core
-    public import Tagged_Primitives
-    import Cardinal_Primitives
-    import Ordinal_Primitives
+    public import Tagged
+    import Cardinal
+    import Ordinal
     internal import Darwin.Mach
     internal import MachO
 

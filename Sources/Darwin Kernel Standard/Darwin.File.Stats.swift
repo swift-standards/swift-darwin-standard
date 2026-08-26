@@ -2,7 +2,7 @@ public import Darwin_Standard_Core
 @_spi(Syscall) public import ISO_9945_Core
 internal import ISO_9945_Kernel
 import ISO_9945_Kernel_File
-internal import Time_Primitives
+internal import Time
 
 #if canImport(Darwin)
     internal import Darwin
@@ -159,12 +159,12 @@ internal import Time_Primitives
     extension ISO_9945.Kernel.File.Stats.Error {
 
         internal init(_posixErrno code: Int32) {
-            let errorCode = Error_Primitives.Error.Code.posix(code)
+            let errorCode = Error.Error.Code.posix(code)
             if let e = ISO_9945.Kernel.Descriptor.Validity.Error(code: errorCode) {
                 self = .handle(e)
                 return
             }
-            self = .platform(Error_Primitives.Error(code: errorCode))
+            self = .platform(Error.Error(code: errorCode))
         }
     }
 

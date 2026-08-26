@@ -2,7 +2,7 @@
 
     public import ISO_9945_Kernel_File
     import ISO_9945_Core
-    public import Error_Primitives
+    public import Error
     internal import Darwin
 
     extension Darwin_Standard_Core.Darwin.Kernel {
@@ -46,7 +46,7 @@
 
             case isDirectory
 
-            case platform(code: Error_Primitives.Error.Code, operation: Operation)
+            case platform(code: Error.Error.Code, operation: Operation)
         }
     }
 
@@ -95,7 +95,7 @@
 
         public enum Syscall: Swift.Error, Sendable {
 
-            case platform(code: Error_Primitives.Error.Code, operation: Operation)
+            case platform(code: Error.Error.Code, operation: Operation)
 
             case notSupported(operation: Operation)
         }

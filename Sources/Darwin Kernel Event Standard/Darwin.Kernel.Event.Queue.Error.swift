@@ -1,4 +1,4 @@
-public import Error_Primitives
+public import Error
 import ISO_9945_Core
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
@@ -7,9 +7,9 @@ import ISO_9945_Core
 
         public enum Error: Swift.Error, Sendable, Equatable, Hashable {
 
-            case create(Error_Primitives.Error.Code)
+            case create(Error.Error.Code)
 
-            case kevent(Error_Primitives.Error.Code)
+            case kevent(Error.Error.Code)
 
             case interrupted
         }

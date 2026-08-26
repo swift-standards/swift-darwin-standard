@@ -1,6 +1,6 @@
 #if canImport(Darwin)
 
-    public import Random_Primitives
+    public import Random
     internal import Darwin
 
     extension Darwin.Kernel {

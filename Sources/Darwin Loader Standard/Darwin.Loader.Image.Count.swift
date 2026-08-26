@@ -1,8 +1,8 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
     public import Darwin_Standard_Core
-    public import Tagged_Primitives
-    public import Cardinal_Primitives
+    public import Tagged
+    public import Cardinal
 
     extension Darwin_Standard_Core.Darwin.Loader.Image {
 

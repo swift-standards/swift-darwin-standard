@@ -113,7 +113,7 @@ internal import ISO_9945_Kernel
                     nil
                 )
                 guard result >= 0 else {
-                    let code = Error_Primitives.Error.Code.posix(errno)
+                    let code = Error.Error.Code.posix(errno)
                     if code.posix == EINTR { throw .interrupted }
                     throw .kevent(code)
                 }
@@ -142,7 +142,7 @@ internal import ISO_9945_Kernel
                     nil
                 )
                 guard result >= 0 else {
-                    let code = Error_Primitives.Error.Code.posix(errno)
+                    let code = Error.Error.Code.posix(errno)
                     if code.posix == EINTR { throw .interrupted }
                     throw .kevent(code)
                 }
@@ -185,7 +185,7 @@ internal import ISO_9945_Kernel
                     )
                 }
                 guard result >= 0 else {
-                    let code = Error_Primitives.Error.Code.posix(errno)
+                    let code = Error.Error.Code.posix(errno)
                     if code.posix == EINTR { throw .interrupted }
                     throw .kevent(code)
                 }
@@ -230,7 +230,7 @@ internal import ISO_9945_Kernel
                     )
                 }
                 guard result >= 0 else {
-                    let code = Error_Primitives.Error.Code.posix(errno)
+                    let code = Error.Error.Code.posix(errno)
                     if code.posix == EINTR { throw .interrupted }
                     throw .kevent(code)
                 }

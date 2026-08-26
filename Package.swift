@@ -39,35 +39,35 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-time-primitives.git",
+            url: "https://github.com/swift-molecules/swift-time.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-loader-primitives.git",
+            url: "https://github.com/swift-molecules/swift-loader.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-string-primitives.git",
+            url: "https://github.com/swift-molecules/swift-string.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-error-primitives.git",
+            url: "https://github.com/swift-molecules/swift-error.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-random-primitives.git",
+            url: "https://github.com/swift-molecules/swift-random.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-tagged-primitives.git",
+            url: "https://github.com/swift-molecules/swift-tagged.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-cardinal-primitives.git",
+            url: "https://github.com/swift-molecules/swift-cardinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-ordinal-primitives.git",
+            url: "https://github.com/swift-molecules/swift-ordinal.git",
             branch: "main"
         ),
         .package(url: "https://github.com/swift-iso/swift-iso-9945.git", branch: "main"),
@@ -95,9 +95,9 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Shims"),
-                .product(name: "Random Primitives", package: "swift-random-primitives"),
-                .product(name: "Time Primitives", package: "swift-time-primitives"),
-                .product(name: "Error Primitives", package: "swift-error-primitives"),
+                .product(name: "Random", package: "swift-random"),
+                .product(name: "Time", package: "swift-time"),
+                .product(name: "Error", package: "swift-error"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
                 .product(name: "ISO 9945 Kernel Thread", package: "swift-iso-9945"),
             ]
@@ -108,7 +108,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Time Standard"),
-                .product(name: "Error Primitives", package: "swift-error-primitives"),
+                .product(name: "Error", package: "swift-error"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
             ]
         ),
@@ -125,11 +125,11 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Shims"),
-                .product(name: "Loader Primitives", package: "swift-loader-primitives"),
-                .product(name: "String Primitives", package: "swift-string-primitives"),
-                .product(name: "Tagged Primitives", package: "swift-tagged-primitives"),
-                .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
-                .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
+                .product(name: "Loader", package: "swift-loader"),
+                .product(name: "String", package: "swift-string"),
+                .product(name: "Tagged", package: "swift-tagged"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
                 .product(name: "ISO 9945 Loader", package: "swift-iso-9945"),
             ]

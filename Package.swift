@@ -43,7 +43,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-loader.git",
+            url: "https://github.com/swift-molecules/swift-loader-vocabulary.git",
             branch: "main"
         ),
         .package(
@@ -125,7 +125,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Shims"),
-                .product(name: "Loader", package: "swift-loader"),
+                .product(name: "Loader", package: "swift-loader-vocabulary"),
                 .product(name: "String", package: "swift-string"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal", package: "swift-cardinal"),

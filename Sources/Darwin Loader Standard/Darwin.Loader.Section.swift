@@ -1,7 +1,7 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
     public import Darwin_Standard_Core
-    public import Loader
+    public import Loader_Vocabulary
     internal import Tagged
     internal import Cardinal
     internal import Ordinal

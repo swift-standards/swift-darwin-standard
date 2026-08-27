@@ -1,6 +1,6 @@
 #if canImport(Darwin)
 
-    public import Loader
+    public import Loader_Vocabulary
     internal import String
     internal import Darwin
     internal import Darwin_Kernel_Shims

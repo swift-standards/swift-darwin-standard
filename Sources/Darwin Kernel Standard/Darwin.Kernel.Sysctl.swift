@@ -12,9 +12,9 @@
     extension Darwin_Standard_Core.Darwin.Kernel.Sysctl {
 
         public struct Error: Swift.Error, Sendable {
-            public let code: Error.Error.Code
+            public let code: Error::Error.Code
 
-            public init(code: Error.Error.Code) {
+            public init(code: Error::Error.Code) {
                 self.code = code
             }
         }

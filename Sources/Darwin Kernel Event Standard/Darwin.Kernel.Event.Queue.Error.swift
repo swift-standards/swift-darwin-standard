@@ -7,9 +7,9 @@ import ISO_9945_Core
 
         public enum Error: Swift.Error, Sendable, Equatable, Hashable {
 
-            case create(Error.Error.Code)
+            case create(Error::Error.Code)
 
-            case kevent(Error.Error.Code)
+            case kevent(Error::Error.Code)
 
             case interrupted
         }

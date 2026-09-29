@@ -159,7 +159,7 @@ internal import Time
     extension ISO_9945.Kernel.File.Stats.Error {
 
         internal init(_posixErrno code: Int32) {
-            let errorCode = Error.Error.Code.posix(code)
+            let errorCode = Error::Error.Code.posix(code)
             if let e = ISO_9945.Kernel.Descriptor.Validity.Error(code: errorCode) {
                 self = .handle(e)
                 return

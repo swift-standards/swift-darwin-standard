@@ -39,7 +39,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-time.git",
+            url: "https://github.com/swift-atoms/swift-time.git",
             branch: "main"
         ),
         .package(
@@ -47,27 +47,27 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-string.git",
+            url: "https://github.com/swift-atoms/swift-string.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-error.git",
+            url: "https://github.com/swift-atoms/swift-error.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-random.git",
+            url: "https://github.com/swift-atoms/swift-random.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-tagged.git",
+            url: "https://github.com/swift-atoms/swift-tagged.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-cardinal.git",
+            url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-ordinal.git",
+            url: "https://github.com/swift-atoms/swift-ordinal.git",
             branch: "main"
         ),
         .package(url: "https://github.com/swift-iso/swift-iso-9945.git", branch: "main"),

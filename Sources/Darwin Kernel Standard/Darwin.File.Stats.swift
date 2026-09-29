@@ -115,22 +115,22 @@ internal import Time
     extension Darwin_Standard_Core.Darwin.File.Stats {
 
         internal init(_from sb: PlatformStat) {
-            let atime = Instant(
+            let atime = Time::Time.Instant(
                 _unchecked: (),
                 secondsSinceUnixEpoch: Int64(sb.st_atimespec.tv_sec),
                 nanosecondFraction: Int32(sb.st_atimespec.tv_nsec)
             )
-            let mtime = Instant(
+            let mtime = Time::Time.Instant(
                 _unchecked: (),
                 secondsSinceUnixEpoch: Int64(sb.st_mtimespec.tv_sec),
                 nanosecondFraction: Int32(sb.st_mtimespec.tv_nsec)
             )
-            let ctime = Instant(
+            let ctime = Time::Time.Instant(
                 _unchecked: (),
                 secondsSinceUnixEpoch: Int64(sb.st_ctimespec.tv_sec),
                 nanosecondFraction: Int32(sb.st_ctimespec.tv_nsec)
             )
-            let btime = Instant(
+            let btime = Time::Time.Instant(
                 _unchecked: (),
                 secondsSinceUnixEpoch: Int64(sb.st_birthtimespec.tv_sec),
                 nanosecondFraction: Int32(sb.st_birthtimespec.tv_nsec)

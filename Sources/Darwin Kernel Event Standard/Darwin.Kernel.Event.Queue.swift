@@ -50,12 +50,12 @@ internal import ISO_9945_Kernel
         }
 
         public func wakeup() throws(Error) -> @Sendable () -> Void {
-            let wakeupEvent = Event(id: .zero, filter: .user, flags: .add | .clear)
+            let wakeupEvent = Event(id: Darwin.Kernel.Event.ID(0), filter: .user, flags: .add | .clear)
             try self.register(events: [wakeupEvent])
 
             let rawFd = self.descriptor._rawValue
             return {
-                let trigger = Event(id: .zero, filter: .user, flags: .none, fflags: .trigger)
+                let trigger = Event(id: Darwin.Kernel.Event.ID(0), filter: .user, flags: .none, fflags: .trigger)
                 do throws(Error) {
                     try Self.register(rawDescriptor: rawFd, events: [trigger])
                 } catch {

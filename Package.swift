@@ -125,7 +125,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Shims"),
-                .product(name: "Loader", package: "swift-loader-vocabulary"),
+                .product(name: "Loader Vocabulary", package: "swift-loader-vocabulary"),
                 .product(name: "String", package: "swift-string"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal", package: "swift-cardinal"),

@@ -60,7 +60,7 @@ internal import ISO_9945_Kernel
                     try Self.register(rawDescriptor: rawFd, events: [trigger])
                 } catch {
                     if case .kevent(let code) = error,
-                        code == .POSIX.EBADF || code == .POSIX.ENOENT
+                        code == .EBADF || code == .ENOENT
                     {
 
                     } else {

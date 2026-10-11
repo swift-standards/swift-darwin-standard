@@ -4,7 +4,6 @@
 
     @_spi(Syscall) import ISO_9945_Core
     import ISO_9945_Kernel_File
-    import ISO_9945_Kernel_Test_Support
     @testable import Darwin_Kernel_Event_Standard
     import Darwin_Standard_Core
 
@@ -24,7 +23,7 @@
         @Test
         func `event roundtrips through C conversion`() throws {
 
-            let pipe = try ISO_9945.Kernel.Event.Test.makePipe()
+            let pipe = try ISO_9945.Kernel.Pipe.pipe()
 
             let original = Kernel.Event.Queue.Event(
                 id: Kernel.Event.ID(pipe.read._rawValue),

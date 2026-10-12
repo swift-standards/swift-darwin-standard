@@ -28,6 +28,8 @@
             case exists
 
             case notFound
+
+            case platform(code: Error::Error.Code)
         }
     }
 
@@ -42,6 +44,7 @@
             case .permissionDenied: return "permission denied"
             case .exists: return "destination already exists"
             case .notFound: return "source not found"
+            case .platform(let code): return "platform error \(code)"
             }
         }
     }
@@ -76,11 +79,11 @@
             case EEXIST:
                 self = .exists
 
-            case EINVAL, ENOTSUP:
+            case EINVAL, ENOTSUP, EOPNOTSUPP, ENOSYS:
                 self = .unsupported
 
             default:
-                self = .unsupported
+                self = .platform(code: .posix(posixErrno))
             }
         }
     }

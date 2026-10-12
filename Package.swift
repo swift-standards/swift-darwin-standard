@@ -153,6 +153,13 @@ let package = Package(
         ),
 
         .testTarget(
+            name: "Darwin Kernel Standard Tests",
+            dependencies: [
+                "Darwin Kernel Standard",
+                .product(name: "Error", package: "swift-error"),
+            ]
+        ),
+        .testTarget(
             name: "Darwin Kernel Event Standard Tests",
             dependencies: [
                 "Darwin Kernel Event Standard",

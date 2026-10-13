@@ -3,7 +3,7 @@
     public import Darwin_Standard_Core
     import Darwin_Memory_Shims
 
-    extension Darwin_Standard_Core.Darwin.Memory.Allocation {
+    extension Darwin_Standard_Core::Darwin.Memory.Allocation {
 
         public struct Statistics: Sendable, Equatable {
 
@@ -21,7 +21,7 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Memory.Allocation.Statistics {
+    extension Darwin_Standard_Core::Darwin.Memory.Allocation.Statistics {
 
         public static func capture() -> Self {
             var stats = malloc_statistics_t()

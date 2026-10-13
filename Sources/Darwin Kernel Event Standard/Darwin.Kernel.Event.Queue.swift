@@ -1,14 +1,13 @@
-internal import Darwin_Kernel_Time_Standard
-package import Darwin_Standard_Core
-@_spi(Syscall) public import ISO_9945_Core
-internal import ISO_9945_Kernel
-
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+    internal import Darwin_Kernel_Time_Standard
+    package import Darwin_Standard_Core
+    @_spi(Syscall) public import ISO_9945_Core
+    internal import ISO_9945_Kernel
     internal import Darwin
 
     internal typealias CKevent = kevent
 
-    extension Darwin_Standard_Core.Darwin.Kernel {
+    extension Darwin_Standard_Core::Darwin.Kernel {
 
         public enum Event: Sendable {}
     }
@@ -97,7 +96,7 @@ internal import ISO_9945_Kernel
         ) throws(Darwin.Kernel.Event.Queue.Error) {
             guard !events.isEmpty else { return }
 
-            try unsafe withUnsafeTemporaryAllocation(
+            try withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: events.count
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) in
@@ -126,7 +125,7 @@ internal import ISO_9945_Kernel
         ) throws(Darwin.Kernel.Event.Queue.Error) {
             guard !events.isEmpty else { return }
 
-            try unsafe withUnsafeTemporaryAllocation(
+            try withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: events.count
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) in
@@ -160,7 +159,7 @@ internal import ISO_9945_Kernel
             guard !events.isEmpty else { return 0 }
             let count = events.count
 
-            return try unsafe withUnsafeTemporaryAllocation(
+            return try withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: count
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) -> Int in
@@ -205,7 +204,7 @@ internal import ISO_9945_Kernel
             guard !events.isEmpty else { return 0 }
             let count = events.count
 
-            return try unsafe withUnsafeTemporaryAllocation(
+            return try withUnsafeTemporaryAllocation(
                 of: CKevent.self,
                 capacity: count
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) -> Int in

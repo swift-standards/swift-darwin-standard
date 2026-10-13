@@ -1,11 +1,11 @@
-public import Error
-import ISO_9945_Core
-
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+
+    public import Error
+    import ISO_9945_Core
 
     extension Darwin.Kernel.Event.Queue {
 
-        public enum Error: Swift.Error, Sendable, Equatable, Hashable {
+        public enum Error: Swift::Error, Sendable, Equatable, Hashable {
 
             case create(Error::Error.Code)
 
@@ -16,7 +16,7 @@ import ISO_9945_Core
     }
 
     extension Darwin.Kernel.Event.Queue.Error: CustomStringConvertible {
-        public var description: Swift.String {
+        public var description: Swift::String {
             switch self {
             case .create(let code):
                 return "kqueue creation failed (\(code))"

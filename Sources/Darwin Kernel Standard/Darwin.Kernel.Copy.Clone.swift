@@ -11,7 +11,7 @@
 
     extension Darwin.Kernel.Copy {
 
-        public enum Error: Swift.Error, Sendable, Equatable, Hashable {
+        public enum Error: Swift::Error, Sendable, Equatable, Hashable {
 
             case invalidDescriptor
 
@@ -34,7 +34,7 @@
     }
 
     extension Darwin.Kernel.Copy.Error: CustomStringConvertible {
-        public var description: Swift.String {
+        public var description: Swift::String {
             switch self {
             case .invalidDescriptor: return "invalid file descriptor"
             case .crossDevice: return "cross-device copy not supported"

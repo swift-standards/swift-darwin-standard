@@ -8,23 +8,23 @@
     internal import Darwin.Mach
     internal import MachO
 
-    extension Darwin_Standard_Core.Darwin.Loader {
+    extension Darwin_Standard_Core::Darwin.Loader {
 
         public enum Section: Sendable {}
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section {
+    extension Darwin_Standard_Core::Darwin.Loader.Section {
 
         public typealias Name = Loader.Section.Name
 
         public typealias Bounds = Loader.Section.Bounds
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section {
+    extension Darwin_Standard_Core::Darwin.Loader.Section {
 
         public static func withDataBytes<R: ~Copyable>(
             for name: Name,
-            in header: Darwin_Standard_Core.Darwin.Loader.Image.Header,
+            in header: Darwin_Standard_Core::Darwin.Loader.Image.Header,
             _ body: (UnsafeRawBufferPointer) -> R
         ) -> R? {
             guard let machO = name.machO else {
@@ -54,7 +54,7 @@
 
         public static func withData<R: ~Copyable>(
             for name: Name,
-            in header: Darwin_Standard_Core.Darwin.Loader.Image.Header,
+            in header: Darwin_Standard_Core::Darwin.Loader.Image.Header,
             _ body: (Bounds) -> R
         ) -> R? {
             guard let machO = name.machO else {
@@ -89,7 +89,7 @@
 
         public static func data(
             for name: Name,
-            in header: Darwin_Standard_Core.Darwin.Loader.Image.Header
+            in header: Darwin_Standard_Core::Darwin.Loader.Image.Header
         ) -> Bounds? {
             withData(for: name, in: header) { bounds in
                 bounds
@@ -97,14 +97,14 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section {
+    extension Darwin_Standard_Core::Darwin.Loader.Section {
 
         public static func all(_ name: Name) -> AllSectionsSequence {
             AllSectionsSequence(name: name)
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section {
+    extension Darwin_Standard_Core::Darwin.Loader.Section {
 
         @safe
         public struct AllSectionsSequence: @unsafe Sequence {
@@ -112,30 +112,30 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section.AllSectionsSequence {
+    extension Darwin_Standard_Core::Darwin.Loader.Section.AllSectionsSequence {
         public func makeIterator() -> Iterator {
             Iterator(name: name, currentIndex: .zero)
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section.AllSectionsSequence {
+    extension Darwin_Standard_Core::Darwin.Loader.Section.AllSectionsSequence {
 
         @safe
         public struct Iterator: @unsafe IteratorProtocol {
-            let name: Darwin_Standard_Core.Darwin.Loader.Section.Name
-            var currentIndex: Darwin_Standard_Core.Darwin.Loader.Image.Index
+            let name: Darwin_Standard_Core::Darwin.Loader.Section.Name
+            var currentIndex: Darwin_Standard_Core::Darwin.Loader.Image.Index
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Section.AllSectionsSequence.Iterator {
-        public mutating func next() -> Darwin_Standard_Core.Darwin.Loader.Section.Bounds? {
-            let end = Darwin_Standard_Core.Darwin.Loader.Image.count.map(Ordinal.init)
+    extension Darwin_Standard_Core::Darwin.Loader.Section.AllSectionsSequence.Iterator {
+        public mutating func next() -> Darwin_Standard_Core::Darwin.Loader.Section.Bounds? {
+            let end = Darwin_Standard_Core::Darwin.Loader.Image.count.map(Ordinal.init)
 
             while currentIndex < end {
                 let index = currentIndex
                 currentIndex += .one
 
-                guard let header = Darwin_Standard_Core.Darwin.Loader.Image.header(at: index) else {
+                guard let header = Darwin_Standard_Core::Darwin.Loader.Image.header(at: index) else {
                     continue
                 }
 
@@ -143,7 +143,7 @@
                     continue
                 }
 
-                if let bounds = Darwin_Standard_Core.Darwin.Loader.Section.data(
+                if let bounds = Darwin_Standard_Core::Darwin.Loader.Section.data(
                     for: name,
                     in: header
                 ) {

@@ -1,6 +1,6 @@
-public import ISO_9945_Core
-
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+
+    public import ISO_9945_Core
     internal import Darwin
 
     extension Darwin.Kernel.Event.Queue {

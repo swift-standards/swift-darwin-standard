@@ -4,7 +4,7 @@
     internal import Darwin.Mach
     internal import MachO
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image {
+    extension Darwin_Standard_Core::Darwin.Loader.Image {
 
         @safe
         public struct Header: Sendable, Equatable {
@@ -19,7 +19,7 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image.Header {
+    extension Darwin_Standard_Core::Darwin.Loader.Image.Header {
 
         public var isInSharedCache: Bool {
             let header64 = unsafe rawValue.assumingMemoryBound(to: mach_header_64.self)
@@ -32,7 +32,7 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image.Header {
+    extension Darwin_Standard_Core::Darwin.Loader.Image.Header {
 
         @unsafe
         internal var header64: UnsafePointer<mach_header_64> {

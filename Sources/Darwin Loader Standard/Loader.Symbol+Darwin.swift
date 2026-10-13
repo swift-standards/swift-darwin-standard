@@ -26,7 +26,7 @@
 
         @unsafe
         public static func lookup(
-            name: Swift.String,
+            name: Swift::String,
             in scope: Scope
         ) throws(Loader.Error) -> UnsafeRawPointer {
 

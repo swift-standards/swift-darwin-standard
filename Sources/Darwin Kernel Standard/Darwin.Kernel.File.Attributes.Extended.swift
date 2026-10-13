@@ -10,7 +10,7 @@
 
     extension ISO_9945.Kernel.File.Attributes.Extended {
 
-        public struct Error: Swift.Error, Sendable {
+        public struct Error: Swift::Error, Sendable {
             public let code: Error::Error.Code
 
             public init(code: Error::Error.Code) {
@@ -39,7 +39,7 @@
         internal static func list(
             path: UnsafePointer<CChar>,
             followSymlinks: Bool = true
-        ) throws(Error) -> [Swift.String] {
+        ) throws(Error) -> [Swift::String] {
             let options: Int32 = followSymlinks ? 0 : XATTR_NOFOLLOW
 
             let size = unsafe listxattr(path, nil, 0, options)
@@ -62,7 +62,7 @@
 
         internal static func list(
             _ fd: Int32
-        ) throws(Error) -> [Swift.String] {
+        ) throws(Error) -> [Swift::String] {
 
             let size = flistxattr(fd, nil, 0, 0)
             guard size >= 0 else {
@@ -243,15 +243,15 @@
         private static func parseNullSeparatedStrings(
             _ buffer: [CChar],
             count: Int
-        ) -> [Swift.String] {
-            var names: [Swift.String] = []
+        ) -> [Swift::String] {
+            var names: [Swift::String] = []
             var start = 0
 
             for i in 0..<count {
                 if buffer[i] == 0 {
                     if i > start {
                         let slice = buffer[start..<i]
-                        if let name = Swift.String(validating: Array(slice), as: UTF8.self) {
+                        if let name = Swift::String(validating: Array(slice), as: UTF8.self) {
                             names.append(name)
                         }
                     }
@@ -263,8 +263,8 @@
         }
 
         @unsafe
-        fileprivate static func withCName<R, E: Swift.Error>(
-            _ name: Swift.String,
+        fileprivate static func withCName<R, E: Swift::Error>(
+            _ name: Swift::String,
             _ body: (UnsafePointer<CChar>) throws(E) -> R
         ) throws(E) -> R {
             var utf8 = Array(name.utf8)
@@ -283,7 +283,7 @@
         public static func list(
             path: borrowing Path.Borrowed,
             followSymlinks: Bool = true
-        ) throws(Error) -> [Swift.String] {
+        ) throws(Error) -> [Swift::String] {
             try unsafe path.withUnsafePointer { pathPtr throws(Error) in
                 try unsafe list(
                     path: UnsafeRawPointer(pathPtr).assumingMemoryBound(to: CChar.self),
@@ -293,7 +293,7 @@
         }
 
         public static func get(
-            name: Swift.String,
+            name: Swift::String,
             path: borrowing Path.Borrowed,
             followSymlinks: Bool = true
         ) throws(Error) -> [UInt8] {
@@ -309,7 +309,7 @@
         }
 
         internal static func get(
-            name: Swift.String,
+            name: Swift::String,
             _ fd: Int32
         ) throws(Error) -> [UInt8] {
             try unsafe withCName(name) { namePtr throws(Error) in
@@ -318,7 +318,7 @@
         }
 
         public static func set(
-            name: Swift.String,
+            name: Swift::String,
             value: UnsafeRawBufferPointer,
             path: borrowing Path.Borrowed,
             followSymlinks: Bool = true
@@ -336,7 +336,7 @@
         }
 
         internal static func set(
-            name: Swift.String,
+            name: Swift::String,
             value: UnsafeRawBufferPointer,
             _ fd: Int32
         ) throws(Error) {
@@ -346,7 +346,7 @@
         }
 
         public static func remove(
-            name: Swift.String,
+            name: Swift::String,
             path: borrowing Path.Borrowed,
             followSymlinks: Bool = true
         ) throws(Error) {
@@ -362,7 +362,7 @@
         }
 
         internal static func remove(
-            name: Swift.String,
+            name: Swift::String,
             _ fd: Int32
         ) throws(Error) {
             try unsafe withCName(name) { namePtr throws(Error) in
@@ -375,12 +375,12 @@
 
         public static func list(
             _ descriptor: borrowing ISO_9945.Kernel.Descriptor
-        ) throws(Error) -> [Swift.String] {
+        ) throws(Error) -> [Swift::String] {
             try list(descriptor._rawValue)
         }
 
         public static func get(
-            name: Swift.String,
+            name: Swift::String,
             _ descriptor: borrowing ISO_9945.Kernel.Descriptor
         ) throws(Error) -> [UInt8] {
             try get(name: name, descriptor._rawValue)
@@ -388,7 +388,7 @@
 
         @unsafe
         public static func set(
-            name: Swift.String,
+            name: Swift::String,
             value: UnsafeRawBufferPointer,
             _ descriptor: borrowing ISO_9945.Kernel.Descriptor
         ) throws(Error) {
@@ -396,7 +396,7 @@
         }
 
         public static func remove(
-            name: Swift.String,
+            name: Swift::String,
             _ descriptor: borrowing ISO_9945.Kernel.Descriptor
         ) throws(Error) {
             try remove(name: name, descriptor._rawValue)

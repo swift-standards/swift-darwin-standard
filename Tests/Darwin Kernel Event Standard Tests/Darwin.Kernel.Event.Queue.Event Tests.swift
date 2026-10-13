@@ -34,8 +34,8 @@
                 data: Kernel.Event.Queue.Event.Data(42)
             )
 
-            let cEvent = original.cValue
-            let restored = Kernel.Event.Queue.Event(cEvent)
+            let cEvent = unsafe original.cValue
+            let restored = unsafe Kernel.Event.Queue.Event(cEvent)
 
             #expect(restored.id == original.id)
             #expect(restored.filter == original.filter)

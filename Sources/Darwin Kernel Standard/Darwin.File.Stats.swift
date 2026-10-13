@@ -1,15 +1,14 @@
-public import Darwin_Standard_Core
-@_spi(Syscall) public import ISO_9945_Core
-internal import ISO_9945_Kernel
-import ISO_9945_Kernel_File
-internal import Time
-
 #if canImport(Darwin)
+    public import Darwin_Standard_Core
+    @_spi(Syscall) public import ISO_9945_Core
+    internal import ISO_9945_Kernel
+    import ISO_9945_Kernel_File
+    internal import Time
     internal import Darwin
 
     internal typealias PlatformStat = stat
 
-    extension Darwin_Standard_Core.Darwin.File {
+    extension Darwin_Standard_Core::Darwin.File {
 
         public struct Stats: Sendable, Equatable {
 
@@ -25,7 +24,7 @@ internal import Time
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.File.Stats {
+    extension Darwin_Standard_Core::Darwin.File.Stats {
 
         @inlinable
         public var size: ISO_9945.Kernel.File.Size { base.size }
@@ -61,7 +60,7 @@ internal import Time
         public var changeTime: ISO_9945.Kernel.Time { base.changeTime }
     }
 
-    extension Darwin_Standard_Core.Darwin.File.Stats {
+    extension Darwin_Standard_Core::Darwin.File.Stats {
 
         public typealias Error = ISO_9945.Kernel.File.Stats.Error
 
@@ -112,7 +111,7 @@ internal import Time
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.File.Stats {
+    extension Darwin_Standard_Core::Darwin.File.Stats {
 
         internal init(_from sb: PlatformStat) {
             let atime = Time::Time.Instant(

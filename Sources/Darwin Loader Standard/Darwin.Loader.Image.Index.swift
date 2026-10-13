@@ -4,9 +4,9 @@
     public import Tagged
     public import Ordinal
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image {
+    extension Darwin_Standard_Core::Darwin.Loader.Image {
 
-        public typealias Index = Tagged<Darwin_Standard_Core.Darwin.Loader.Image, Ordinal>
+        public typealias Index = Tagged<Darwin_Standard_Core::Darwin.Loader.Image, Ordinal>
     }
 
 #endif

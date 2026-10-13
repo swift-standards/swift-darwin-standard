@@ -7,12 +7,12 @@
     internal import Darwin.Mach
     internal import MachO
 
-    extension Darwin_Standard_Core.Darwin.Loader {
+    extension Darwin_Standard_Core::Darwin.Loader {
 
         public enum Image {}
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image {
+    extension Darwin_Standard_Core::Darwin.Loader.Image {
 
         public static var count: Count {
             Count(_unchecked: Cardinal(UInt(_dyld_image_count())))
@@ -39,11 +39,11 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image {
+    extension Darwin_Standard_Core::Darwin.Loader.Image {
 
         public static func withPathBytes<R: ~Copyable>(
             at index: Index,
-            _ body: (Swift.Span<CChar>) -> R
+            _ body: (Swift::Span<CChar>) -> R
         ) -> R? {
             guard
                 let ptr = unsafe _dyld_get_image_name(
@@ -64,7 +64,7 @@
 
         public static func withPath<R: ~Copyable>(
             at index: Index,
-            _ body: (Swift.String) -> R
+            _ body: (Swift::String) -> R
         ) -> R? {
             guard
                 let ptr = unsafe _dyld_get_image_name(
@@ -74,11 +74,11 @@
                 return nil
             }
 
-            let str = unsafe Swift.String(cString: ptr)
+            let str = unsafe Swift::String(cString: ptr)
             return body(str)
         }
 
-        public static func pathString(at index: Index) -> Swift.String? {
+        public static func pathString(at index: Index) -> Swift::String? {
             withPath(at: index) { str in
                 str
             }

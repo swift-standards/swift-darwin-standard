@@ -32,7 +32,7 @@
 
     extension Darwin.Kernel.File.Clone {
 
-        public enum Error: Swift.Error, Sendable, Equatable, CustomStringConvertible {
+        public enum Error: Swift::Error, Sendable, Equatable, CustomStringConvertible {
 
             case notSupported
 
@@ -51,7 +51,7 @@
     }
 
     extension Darwin.Kernel.File.Clone.Error {
-        public var description: Swift.String {
+        public var description: Swift::String {
             switch self {
             case .notSupported:
                 return "Reflink not supported on this filesystem"
@@ -79,7 +79,7 @@
 
     extension Darwin.Kernel.File.Clone.Error {
 
-        public enum Operation: Swift.String, Sendable, Equatable {
+        public enum Operation: Swift::String, Sendable, Equatable {
             case clonefile
             case copyfile
             case ficlone
@@ -93,7 +93,7 @@
 
     extension Darwin.Kernel.File.Clone.Error {
 
-        public enum Syscall: Swift.Error, Sendable {
+        public enum Syscall: Swift::Error, Sendable {
 
             case platform(code: Error::Error.Code, operation: Operation)
 

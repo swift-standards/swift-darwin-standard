@@ -4,14 +4,14 @@
     public import Error
     internal import Darwin
 
-    extension Darwin_Standard_Core.Darwin.Kernel {
+    extension Darwin_Standard_Core::Darwin.Kernel {
 
         public enum Sysctl {}
     }
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Sysctl {
+    extension Darwin_Standard_Core::Darwin.Kernel.Sysctl {
 
-        public struct Error: Swift.Error, Sendable {
+        public struct Error: Swift::Error, Sendable {
             public let code: Error::Error.Code
 
             public init(code: Error::Error.Code) {
@@ -20,7 +20,7 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Sysctl.Error {
+    extension Darwin_Standard_Core::Darwin.Kernel.Sysctl.Error {
 
         @usableFromInline
         internal static func current() -> Self {
@@ -28,10 +28,10 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Sysctl {
+    extension Darwin_Standard_Core::Darwin.Kernel.Sysctl {
 
         public static func byName<T: FixedWidthInteger>(
-            _ name: Swift.String,
+            _ name: Swift::String,
             as type: T.Type = T.self
         ) throws(Error) -> T {
             var value = T(0)

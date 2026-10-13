@@ -147,7 +147,7 @@ let package = Package(
         .target(
             name: "Darwin Kernel Standard Test Support",
             dependencies: [
-                "Darwin Kernel Standard"
+                .target(name: "Darwin Kernel Standard")
             ],
             path: "Tests/Support"
         ),
@@ -155,14 +155,14 @@ let package = Package(
         .testTarget(
             name: "Darwin Kernel Standard Tests",
             dependencies: [
-                "Darwin Kernel Standard",
+                .target(name: "Darwin Kernel Standard"),
                 .product(name: "Error", package: "swift-error"),
             ]
         ),
         .testTarget(
             name: "Darwin Kernel Event Standard Tests",
             dependencies: [
-                "Darwin Kernel Event Standard",
+                .target(name: "Darwin Kernel Event Standard"),
                 .target(name: "Darwin Standard Core"),
                 .product(name: "ISO 9945 Kernel Test Support", package: "swift-iso-9945"),
             ]
@@ -172,17 +172,14 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+    target.swiftSettings = (target.swiftSettings ?? []) + [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

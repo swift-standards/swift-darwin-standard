@@ -1,9 +1,8 @@
-public import ISO_9945_Core
-public import ISO_9945_Loader
-public import Loader_Vocabulary
-
 #if canImport(Darwin)
 
+    public import ISO_9945_Core
+    public import ISO_9945_Loader
+    public import Loader_Vocabulary
     internal import Darwin
 
     extension ISO_9945.Loader.Library.Options {

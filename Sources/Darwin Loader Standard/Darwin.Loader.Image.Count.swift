@@ -4,9 +4,9 @@
     public import Tagged
     public import Cardinal
 
-    extension Darwin_Standard_Core.Darwin.Loader.Image {
+    extension Darwin_Standard_Core::Darwin.Loader.Image {
 
-        public typealias Count = Tagged<Darwin_Standard_Core.Darwin.Loader.Image, Cardinal>
+        public typealias Count = Tagged<Darwin_Standard_Core::Darwin.Loader.Image, Cardinal>
     }
 
 #endif

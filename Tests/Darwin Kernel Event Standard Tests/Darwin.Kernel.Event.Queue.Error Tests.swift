@@ -45,7 +45,7 @@
 
         @Test
         func `error conforms to Swift.Error`() {
-            let error: any Swift.Error = Kernel.Event.Queue.Error.interrupted
+            let error: any Swift::Error = Kernel.Event.Queue.Error.interrupted
             #expect(error is Kernel.Event.Queue.Error)
         }
 

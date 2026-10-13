@@ -3,7 +3,7 @@
     public import Darwin_Standard_Core
     internal import Darwin
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Thread {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread {
 
         public struct QoS: Hashable, Sendable {
 
@@ -11,7 +11,7 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Thread.QoS {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread.QoS {
 
         public static let userInteractive = Self(rawValue: QOS_CLASS_USER_INTERACTIVE.rawValue)
 
@@ -26,7 +26,7 @@
         public static let unspecified = Self(rawValue: QOS_CLASS_UNSPECIFIED.rawValue)
     }
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Thread.QoS {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread.QoS {
 
         public init?(priority: UInt32) {
             switch priority {
@@ -43,7 +43,7 @@
         }
     }
 
-    extension Darwin_Standard_Core.Darwin.Kernel.Thread.QoS {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread.QoS {
 
         internal var qosClass: qos_class_t? {
             switch rawValue {

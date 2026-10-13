@@ -35,14 +35,14 @@
             let pointer: UnsafeMutableRawPointer? = withUnsafeMutablePointer(to: &value) {
                 UnsafeMutableRawPointer($0)
             }
-            let data = Kernel.Event.Queue.Event.Data(pointer)
+            let data = unsafe Kernel.Event.Queue.Event.Data(pointer)
             #expect(data.underlying == UInt64(UInt(bitPattern: pointer)))
         }
 
         @Test
         func `init from nil pointer gives zero`() {
             let pointer: UnsafeMutableRawPointer? = nil
-            let data = Kernel.Event.Queue.Event.Data(pointer)
+            let data = unsafe Kernel.Event.Queue.Event.Data(pointer)
             #expect(data == 0)
         }
 
@@ -50,7 +50,7 @@
         func `init from raw pointer preserves bitPattern`() {
             var value: Int = 42
             let data = withUnsafePointer(to: &value) { ptr in
-                Kernel.Event.Queue.Event.Data(UnsafeRawPointer(ptr))
+                unsafe Kernel.Event.Queue.Event.Data(UnsafeRawPointer(ptr))
             }
             #expect(data != 0)
         }
@@ -59,7 +59,7 @@
         func `init from typed pointer preserves bitPattern`() {
             var value: Int = 42
             let data = withUnsafePointer(to: &value) { ptr in
-                Kernel.Event.Queue.Event.Data(pointer: ptr)
+                unsafe Kernel.Event.Queue.Event.Data(pointer: ptr)
             }
             #expect(data != 0)
         }
@@ -68,7 +68,7 @@
         func `init from mutable typed pointer preserves bitPattern`() {
             var value: Int = 42
             let data = withUnsafeMutablePointer(to: &value) { ptr in
-                Kernel.Event.Queue.Event.Data(pointer: ptr)
+                unsafe Kernel.Event.Queue.Event.Data(pointer: ptr)
             }
             #expect(data != 0)
         }
@@ -78,17 +78,17 @@
             var value: Int = 42
             withUnsafeMutablePointer(to: &value) { ptr in
                 let originalPtr = UnsafeMutableRawPointer(ptr)
-                let data = Kernel.Event.Queue.Event.Data(originalPtr)
-                let extractedPtr = UnsafeMutableRawPointer(data)
-                #expect(extractedPtr == originalPtr)
+                let data = unsafe Kernel.Event.Queue.Event.Data(originalPtr)
+                let extractedPtr = unsafe UnsafeMutableRawPointer(data)
+                unsafe #expect(extractedPtr == originalPtr)
             }
         }
 
         @Test
         func `UnsafeMutableRawPointer init from zero data returns nil`() {
             let data = Kernel.Event.Queue.Event.Data.zero
-            let extractedPtr = UnsafeMutableRawPointer(data)
-            #expect(extractedPtr == nil)
+            let extractedPtr = unsafe UnsafeMutableRawPointer(data)
+            unsafe #expect(extractedPtr == nil)
         }
 
         @Test
@@ -96,9 +96,9 @@
             var value: Int = 42
             withUnsafeMutablePointer(to: &value) { ptr in
                 let originalPtr = UnsafeMutableRawPointer(ptr)
-                let data = Kernel.Event.Queue.Event.Data(originalPtr)
-                let extractedPtr = UnsafeMutableRawPointer(data)
-                #expect(extractedPtr == originalPtr)
+                let data = unsafe Kernel.Event.Queue.Event.Data(originalPtr)
+                let extractedPtr = unsafe UnsafeMutableRawPointer(data)
+                unsafe #expect(extractedPtr == originalPtr)
             }
         }
 

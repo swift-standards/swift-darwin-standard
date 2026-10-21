@@ -19,8 +19,7 @@
         }
 
         @unsafe
-        public static func arc4random(_ buffer: UnsafeMutableRawBufferPointer) throws(Random.Error)
-        {
+        public static func arc4random(_ buffer: UnsafeMutableRawBufferPointer) throws(Random.Error) {
             guard let base = buffer.baseAddress, buffer.count > 0 else { return }
             unsafe arc4random_buf(base, buffer.count)
         }

@@ -33,7 +33,10 @@
             var utf8 = Array(name.utf8)
             utf8.append(0)
             return try utf8.withUnsafeBufferPointer { buffer throws(Loader.Error) in
-                let cName = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                guard let base = buffer.baseAddress else {
+                    preconditionFailure("A null-terminated array has a base address")
+                }
+                let cName = unsafe UnsafeRawPointer(base).assumingMemoryBound(
                     to: CChar.self
                 )
                 return try unsafe lookup(name: cName, in: scope)

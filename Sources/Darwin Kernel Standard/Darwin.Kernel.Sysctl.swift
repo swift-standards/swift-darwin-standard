@@ -40,7 +40,10 @@
             var utf8 = Array(name.utf8)
             utf8.append(0)
             let result = utf8.withUnsafeBufferPointer { buffer -> Int32 in
-                let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                guard let base = buffer.baseAddress else {
+                    preconditionFailure("A null-terminated array has a base address")
+                }
+                let namePtr = unsafe UnsafeRawPointer(base).assumingMemoryBound(
                     to: CChar.self
                 )
                 return unsafe sysctlbyname(namePtr, &value, &size, nil, 0)

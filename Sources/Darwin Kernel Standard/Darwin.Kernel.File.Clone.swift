@@ -122,7 +122,10 @@
                 }
 
                 let isAPFS = withUnsafeBytes(of: statfsBuf.f_fstypename) { buf in
-                    let ptr = unsafe buf.baseAddress!.assumingMemoryBound(to: CChar.self)
+                    guard let base = buf.baseAddress else {
+                        preconditionFailure("A tuple buffer has a base address")
+                    }
+                    let ptr = unsafe base.assumingMemoryBound(to: CChar.self)
                     return unsafe strcmp(ptr, "apfs") == 0
                 }
                 if isAPFS {

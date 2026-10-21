@@ -221,7 +221,10 @@
                 var utf8 = Array(name.utf8)
                 utf8.append(0)
                 try utf8.withUnsafeBufferPointer { buffer throws(Error) in
-                    let namePtr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                    guard let base = buffer.baseAddress else {
+                        preconditionFailure("A null-terminated array has a base address")
+                    }
+                    let namePtr = unsafe UnsafeRawPointer(base).assumingMemoryBound(
                         to: CChar.self
                     )
                     let value = try unsafe get(name: namePtr, source)
@@ -270,7 +273,10 @@
             var utf8 = Array(name.utf8)
             utf8.append(0)
             return try utf8.withUnsafeBufferPointer { buffer throws(E) in
-                let ptr = unsafe UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(
+                guard let base = buffer.baseAddress else {
+                    preconditionFailure("A null-terminated array has a base address")
+                }
+                let ptr = unsafe UnsafeRawPointer(base).assumingMemoryBound(
                     to: CChar.self
                 )
                 return try unsafe body(ptr)

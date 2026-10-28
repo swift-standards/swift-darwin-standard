@@ -29,4 +29,21 @@ import ISO_9945_Core
         }
     }
 
+    extension Darwin.Kernel.Event.Queue.Filter.Flags {
+
+        public static let delete = Self(rawValue: UInt32(NOTE_DELETE))
+
+        public static let write = Self(rawValue: UInt32(NOTE_WRITE))
+
+        public static let extend = Self(rawValue: UInt32(NOTE_EXTEND))
+
+        public static let attrib = Self(rawValue: UInt32(NOTE_ATTRIB))
+
+        public static let link = Self(rawValue: UInt32(NOTE_LINK))
+
+        public static let rename = Self(rawValue: UInt32(NOTE_RENAME))
+
+        public static let revoke = Self(rawValue: UInt32(NOTE_REVOKE))
+    }
+
 #endif

@@ -21,6 +21,8 @@ import ISO_9945_Core
         public static let write = Self(rawValue: Int16(EVFILT_WRITE))
 
         public static let user = Self(rawValue: Int16(EVFILT_USER))
+
+        public static let vnode = Self(rawValue: Int16(EVFILT_VNODE))
     }
 
 #endif

@@ -41,4 +41,49 @@
         }
     }
 
+    extension Kernel.Event.Queue.Test.Integration {
+
+        @Test
+        func `vnode filter reports a write when a file appears in a watched directory`() throws {
+            var template = Array("/tmp/vnode-XXXXXX".utf8CString)
+            let made = template.withUnsafeMutableBufferPointer { buffer in
+                unsafe mkdtemp(buffer.baseAddress!).map { unsafe String(cString: $0) }
+            }
+            let directory = try #require(made)
+            defer { _ = unsafe rmdir(directory) }
+
+            let watched = unsafe open(directory, O_EVTONLY)
+            try #require(watched >= 0)
+            defer { Kernel.Event.Queue.Test.closeNoThrow(watched) }
+
+            let queue = try Kernel.Event.Queue()
+            try queue.register(events: [
+                Kernel.Event.Queue.Event(
+                    id: Kernel.Event.ID(watched),
+                    filter: .vnode,
+                    flags: .add | .clear,
+                    fflags: .write | .delete | .rename
+                )
+            ])
+
+            let file = directory + "/new"
+            let created = unsafe open(file, O_CREAT | O_WRONLY, 0o600)
+            try #require(created >= 0)
+            Kernel.Event.Queue.Test.closeNoThrow(created)
+            defer { _ = unsafe unlink(file) }
+
+            var events = [Kernel.Event.Queue.Event](
+                repeating: Kernel.Event.Queue.Event(id: Kernel.Event.ID(0), filter: .read, flags: .none),
+                count: 4
+            )
+            let count = try queue.poll(into: &events, timeout: .seconds(2))
+
+            #expect(count == 1)
+            #expect(events[0].filter == .vnode)
+            #expect(events[0].id == Kernel.Event.ID(watched))
+            #expect(events[0].fflags.contains(.write))
+            #expect(!events[0].fflags.contains(.delete))
+        }
+    }
+
 #endif

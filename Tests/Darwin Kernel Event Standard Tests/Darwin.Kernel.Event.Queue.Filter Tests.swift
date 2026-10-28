@@ -43,6 +43,11 @@
         }
 
         @Test
+        func `vnode filter rawValue matches EVFILT_VNODE`() {
+            #expect(Kernel.Event.Queue.Filter.vnode.rawValue == Int16(EVFILT_VNODE))
+        }
+
+        @Test
         func `filter conforms to Equatable`() {
             let filter1 = Kernel.Event.Queue.Filter.read
             let filter2 = Kernel.Event.Queue.Filter.read

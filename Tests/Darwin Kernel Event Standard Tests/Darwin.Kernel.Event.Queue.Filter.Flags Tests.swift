@@ -93,6 +93,28 @@
         }
     }
 
+    extension Kernel.Event.Queue.Filter.Flags.Test.Unit {
+        @Test
+        func `vnode notes match their NOTE constants`() {
+            #expect(Kernel.Event.Queue.Filter.Flags.delete.rawValue == UInt32(NOTE_DELETE))
+            #expect(Kernel.Event.Queue.Filter.Flags.write.rawValue == UInt32(NOTE_WRITE))
+            #expect(Kernel.Event.Queue.Filter.Flags.extend.rawValue == UInt32(NOTE_EXTEND))
+            #expect(Kernel.Event.Queue.Filter.Flags.attrib.rawValue == UInt32(NOTE_ATTRIB))
+            #expect(Kernel.Event.Queue.Filter.Flags.link.rawValue == UInt32(NOTE_LINK))
+            #expect(Kernel.Event.Queue.Filter.Flags.rename.rawValue == UInt32(NOTE_RENAME))
+            #expect(Kernel.Event.Queue.Filter.Flags.revoke.rawValue == UInt32(NOTE_REVOKE))
+        }
+
+        @Test
+        func `vnode notes combine and are found again`() {
+            let notes: Kernel.Event.Queue.Filter.Flags = .write | .delete | .rename
+            #expect(notes.contains(.write))
+            #expect(notes.contains(.delete))
+            #expect(notes.contains(.rename))
+            #expect(!notes.contains(.extend))
+        }
+    }
+
     extension Kernel.Event.Queue.Filter.Flags.Test.EdgeCase {
         @Test
         func `combining same flag is idempotent`() {

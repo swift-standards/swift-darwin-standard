@@ -144,7 +144,7 @@
                 uid: ISO_9945.Kernel.User.ID(_unchecked: UInt32(sb.st_uid)),
                 gid: ISO_9945.Kernel.Group.ID(_unchecked: UInt32(sb.st_gid)),
                 inode: ISO_9945.Kernel.Inode(UInt64(sb.st_ino)),
-                device: ISO_9945.Kernel.Device(UInt64(sb.st_dev)),
+                device: ISO_9945.Kernel.Device(UInt64(UInt32(bitPattern: sb.st_dev))),
                 linkCount: ISO_9945.Kernel.Link.Count(_unchecked: Cardinal(UInt(sb.st_nlink))),
                 accessTime: atime,
                 modificationTime: mtime,

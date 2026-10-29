@@ -33,6 +33,10 @@ let package = Package(
             targets: ["Darwin Memory Standard"]
         ),
         .library(
+            name: "Darwin Metadata Standard",
+            targets: ["Darwin Metadata Standard"]
+        ),
+        .library(
             name: "Darwin Kernel Standard Test Support",
             targets: ["Darwin Kernel Standard Test Support"]
         ),
@@ -145,6 +149,13 @@ let package = Package(
         ),
 
         .target(
+            name: "Darwin Metadata Standard",
+            dependencies: [
+                .target(name: "Darwin Standard Core")
+            ]
+        ),
+
+        .target(
             name: "Darwin Kernel Standard Test Support",
             dependencies: [
                 .target(name: "Darwin Kernel Standard")
@@ -165,6 +176,12 @@ let package = Package(
                 .target(name: "Darwin Kernel Event Standard"),
                 .target(name: "Darwin Standard Core"),
                 .product(name: "ISO 9945 Kernel Test Support", package: "swift-iso-9945"),
+            ]
+        ),
+        .testTarget(
+            name: "Darwin Metadata Standard Tests",
+            dependencies: [
+                .target(name: "Darwin Metadata Standard")
             ]
         ),
     ],

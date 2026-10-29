@@ -18,6 +18,9 @@
                 case EEXIST:
                     throw .exists
 
+                case ENOTSUP:
+                    throw .notSupported
+
                 case EPERM, EACCES:
                     throw .permission(code)
 

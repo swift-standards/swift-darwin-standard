@@ -169,6 +169,27 @@
         public enum Copyfile {}
     }
 
+    extension Darwin.Kernel.File.Clone {
+
+        /// Clones `source` (following symlinks) to a new `destination`; returns
+        /// `clonefile`'s result and sets `errno`, failing with `EEXIST` for any
+        /// existing destination entry, a dangling symlink included.
+        @unsafe
+        internal static func exclusive(
+            source: UnsafePointer<CChar>,
+            destination: UnsafePointer<CChar>
+        ) -> Int32 {
+            let descriptor = unsafe open(source, O_RDONLY | O_CLOEXEC)
+            guard descriptor >= 0 else { return -1 }
+            defer {
+                let saved = errno
+                close(descriptor)
+                errno = saved
+            }
+            return unsafe fclonefileat(descriptor, AT_FDCWD, destination, UInt32(CLONE_NOFOLLOW))
+        }
+    }
+
     extension Darwin.Kernel.File.Clone.Clonefile {
 
         public static func attempt(
@@ -179,10 +200,13 @@
                 srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
                 try unsafe destination.withUnsafePointer {
                     dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                    let result = unsafe clonefile(
-                        UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self),
-                        UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self),
-                        0
+                    // `clonefile` follows a dangling symlink at the destination and
+                    // creates its target; `fclonefileat` with `CLONE_NOFOLLOW` refuses
+                    // any existing destination entry, while the source, opened here,
+                    // still follows symlinks.
+                    let result = unsafe Darwin.Kernel.File.Clone.exclusive(
+                        source: UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self),
+                        destination: UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)
                     )
 
                     if result == 0 {
@@ -220,20 +244,11 @@
                         to: CChar.self
                     )
 
-                    var statBuf = stat()
-                    let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
-                    if destExists {
-                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
-                            code: .posix(EEXIST),
-                            operation: .copyfile
-                        )
-                    }
-
                     let result = unsafe copyfile(
                         srcPtr,
                         dstPtr,
                         nil,
-                        copyfile_flags_t(COPYFILE_CLONE | COPYFILE_ALL)
+                        copyfile_flags_t(COPYFILE_CLONE | COPYFILE_ALL | COPYFILE_EXCL)
                     )
 
                     guard result == 0 else {
@@ -261,20 +276,11 @@
                         to: CChar.self
                     )
 
-                    var statBuf = stat()
-                    let destExists = unsafe (stat(dstPtr, &statBuf) == 0)
-                    if destExists {
-                        throw Darwin.Kernel.File.Clone.Error.Syscall.platform(
-                            code: .posix(EEXIST),
-                            operation: .copyfile
-                        )
-                    }
-
                     let result = unsafe copyfile(
                         srcPtr,
                         dstPtr,
                         nil,
-                        copyfile_flags_t(COPYFILE_DATA)
+                        copyfile_flags_t(COPYFILE_DATA | COPYFILE_EXCL)
                     )
 
                     guard result == 0 else {

@@ -21,6 +21,10 @@ let package = Package(
             targets: ["Darwin Kernel Event Standard"]
         ),
         .library(
+            name: "Darwin Kernel System Standard",
+            targets: ["Darwin Kernel System Standard"]
+        ),
+        .library(
             name: "Darwin Kernel Time Standard",
             targets: ["Darwin Kernel Time Standard"]
         ),
@@ -74,6 +78,14 @@ let package = Package(
             url: "https://github.com/swift-atoms/swift-ordinal.git",
             branch: "main"
         ),
+        .package(
+            url: "https://github.com/swift-atoms/swift-cpu.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-atoms/swift-memory.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-iso/swift-iso-9945.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-parser.git", branch: "main", traits: ["Map", "IteratorLeaves", "Product", "Skip", "Append", "Either", "Iterator"]),
     ],
@@ -115,6 +127,16 @@ let package = Package(
                 .target(name: "Darwin Kernel Time Standard"),
                 .product(name: "Error", package: "swift-error"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
+            ]
+        ),
+
+        .target(
+            name: "Darwin Kernel System Standard",
+            dependencies: [
+                .target(name: "Darwin Kernel Standard"),
+                .product(name: "CPU", package: "swift-cpu"),
+                .product(name: "Memory", package: "swift-memory"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
             ]
         ),
 
@@ -176,6 +198,13 @@ let package = Package(
                 .target(name: "Darwin Kernel Event Standard"),
                 .target(name: "Darwin Standard Core"),
                 .product(name: "ISO 9945 Kernel Test Support", package: "swift-iso-9945"),
+            ]
+        ),
+        .testTarget(
+            name: "Darwin Kernel System Standard Tests",
+            dependencies: [
+                .target(name: "Darwin Kernel System Standard"),
+                .product(name: "ISO 9945 Kernel System", package: "swift-iso-9945"),
             ]
         ),
         .testTarget(

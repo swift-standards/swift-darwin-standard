@@ -1,14 +1,16 @@
 import Darwin_Metadata_Standard
 import Testing
 
-extension Darwin.Metadata.Attribute {
+enum `Darwin.Metadata.Attribute Tests` {}
+
+extension `Darwin.Metadata.Attribute Tests` {
     @Suite
     struct Test {
         @Suite struct Unit {}
     }
 }
 
-extension Darwin.Metadata.Attribute.Test.Unit {
+extension `Darwin.Metadata.Attribute Tests`.Test.Unit {
     @Test
     func `the attributes carry Apple's names`() {
         #expect(Darwin.Metadata.Attribute.kMDItemTitle.name == "kMDItemTitle")

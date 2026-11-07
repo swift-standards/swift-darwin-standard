@@ -200,10 +200,6 @@
                 srcCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
                 try unsafe destination.withUnsafePointer {
                     dstCString throws(Darwin.Kernel.File.Clone.Error.Syscall) in
-                    // `clonefile` follows a dangling symlink at the destination and
-                    // creates its target; `fclonefileat` with `CLONE_NOFOLLOW` refuses
-                    // any existing destination entry, while the source, opened here,
-                    // still follows symlinks.
                     let result = unsafe Darwin.Kernel.File.Clone.exclusive(
                         source: UnsafeRawPointer(srcCString).assumingMemoryBound(to: CChar.self),
                         destination: UnsafeRawPointer(dstCString).assumingMemoryBound(to: CChar.self)

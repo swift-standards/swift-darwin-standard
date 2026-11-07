@@ -250,7 +250,7 @@
             var names: [Swift::String] = []
             var start = 0
 
-            for i in 0..<count {
+            (0..<count).forEach { i in
                 if buffer[i] == 0 {
                     if i > start {
                         let slice = buffer[start..<i]

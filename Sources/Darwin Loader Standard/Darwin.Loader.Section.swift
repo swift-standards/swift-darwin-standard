@@ -107,7 +107,7 @@
     extension Darwin_Standard_Core::Darwin.Loader.Section {
 
         @safe
-        public struct AllSectionsSequence: @unsafe Sequence {
+        public struct AllSectionsSequence: @unsafe Swift.Sequence {
             let name: Name
         }
     }

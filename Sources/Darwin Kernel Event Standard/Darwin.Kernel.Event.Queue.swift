@@ -100,7 +100,7 @@
                 of: CKevent.self,
                 capacity: events.count
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) in
-                for i in 0..<events.count {
+                (0..<events.count).forEach { i in
                     unsafe (buffer[i] = unsafe events[i].cValue)
                 }
                 let result = unsafe _kevent(
@@ -129,7 +129,7 @@
                 of: CKevent.self,
                 capacity: events.count
             ) { buffer throws(Darwin.Kernel.Event.Queue.Error) in
-                for i in 0..<events.count {
+                (0..<events.count).forEach { i in
                     unsafe (buffer[i] = unsafe events[i].cValue)
                 }
                 let result = unsafe _kevent(
@@ -189,7 +189,7 @@
                     throw .kevent(code)
                 }
                 let eventCount = Int(result)
-                for i in 0..<eventCount {
+                (0..<eventCount).forEach { i in
                     events[i] = unsafe Event(buffer[i])
                 }
                 return eventCount
@@ -234,7 +234,7 @@
                     throw .kevent(code)
                 }
                 let eventCount = Int(result)
-                for i in 0..<eventCount {
+                (0..<eventCount).forEach { i in
                     unsafe (events[i] = unsafe Event(buffer[i]))
                 }
                 return eventCount

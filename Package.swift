@@ -208,6 +208,13 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "Darwin Memory Standard Tests",
+            dependencies: [
+                .target(name: "Darwin Memory Standard"),
+                .target(name: "Darwin Standard Core"),
+            ]
+        ),
+        .testTarget(
             name: "Darwin Metadata Standard Tests",
             dependencies: [
                 .target(name: "Darwin Metadata Standard")

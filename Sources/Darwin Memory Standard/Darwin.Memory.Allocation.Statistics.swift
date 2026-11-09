@@ -5,18 +5,19 @@
 
     extension Darwin_Standard_Core::Darwin.Memory.Allocation {
 
+        /// A snapshot of the default malloc zone: what is in use at the moment of capture,
+        /// not running counts of allocations and deallocations.
         public struct Statistics: Sendable, Equatable {
 
-            public let allocations: Int
+            /// The number of heap blocks in use.
+            public let blocksInUse: Int
 
-            public let deallocations: Int
+            /// The number of bytes in use by those blocks.
+            public let bytesInUse: Int
 
-            public let bytesAllocated: Int
-
-            public init(allocations: Int = 0, deallocations: Int = 0, bytesAllocated: Int = 0) {
-                self.allocations = allocations
-                self.deallocations = deallocations
-                self.bytesAllocated = bytesAllocated
+            public init(blocksInUse: Int = 0, bytesInUse: Int = 0) {
+                self.blocksInUse = blocksInUse
+                self.bytesInUse = bytesInUse
             }
         }
     }
@@ -28,9 +29,8 @@
             unsafe darwin_malloc_zone_statistics(&stats)
 
             return Self(
-                allocations: Int(stats.blocks_in_use),
-                deallocations: 0,
-                bytesAllocated: Int(stats.size_in_use)
+                blocksInUse: Int(stats.blocks_in_use),
+                bytesInUse: Int(stats.size_in_use)
             )
         }
     }

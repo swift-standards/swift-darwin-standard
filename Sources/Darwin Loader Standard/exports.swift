@@ -1,2 +1,4 @@
-@_exported public import Darwin_Standard_Core
-@_exported public import Loader_Vocabulary
+#if Loader
+    @_exported public import Darwin_Standard_Core
+    @_exported public import Loader_Vocabulary
+#endif

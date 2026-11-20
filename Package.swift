@@ -45,6 +45,9 @@ let package = Package(
             targets: ["Darwin Kernel Standard Test Support"]
         ),
     ],
+    traits: [
+        .trait(name: "Loader", description: "Dynamic library loader (dyld/dlopen)")
+    ],
     dependencies: [
         .package(
             url: "https://github.com/swift-atoms/swift-time.git",
@@ -86,8 +89,11 @@ let package = Package(
             url: "https://github.com/swift-atoms/swift-memory.git",
             branch: "main"
         ),
-        .package(url: "https://github.com/swift-iso/swift-iso-9945.git", branch: "main"),
-        .package(url: "https://github.com/swift-atoms/swift-parser.git", branch: "main", traits: ["Map", "IteratorLeaves", "Product", "Skip", "Append", "Either", "Iterator"]),
+        .package(
+            url: "https://github.com/swift-iso/swift-iso-9945.git",
+            branch: "main",
+            traits: [.trait(name: "Loader", condition: .when(traits: ["Loader"]))]
+        ),
     ],
     targets: [
 
@@ -116,7 +122,6 @@ let package = Package(
                 .product(name: "Time", package: "swift-time"),
                 .product(name: "Error", package: "swift-error"),
                 .product(name: "ISO 9945 Kernel", package: "swift-iso-9945"),
-                .product(name: "ISO 9945 Kernel Thread", package: "swift-iso-9945"),
             ]
         ),
 
@@ -152,13 +157,13 @@ let package = Package(
             dependencies: [
                 .target(name: "Darwin Standard Core"),
                 .target(name: "Darwin Kernel Shims"),
-                .product(name: "Loader Vocabulary", package: "swift-loader-vocabulary"),
-                .product(name: "String", package: "swift-string"),
-                .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "ISO 9945 Core", package: "swift-iso-9945"),
-                .product(name: "ISO 9945 Loader", package: "swift-iso-9945"),
+                .product(name: "Loader Vocabulary", package: "swift-loader-vocabulary", condition: .when(traits: ["Loader"])),
+                .product(name: "String", package: "swift-string", condition: .when(traits: ["Loader"])),
+                .product(name: "Tagged", package: "swift-tagged", condition: .when(traits: ["Loader"])),
+                .product(name: "Cardinal", package: "swift-cardinal", condition: .when(traits: ["Loader"])),
+                .product(name: "Ordinal", package: "swift-ordinal", condition: .when(traits: ["Loader"])),
+                .product(name: "ISO 9945 Core", package: "swift-iso-9945", condition: .when(traits: ["Loader"])),
+                .product(name: "ISO 9945 Loader", package: "swift-iso-9945", condition: .when(traits: ["Loader"])),
             ]
         ),
 

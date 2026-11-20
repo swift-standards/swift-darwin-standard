@@ -1,14 +1,15 @@
 #if canImport(Darwin)
 
     @_spi(Syscall) public import ISO_9945_Core
+    public import Darwin_Standard_Core
     internal import Darwin
 
-    extension ISO_9945.Kernel.File.Attributes {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes {
 
         public enum Extended {}
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         public struct Error: Swift::Error, Sendable {
             public let code: Error::Error.Code
@@ -19,7 +20,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended.Error {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended.Error {
 
         public static let notFound = Error(code: .posix(ENOATTR))
 
@@ -33,7 +34,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         @unsafe
         internal static func list(
@@ -83,7 +84,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         @unsafe
         internal static func get(
@@ -136,7 +137,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         @unsafe
         internal static func set(
@@ -180,7 +181,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         @unsafe
         internal static func remove(
@@ -208,7 +209,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         internal static func copyAll(
             fromFd source: Int32,
@@ -241,7 +242,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         private static func parseNullSeparatedStrings(
             _ buffer: [CChar],
@@ -284,7 +285,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         public static func list(
             path: borrowing Path.Borrowed,
@@ -377,7 +378,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Attributes.Extended {
+    extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         public static func list(
             _ descriptor: borrowing ISO_9945.Kernel.Descriptor

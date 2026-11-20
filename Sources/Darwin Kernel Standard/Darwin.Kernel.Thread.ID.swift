@@ -1,9 +1,9 @@
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 
+    public import Darwin_Standard_Core
     internal import Darwin
-    public import ISO_9945_Kernel_Thread
 
-    extension ISO_9945.Kernel.Thread {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread {
 
         public struct ID: Hashable, Sendable, RawRepresentable, CustomStringConvertible {
 
@@ -15,11 +15,11 @@
         }
     }
 
-    extension ISO_9945.Kernel.Thread.ID {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread.ID {
         public var description: String { "mach_port(\(rawValue))" }
     }
 
-    extension ISO_9945.Kernel.Thread.ID {
+    extension Darwin_Standard_Core::Darwin.Kernel.Thread.ID {
 
         public static var current: Self {
             .init(rawValue: UInt32(unsafe pthread_mach_thread_np(unsafe pthread_self())))

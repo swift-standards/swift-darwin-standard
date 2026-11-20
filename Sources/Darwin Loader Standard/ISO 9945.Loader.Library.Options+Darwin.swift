@@ -1,15 +1,17 @@
-#if canImport(Darwin)
+#if Loader
+    #if canImport(Darwin)
 
-    public import ISO_9945_Core
-    public import ISO_9945_Loader
-    public import Loader_Vocabulary
-    internal import Darwin
+        public import ISO_9945_Core
+        public import ISO_9945_Loader
+        public import Loader_Vocabulary
+        internal import Darwin
 
-    extension ISO_9945.Loader.Library.Options {
+        extension ISO_9945.Loader.Library.Options {
 
-        public static let noLoad = Self(rawValue: RTLD_NOLOAD)
+            public static let noLoad = Self(rawValue: RTLD_NOLOAD)
 
-        public static let noDelete = Self(rawValue: RTLD_NODELETE)
-    }
+            public static let noDelete = Self(rawValue: RTLD_NODELETE)
+        }
 
+    #endif
 #endif

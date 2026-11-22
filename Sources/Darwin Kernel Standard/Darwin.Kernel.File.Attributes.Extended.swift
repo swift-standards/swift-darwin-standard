@@ -381,14 +381,14 @@
     extension Darwin_Standard_Core::Darwin.Kernel.File.Attributes.Extended {
 
         public static func list(
-            _ descriptor: borrowing ISO_9945.Kernel.Descriptor
+            _ descriptor: borrowing ISO.`9945`.Kernel.Descriptor
         ) throws(Error) -> [Swift::String] {
             try list(descriptor._rawValue)
         }
 
         public static func get(
             name: Swift::String,
-            _ descriptor: borrowing ISO_9945.Kernel.Descriptor
+            _ descriptor: borrowing ISO.`9945`.Kernel.Descriptor
         ) throws(Error) -> [UInt8] {
             try get(name: name, descriptor._rawValue)
         }
@@ -397,21 +397,21 @@
         public static func set(
             name: Swift::String,
             value: UnsafeRawBufferPointer,
-            _ descriptor: borrowing ISO_9945.Kernel.Descriptor
+            _ descriptor: borrowing ISO.`9945`.Kernel.Descriptor
         ) throws(Error) {
             try unsafe set(name: name, value: value, descriptor._rawValue)
         }
 
         public static func remove(
             name: Swift::String,
-            _ descriptor: borrowing ISO_9945.Kernel.Descriptor
+            _ descriptor: borrowing ISO.`9945`.Kernel.Descriptor
         ) throws(Error) {
             try remove(name: name, descriptor._rawValue)
         }
 
         public static func copyAll(
-            from source: borrowing ISO_9945.Kernel.Descriptor,
-            to destination: borrowing ISO_9945.Kernel.Descriptor
+            from source: borrowing ISO.`9945`.Kernel.Descriptor,
+            to destination: borrowing ISO.`9945`.Kernel.Descriptor
         ) throws(Error) {
             try copyAll(fromFd: source._rawValue, toFd: destination._rawValue)
         }

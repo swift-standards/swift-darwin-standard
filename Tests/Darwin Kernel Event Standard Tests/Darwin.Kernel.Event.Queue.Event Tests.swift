@@ -23,7 +23,7 @@
         @Test
         func `event roundtrips through C conversion`() throws {
 
-            let pipe = try ISO_9945.Kernel.Pipe.pipe()
+            let pipe = try ISO.`9945`.Kernel.Pipe.pipe()
 
             let original = Kernel.Event.Queue.Event(
                 id: Kernel.Event.ID(pipe.read._rawValue),

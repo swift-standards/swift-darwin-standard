@@ -30,10 +30,10 @@
         @safe
         public struct Queue: ~Copyable, Sendable {
 
-            internal let descriptor: ISO_9945.Kernel.Descriptor
+            internal let descriptor: ISO.`9945`.Kernel.Descriptor
 
             public init() throws(Error) {
-                self.descriptor = try ISO_9945.Kernel.Descriptor(_rawValue: Self.create())
+                self.descriptor = try ISO.`9945`.Kernel.Descriptor(_rawValue: Self.create())
             }
         }
     }

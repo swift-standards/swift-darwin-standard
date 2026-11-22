@@ -6,7 +6,7 @@
         public import Loader_Vocabulary
         internal import Darwin
 
-        extension ISO_9945.Loader.Library.Options {
+        extension ISO.`9945`.Loader.Library.Options {
 
             public static let noLoad = Self(rawValue: RTLD_NOLOAD)
 

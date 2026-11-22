@@ -3,7 +3,7 @@
     public import ISO_9945_Core
     internal import Darwin
 
-    extension ISO_9945.Kernel.File.Open.Options {
+    extension ISO.`9945`.Kernel.File.Open.Options {
 
         public static let noCache = Self(rawValue: 1 << 30)
 

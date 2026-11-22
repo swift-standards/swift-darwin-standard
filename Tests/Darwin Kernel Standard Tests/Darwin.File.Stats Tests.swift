@@ -18,7 +18,7 @@
             // dev_t is a signed Int32, and fstat reports a socket's device as -1.
             let raw = socket(AF_UNIX, SOCK_STREAM, 0)
             try #require(raw >= 0)
-            let socket = ISO_9945.Kernel.Descriptor(_rawValue: raw)
+            let socket = ISO.`9945`.Kernel.Descriptor(_rawValue: raw)
 
             let stats = try Darwin.File.Stats.get(socket)
 

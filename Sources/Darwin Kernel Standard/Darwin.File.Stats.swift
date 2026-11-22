@@ -12,12 +12,12 @@
 
         public struct Stats: Sendable, Equatable {
 
-            public let base: ISO_9945.Kernel.File.Stats
+            public let base: ISO.`9945`.Kernel.File.Stats
 
-            public let birthtime: ISO_9945.Kernel.Time
+            public let birthtime: ISO.`9945`.Kernel.Time
 
             @inlinable
-            public init(base: ISO_9945.Kernel.File.Stats, birthtime: ISO_9945.Kernel.Time) {
+            public init(base: ISO.`9945`.Kernel.File.Stats, birthtime: ISO.`9945`.Kernel.Time) {
                 self.base = base
                 self.birthtime = birthtime
             }
@@ -27,42 +27,42 @@
     extension Darwin_Standard_Core::Darwin.File.Stats {
 
         @inlinable
-        public var size: ISO_9945.Kernel.File.Size { base.size }
+        public var size: ISO.`9945`.Kernel.File.Size { base.size }
 
         @inlinable
-        public var type: ISO_9945.Kernel.File.Stats.Kind { base.type }
+        public var type: ISO.`9945`.Kernel.File.Stats.Kind { base.type }
 
         @inlinable
-        public var permissions: ISO_9945.Kernel.File.Permissions { base.permissions }
+        public var permissions: ISO.`9945`.Kernel.File.Permissions { base.permissions }
 
         @inlinable
-        public var uid: ISO_9945.Kernel.User.ID { base.uid }
+        public var uid: ISO.`9945`.Kernel.User.ID { base.uid }
 
         @inlinable
-        public var gid: ISO_9945.Kernel.Group.ID { base.gid }
+        public var gid: ISO.`9945`.Kernel.Group.ID { base.gid }
 
         @inlinable
-        public var inode: ISO_9945.Kernel.Inode { base.inode }
+        public var inode: ISO.`9945`.Kernel.Inode { base.inode }
 
         @inlinable
-        public var device: ISO_9945.Kernel.Device { base.device }
+        public var device: ISO.`9945`.Kernel.Device { base.device }
 
         @inlinable
-        public var linkCount: ISO_9945.Kernel.Link.Count { base.linkCount }
+        public var linkCount: ISO.`9945`.Kernel.Link.Count { base.linkCount }
 
         @inlinable
-        public var accessTime: ISO_9945.Kernel.Time { base.accessTime }
+        public var accessTime: ISO.`9945`.Kernel.Time { base.accessTime }
 
         @inlinable
-        public var modificationTime: ISO_9945.Kernel.Time { base.modificationTime }
+        public var modificationTime: ISO.`9945`.Kernel.Time { base.modificationTime }
 
         @inlinable
-        public var changeTime: ISO_9945.Kernel.Time { base.changeTime }
+        public var changeTime: ISO.`9945`.Kernel.Time { base.changeTime }
     }
 
     extension Darwin_Standard_Core::Darwin.File.Stats {
 
-        public typealias Error = ISO_9945.Kernel.File.Stats.Error
+        public typealias Error = ISO.`9945`.Kernel.File.Stats.Error
 
         public static func get(path: borrowing Path) throws(Error) -> Self {
             let cPath = unsafe UnsafeRawPointer(path.view.pointer).assumingMemoryBound(
@@ -105,7 +105,7 @@
         }
 
         public static func get(
-            _ descriptor: borrowing ISO_9945.Kernel.Descriptor
+            _ descriptor: borrowing ISO.`9945`.Kernel.Descriptor
         ) throws(Error) -> Self {
             try get(fd: descriptor._rawValue)
         }
@@ -135,17 +135,17 @@
                 nanosecondFraction: Int32(sb.st_birthtimespec.tv_nsec)
             )
 
-            let base = ISO_9945.Kernel.File.Stats(
-                size: ISO_9945.Kernel.File.Size(Int64(sb.st_size)),
-                type: ISO_9945.Kernel.File.Stats.Kind(_mode: sb.st_mode),
-                permissions: ISO_9945.Kernel.File.Permissions(
+            let base = ISO.`9945`.Kernel.File.Stats(
+                size: ISO.`9945`.Kernel.File.Size(Int64(sb.st_size)),
+                type: ISO.`9945`.Kernel.File.Stats.Kind(_mode: sb.st_mode),
+                permissions: ISO.`9945`.Kernel.File.Permissions(
                     rawValue: UInt16(sb.st_mode & 0o7777)
                 ),
-                uid: ISO_9945.Kernel.User.ID(_unchecked: UInt32(sb.st_uid)),
-                gid: ISO_9945.Kernel.Group.ID(_unchecked: UInt32(sb.st_gid)),
-                inode: ISO_9945.Kernel.Inode(UInt64(sb.st_ino)),
-                device: ISO_9945.Kernel.Device(UInt64(UInt32(bitPattern: sb.st_dev))),
-                linkCount: ISO_9945.Kernel.Link.Count(_unchecked: Cardinal(UInt(sb.st_nlink))),
+                uid: ISO.`9945`.Kernel.User.ID(_unchecked: UInt32(sb.st_uid)),
+                gid: ISO.`9945`.Kernel.Group.ID(_unchecked: UInt32(sb.st_gid)),
+                inode: ISO.`9945`.Kernel.Inode(UInt64(sb.st_ino)),
+                device: ISO.`9945`.Kernel.Device(UInt64(UInt32(bitPattern: sb.st_dev))),
+                linkCount: ISO.`9945`.Kernel.Link.Count(_unchecked: Cardinal(UInt(sb.st_nlink))),
                 accessTime: atime,
                 modificationTime: mtime,
                 changeTime: ctime
@@ -155,11 +155,11 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Stats.Error {
+    extension ISO.`9945`.Kernel.File.Stats.Error {
 
         internal init(_posixErrno code: Int32) {
             let errorCode = Error::Error.Code.posix(code)
-            if let e = ISO_9945.Kernel.Descriptor.Validity.Error(code: errorCode) {
+            if let e = ISO.`9945`.Kernel.Descriptor.Validity.Error(code: errorCode) {
                 self = .handle(e)
                 return
             }
@@ -167,7 +167,7 @@
         }
     }
 
-    extension ISO_9945.Kernel.File.Stats.Kind {
+    extension ISO.`9945`.Kernel.File.Stats.Kind {
 
         internal init(_mode: mode_t) {
             let fileType = _mode & S_IFMT

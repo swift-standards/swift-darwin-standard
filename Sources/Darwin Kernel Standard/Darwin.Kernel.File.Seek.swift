@@ -3,7 +3,7 @@
     public import ISO_9945_Core
     internal import Darwin
 
-    extension ISO_9945.Kernel.File.Seek.Whence {
+    extension ISO.`9945`.Kernel.File.Seek.Whence {
 
         public static let hole = Self(rawValue: SEEK_HOLE)
 

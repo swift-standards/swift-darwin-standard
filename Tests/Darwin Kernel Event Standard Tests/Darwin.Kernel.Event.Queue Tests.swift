@@ -11,7 +11,7 @@
     extension Kernel.Event.Queue.Test {
 
         static func closeNoThrow(_ rawDescriptor: Int32) {
-            try? ISO_9945.Kernel.Close.close(ISO_9945.Kernel.Descriptor(_rawValue: rawDescriptor))
+            try? ISO.`9945`.Kernel.Close.close(ISO.`9945`.Kernel.Descriptor(_rawValue: rawDescriptor))
         }
     }
 
